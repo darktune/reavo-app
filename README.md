@@ -7,7 +7,7 @@ REAVO is a premium e-commerce platform and a specialized Corporate Admin Operati
 *   **Customer Storefront:** Product discovery, shopping cart, and secure checkout using KoraPay Collections.
 *   **Corporate Admin OS:** A powerful internal dashboard for managing products, orders, customers, and partnerships.
 *   **AI Operations Copilot:** An autonomous AI assistant that helps the admin manage inventory, detect anomalies, and execute business operations.
-*   **Automated Background Jobs (Cron):** Automated daily morning business briefings and hourly low-stock alerts sent directly via email.
+*   **Automated Background Jobs (Cron):** A Vercel-hosted daily morning briefing and an hourly low-stock check invoked by GitHub Actions.
 *   **Automated Disbursements:** Secure payout integration with KoraPay to disburse funds to ambassadors and partners.
 
 ## Environment Variables
@@ -38,7 +38,8 @@ CRON_SECRET="your-secure-cron-secret"
 
 1.  **Install dependencies:** `npm install`
 2.  **Run locally:** `npm run dev`
-3.  **Deploy:** This project is configured for Vercel. Push to your main branch to deploy. Vercel Cron jobs are configured in `vercel.json`.
+3.  **Deploy:** This project is configured for Vercel. Push to your main branch to deploy. The daily Vercel cron is configured in `vercel.json`.
+4.  **Configure hourly stock checks:** In the GitHub repository, add `REAVO_APP_URL` (the deployed Vercel URL) and `CRON_SECRET` under **Settings → Secrets and variables → Actions**. The `Hourly stock check` workflow then invokes `/api/cron/hourly-stock` once per hour. GitHub Actions schedules are best-effort and may be delayed.
 
 ## Database Schema
 

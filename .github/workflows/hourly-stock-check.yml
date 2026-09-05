@@ -1,0 +1,25 @@
+name: Hourly stock check
+
+on:
+  schedule:
+    - cron: '0 * * * *'
+  workflow_dispatch:
+
+jobs:
+  check-stock:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Invoke stock check
+        env:
+          REAVO_APP_URL: ${{ secrets.REAVO_APP_URL }}
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+        run: |
+          set -eu
+          test -n "$REAVO_APP_URL"
+          test -n "$CRON_SECRET"
+          curl --fail-with-body --silent --show-error \
+            --retry 2 --retry-delay 5 \
+            --request GET \
+            --header "Authorization: Bearer $CRON_SECRET" \
+            "${REAVO_APP_URL%/}/api/cron/hourly-stock"
