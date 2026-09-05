@@ -29,3 +29,6 @@ All requests have been fully executed! Here is the breakdown of what I built:
 > 1. Try liking a product on the shop page without being logged in to test the Auth wall!
 > 2. Log in, open the wishlist drawer from the Navbar, and see your saved items.
 > 3. Go to the **Ambassadors** page (link in footer), scroll to the bottom, and check out your unique signature color!
+
+### 4. UI Fixes
+- **Mobile Categories**: Fixed an issue where the category sorting profile buttons would squish into illegible circles on mobile screens by ensuring they maintain their structural width.

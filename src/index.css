@@ -1,0 +1,345 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@600;700&display=swap');
+
+:root {
+  --bg-void: #0A0A0C;
+  --bg-surface: #0D0D0F;
+  --bg-card: #111113;
+  --bg-inner: #161618;
+  --text-primary: #FFFFFF;
+  --text-secondary: #C4C7CC;
+  --accent-primary: #39D9C4;
+  --accent-teal: #39D9C4;
+  --accent-purple: #7C5CFF;
+  --accent-blue: #3D8BFF;
+  --accent-gold: #FFB800;
+  --accent-lime: #B4FF39;
+  --accent-coral: #FF6B4A;
+  --border-subtle: rgba(255, 255, 255, 0.09);
+  --border-active: rgba(255, 255, 255, 0.2);
+  --glass-bg: rgba(255, 255, 255, 0.06);
+  --glass-border: rgba(255, 255, 255, 0.12);
+  --glass-blur: 24px;
+  --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.4);
+  --bg-admin-glass: rgba(10, 10, 12, 0.96);
+}
+
+[data-theme='light'] {
+  --bg-void: #F8FAFC;
+  --bg-surface: #FFFFFF;
+  --bg-card: #FFFFFF;
+  --bg-inner: #F1F5F9;
+  --bg-surface-elevated: #FFFFFF;
+  --text-primary: #0F172A;
+  --text-secondary: #475569;
+  --border-subtle: #E2E8F0;
+  --border-active: #CBD5E1;
+  --glass-bg: #FFFFFF;
+  --glass-border: #E2E8F0;
+  --glass-blur: 16px;
+  --shadow-card: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.05);
+  --dot-color: rgba(0, 0, 0, 0.05);
+  --bg-admin-glass: #FFFFFF;
+  --accent-primary: #0D9488;
+  --accent-teal: #0D9488;
+  --accent-purple: #6366F1;
+}
+
+@media (prefers-color-scheme: light) {
+  :root[data-theme="system"] {
+    --bg-void: #F8FAFC;
+    --bg-surface: #FFFFFF;
+    --bg-card: #FFFFFF;
+    --bg-inner: #F1F5F9;
+    --text-primary: #0F172A;
+    --text-secondary: #475569;
+    --border-subtle: #E2E8F0;
+    --border-active: #CBD5E1;
+    --glass-bg: #FFFFFF;
+    --glass-border: #E2E8F0;
+    --shadow-card: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+    --dot-color: rgba(0, 0, 0, 0.05);
+    --bg-admin-glass: #FFFFFF;
+    --accent-primary: #0D9488;
+    --accent-teal: #0D9488;
+    --accent-purple: #6366F1;
+  }
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg-void);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.7;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+  color: var(--text-primary);
+}
+
+button {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  cursor: pointer;
+  border: none;
+  background: none;
+  color: inherit;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.font-mono {
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.glass-panel { transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-card), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+}
+
+/* Utilities */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 clamp(20px, 4vw, 48px);
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: var(--accent-primary);
+  color: #0A0A0C;
+  font-weight: 600;
+  padding: 12px 24px;
+  border-radius: 8px;
+  transition: transform 0.2s, opacity 0.2s;
+}
+
+.btn-primary:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: transparent;
+  color: var(--text-primary);
+  font-weight: 600;
+  padding: 12px 24px;
+  border-radius: 8px;
+  border: 1px solid var(--border-subtle);
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.btn-ghost:hover {
+  background: var(--glass-bg);
+  border-color: var(--border-active);
+}
+
+.reavo-logo {
+  display: block;
+  mix-blend-mode: screen; /* default dark */
+}
+
+[data-theme='light'] .reavo-logo {
+  filter: invert(1);
+  mix-blend-mode: multiply;
+}
+
+@media (prefers-color-scheme: light) {
+  [data-theme='system'] .reavo-logo {
+    filter: invert(1);
+    mix-blend-mode: multiply;
+  }
+}
+
+/* Global Icon Animation (Claude Style) */
+button .lucide, a .lucide {
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+button:hover .lucide, a:hover .lucide {
+  transform: scale(1.15);
+}
+
+button:active .lucide, a:active .lucide {
+  transform: scale(0.9);
+  transition: all 0.1s ease-out;
+}
+
+/* Skeleton Loading */
+.skeleton {
+  background: linear-gradient(90deg, var(--bg-card) 25%, var(--bg-inner) 50%, var(--bg-card) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite linear;
+  border-radius: 8px;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.skeleton-pulse {
+  background: var(--bg-inner);
+  animation: skeleton-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes skeleton-pulse {
+  0% { opacity: 0.5; }
+  50% { opacity: 0.9; }
+  100% { opacity: 0.5; }
+}
+
+/* Glassmorphism Shine Hover Effect */
+.glass-hover {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
+}
+
+.glass-hover::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transform: skewX(-20deg);
+  transition: 0.5s;
+}
+
+.glass-hover:hover {
+  transform: translateY(-4px) scale(1.01);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.2);
+}
+
+.glass-hover:hover::after {
+  left: 200%;
+  transition: left 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Global iOS 26 Physics Interactions */
+h1, h2, h3, p, span {
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), text-shadow 0.4s ease;
+}
+
+h1:hover, h2:hover, h3:hover, p:not(.card-body-text):hover {
+  transform: translateY(-2px);
+  text-shadow: 0 4px 24px rgba(255, 255, 255, 0.15);
+}
+
+img {
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+}
+
+img:hover {
+  transform: scale(1.03) !important;
+  filter: brightness(1.05) saturate(1.1) !important;
+}
+
+.dot-pulse { display: inline-block; animation: pulse 1.5s infinite; } @keyframes pulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
+
+/* Premium Input Fields */
+input, select, textarea {
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+input:hover, select:hover, textarea:hover {
+  border-color: rgba(255, 255, 255, 0.2) !important;
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.05);
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: var(--accent-primary) !important;
+  box-shadow: 0 0 0 2px rgba(57, 217, 196, 0.2);
+  outline: none;
+}
+
+[data-theme='light'] input:focus, [data-theme='light'] select:focus, [data-theme='light'] textarea:focus {
+  box-shadow: 0 0 0 2px rgba(57, 217, 196, 0.4);
+}
+
+/* Premium Icon Button */
+.icon-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--bg-inner);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  cursor: pointer;
+}
+
+.icon-btn:hover {
+  background: var(--glass-bg);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+/* Mobile Responsiveness Utilities */
+.show-mobile {
+  display: none !important;
+}
+
+@media (max-width: 768px) {
+  .hidden-mobile {
+    display: none !important;
+  }
+  .show-mobile {
+    display: block !important;
+  }
+  .hidden-desktop {
+    display: block !important;
+  }
+}
+
+@media (min-width: 769px) {
+  .hidden-desktop {
+    display: none !important;
+  }
+}
+
+.glass-panel:hover { transform: translateY(-4px) scale(1.01); box-shadow: 0 12px 32px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255, 255, 255, 0.15); border-color: rgba(255,255,255,0.2); z-index: 2; }

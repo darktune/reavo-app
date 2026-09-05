@@ -1,0 +1,11 @@
+node_modules
+.git
+.env*
+.vercel
+dist
+*.log
+*.zip
+REAVO shoots
+REAVO logos
+*.md
+*.skill

@@ -1,0 +1,26 @@
+# Oriental Times Task List
+
+- [ ] Project Setup
+  - [x] Create Next.js project
+  - [x] Initialize Git repository
+  - [x] Add Github Collaborator instructions
+  - [ ] Install GitHub CLI
+- [ ] Database Schema (Supabase)
+  - [x] Define schemas for users, articles, categories, media, homepage_sections
+  - [ ] Write SQL migrations
+- [ ] Core Frontend Design System
+  - [x] Setup Tailwind configuration (fonts, colors, spacing)
+  - [x] Create core UI components (buttons, inputs, cards)
+  - [ ] Setup Framer Motion for animations
+- [ ] Public Facing App (Reader Experience)
+  - [x] Homepage layout with dynamic sections
+  - [x] Navigation and global header/footer
+  - [x] Article reading page (premium typography)
+  - [x] Category pages
+  - [x] SEO URL structure preservation
+- [ ] CMS / Admin Dashboard
+  - [x] Login and authentication (Supabase Auth)
+  - [x] Admin dashboard layout
+  - [x] Rich text editor integration (Tiptap)
+  - [x] Image upload to Supabase Storage
+  - [x] Homepage section management (drag/drop)

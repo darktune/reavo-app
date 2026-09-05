@@ -1,16 +1,45 @@
-# React + Vite
+# REAVO App & Admin OS
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+REAVO is a premium e-commerce platform and a specialized Corporate Admin Operating System powered by AI.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+*   **Customer Storefront:** Product discovery, shopping cart, and secure checkout using KoraPay Collections.
+*   **Corporate Admin OS:** A powerful internal dashboard for managing products, orders, customers, and partnerships.
+*   **AI Operations Copilot:** An autonomous AI assistant that helps the admin manage inventory, detect anomalies, and execute business operations.
+*   **Automated Background Jobs (Cron):** Automated daily morning business briefings and hourly low-stock alerts sent directly via email.
+*   **Automated Disbursements:** Secure payout integration with KoraPay to disburse funds to ambassadors and partners.
 
-## React Compiler
+## Environment Variables
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Create a `.env.local` or `.env` file at the root of the project with the following required variables:
 
-## Expanding the Oxlint configuration
+```env
+# Supabase
+VITE_SUPABASE_URL="https://your-project-id.supabase.co"
+VITE_SUPABASE_ANON_KEY="your-anon-key"
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+# KoraPay Integration
+KORAPAY_SECRET_KEY="sk_test_..."
+
+# Email / SMTP Settings
+# If not provided, the system falls back to Ethereal (fake SMTP) for testing.
+SMTP_HOST="smtp.example.com"
+SMTP_PORT="587"
+SMTP_USER="your-email@example.com"
+SMTP_PASS="your-email-password"
+
+# AI Automations
+ADMIN_EMAIL="admin@reavoglobal.com"
+CRON_SECRET="your-secure-cron-secret"
+```
+
+## Setup & Deployment
+
+1.  **Install dependencies:** `npm install`
+2.  **Run locally:** `npm run dev`
+3.  **Deploy:** This project is configured for Vercel. Push to your main branch to deploy. Vercel Cron jobs are configured in `vercel.json`.
+
+## Database Schema
+
+The complete database schema, including Row-Level Security (RLS) policies and triggers, is located in `supabase_admin_os_schema.sql`. Run this file in your Supabase SQL Editor to initialize the database.
