@@ -4,10 +4,6 @@
     {
       "path": "/api/cron/daily-briefing",
       "schedule": "0 8 * * *"
-    },
-    {
-      "path": "/api/cron/hourly-stock",
-      "schedule": "0 * * * *"
     }
   ],
   "rewrites": [
