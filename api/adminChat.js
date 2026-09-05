@@ -6,7 +6,21 @@ dotenv.config();
 
 const supabaseUrl = process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL;
 const supabaseKey = process.env.VITE_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY;
-const supabase = createClient(supabaseUrl, supabaseKey);
+
+const isSupabaseConfigured = Boolean(
+  supabaseUrl &&
+  supabaseKey &&
+  !supabaseUrl.includes('your-project-id') &&
+  (supabaseUrl.startsWith('http://') || supabaseUrl.startsWith('https://'))
+);
+
+const supabase = isSupabaseConfigured
+  ? createClient(supabaseUrl, supabaseKey)
+  : {
+      auth: { getUser: () => Promise.resolve({ data: { user: null }, error: new Error('Supabase unconfigured') }) },
+      from: () => ({ select: () => ({ or: () => ({ single: () => Promise.resolve({ data: null, error: null }) }) }) })
+    };
+
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {

@@ -9,7 +9,32 @@ import adminChatHandler from './api/adminChat.js';
 
 dotenv.config();
 
-const supabase = createClient(process.env.VITE_SUPABASE_URL, process.env.VITE_SUPABASE_ANON_KEY);
+const supabaseUrl = process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL;
+const supabaseAnonKey = process.env.VITE_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY;
+
+const isSupabaseConfigured = Boolean(
+  supabaseUrl &&
+  supabaseAnonKey &&
+  !supabaseUrl.includes('your-project-id') &&
+  (supabaseUrl.startsWith('http://') || supabaseUrl.startsWith('https://'))
+);
+
+const supabase = isSupabaseConfigured
+  ? createClient(supabaseUrl, supabaseAnonKey)
+  : {
+      from: () => ({
+        select: () => ({
+          eq: () => Promise.resolve({ data: [], error: null }),
+          or: () => ({ single: () => Promise.resolve({ data: null, error: null }) }),
+          then: (r) => r({ data: [], error: null })
+        }),
+        insert: () => Promise.resolve({ error: null }),
+        update: () => ({ eq: () => Promise.resolve({ error: null }) })
+      }),
+      auth: {
+        getUser: () => Promise.resolve({ data: { user: null }, error: new Error('Supabase unconfigured') })
+      }
+    };
 
 const app = express();
 app.use(cors());
