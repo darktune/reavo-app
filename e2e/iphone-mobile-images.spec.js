@@ -40,7 +40,7 @@ test.describe('iPhone 15/16/17 Mobile Viewport & Image Scaling Suite', () => {
     expect(scrollWidth).toBeLessThanOrEqual(clientWidth + 2);
   });
 
-  test('Shop Page: Product cards display whole gadgets without sticky hover zoom', async ({ page }) => {
+  test('Shop Page: Product cards display whole gadgets without sticky hover zoom', async ({ page, isMobile }) => {
     await page.goto('/shop', { waitUntil: 'domcontentloaded', timeout: 60000 });
 
     // Wait for product cards to load
@@ -53,10 +53,14 @@ test.describe('iPhone 15/16/17 Mobile Viewport & Image Scaling Suite', () => {
     // Check initial transform scale
     const initialTransform = await cardImage.evaluate(el => window.getComputedStyle(el).transform);
 
-    // Simulate mobile touch tap on the card
-    await card.tap();
+    // Simulate touch tap on mobile or click on desktop
+    if (isMobile) {
+      await card.tap();
+    } else {
+      await card.click();
+    }
 
-    // Check transform scale after tap - should NOT be stuck at zoomed scale > 1.02
+    // Check transform scale after interaction - should NOT be stuck at zoomed scale > 1.02
     const postTapTransform = await cardImage.evaluate(el => window.getComputedStyle(el).transform);
 
     // Verify object-fit is contain or properly framed

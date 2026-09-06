@@ -21,6 +21,7 @@ test.describe('Vibe-Coded E-Commerce Fortress Suite (VibeEval + testRigor + Mabl
 
   // 1. VIBEEVAL PATTERN: Client-Side Price Tampering & Coupon Abuse Defense
   test('Security: Client cannot tamper with cart total or submit negative coupon discounts', async ({ page }) => {
+    test.slow(); // First test in suite — dev server cold start can consume most of the timeout
     await page.goto('/checkout', { waitUntil: 'domcontentloaded' });
 
     // Attempt to enter a fraudulent or malformed coupon code
