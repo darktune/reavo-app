@@ -209,8 +209,15 @@ export default function ProfilePage() {
                 </button>
                 <button 
                   onClick={() => setActiveTab('trade-ins')}
-                  className={`profile-nav-btn ${activeTab === 'trade-ins' ? 'active' : ''}`}>
-                  <Smartphone size={18} /> Device Trade-Ins
+                  className={`profile-nav-btn ${activeTab === 'trade-ins' ? 'active' : ''}`}
+                  style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <Smartphone size={18} /> Device Trade-Ins
+                  </div>
+                  <span style={{ fontSize: 10, fontWeight: 700, padding: '2px 6px', borderRadius: 6, background: 'rgba(255, 184, 0, 0.15)', color: '#FFB800' }}>
+                    Beta
+                  </span>
                 </button>
                 <button 
                   onClick={() => setActiveTab('support')}
@@ -710,8 +717,13 @@ export default function ProfilePage() {
                 <>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24, flexWrap: 'wrap', gap: 16 }}>
                     <div>
-                      <h2 style={{ fontSize: 24, margin: 0, color: 'var(--text-primary)' }}>Device Trade-Ins</h2>
-                      <p style={{ color: 'var(--text-secondary)', margin: '4px 0 0 0', fontSize: 14 }}>Exchange your pre-owned smartphone or laptop for instant store credit or cash.</p>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
+                        <h2 style={{ fontSize: 24, margin: 0, color: 'var(--text-primary)' }}>Device Trade-Ins</h2>
+                        <span style={{ fontSize: 11, fontWeight: 700, padding: '3px 9px', borderRadius: 100, background: 'rgba(255, 184, 0, 0.15)', color: '#FFB800', border: '1px solid rgba(255, 184, 0, 0.3)' }}>
+                          REAVO Trade-In Hub — Beta / Rolling Out to Select Campuses
+                        </span>
+                      </div>
+                      <p style={{ color: 'var(--text-secondary)', margin: '4px 0 0 0', fontSize: 14 }}>Exchange your pre-owned smartphone or laptop for store credit or verified campus payouts.</p>
                     </div>
                     <button 
                       onClick={() => setShowTradeInModal(true)}

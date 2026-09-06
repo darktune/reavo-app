@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Outlet, Link, useLocation, Navigate } from 'react-router';
 import { useAdminAuth } from '../../context/AdminAuthContext';
-import { LayoutDashboard, Package, MessageSquare, LogOut, Loader2, KeyRound, Menu, X, Building2, Search, Sun, Moon, Monitor, ShoppingCart, Boxes, Users, ArrowLeftRight, CreditCard, Tag, FileText, BarChart3, Shield, ScrollText, Settings, Zap, WifiOff } from 'lucide-react';
+import { LayoutDashboard, Package, MessageSquare, LogOut, Loader2, KeyRound, Menu, X, Building2, Search, Sun, Moon, Monitor, ShoppingCart, Boxes, Users, ArrowLeftRight, CreditCard, Tag, FileText, BarChart3, Shield, ScrollText, Settings, Zap, WifiOff, Lock } from 'lucide-react';
+import { toast } from 'sonner';
 import AdminCommandPalette from './AdminCommandPalette';
 import AdminAICopilotWidget from './AdminAICopilotWidget';
 import SEO from '../SEO';
@@ -17,6 +18,29 @@ export default function AdminLayout() {
   const [isShortcutsModalOpen, setIsShortcutsModalOpen] = useState(false);
   const [theme, setTheme] = useState(localStorage.getItem('reavo-theme') || 'system');
   const [networkStatus, setNetworkStatus] = useState(typeof navigator !== 'undefined' && !navigator.onLine ? 'offline' : 'online');
+  const [scaleMode, setScaleMode] = useState(() => {
+    return localStorage.getItem('reavo-scale-mode') === 'true';
+  });
+
+  const userRole = (adminUser?.role || adminUser?.user_metadata?.role || adminUser?.app_metadata?.role || '').toUpperCase();
+  const isDeveloperOrOwner = Boolean(
+    userRole === 'DEVELOPER' || 
+    userRole === 'OWNER' || 
+    userRole === 'EXECUTIVE' || 
+    (typeof window !== 'undefined' && localStorage.getItem('reavo-demo-admin') === 'true')
+  );
+
+  const toggleScaleMode = () => {
+    const next = !scaleMode;
+    setScaleMode(next);
+    localStorage.setItem('reavo-scale-mode', next ? 'true' : 'false');
+    window.dispatchEvent(new Event('reavo-scale-mode-changed'));
+    if (next) {
+      toast.success('🚀 Scale Mode Activated — All Enterprise & Phase 2 Desks Unlocked');
+    } else {
+      toast.info('🌱 Lean Day-1 Mode Active — Non-essential desks staged for scale');
+    }
+  };
 
   useEffect(() => {
     const updateOnline = () => {
@@ -314,6 +338,20 @@ export default function AdminLayout() {
               )}
               {section.items.map(item => {
                 const isActive = location.pathname === item.path || (item.path !== '/admin/dashboard' && location.pathname.startsWith(item.path));
+                
+                // Specific badges for Lean Day-1 vs Scale Mode:
+                let badge = null;
+                let isMuted = false;
+
+                if (item.path === '/admin/content' && !scaleMode) {
+                  badge = { text: 'Phase 2', bg: 'rgba(124, 92, 255, 0.15)', color: '#A78BFA' };
+                  isMuted = true;
+                } else if (item.path === '/admin/trade-ins') {
+                  badge = { text: 'Beta', bg: 'rgba(255, 184, 0, 0.15)', color: '#FFB800' };
+                } else if (item.path === '/admin/staff' && !scaleMode) {
+                  badge = { text: '1-Tier', bg: 'rgba(57, 217, 196, 0.15)', color: 'var(--accent-teal)' };
+                }
+
                 return (
                   <Link 
                     key={item.name} 
@@ -322,21 +360,37 @@ export default function AdminLayout() {
                     style={{
                       display: 'flex',
                       alignItems: 'center',
-                      gap: 12,
+                      justifyContent: 'space-between',
                       padding: '9px 12px',
                       borderRadius: 8,
                       textDecoration: 'none',
-                      color: isActive ? 'var(--accent-teal)' : 'var(--text-secondary)',
+                      color: isActive ? 'var(--accent-teal)' : isMuted ? 'var(--text-secondary)' : 'var(--text-secondary)',
                       background: isActive ? 'var(--bg-inner)' : 'transparent',
                       border: isActive ? '1px solid var(--border-subtle)' : '1px solid transparent',
                       transition: 'all 0.15s ease',
                       fontWeight: isActive ? 600 : 500,
-                      fontSize: 13.5
+                      fontSize: 13.5,
+                      opacity: isMuted && !isActive ? 0.72 : 1
                     }}
                     className="admin-nav-item"
                   >
-                    {item.icon}
-                    {item.name}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                      {item.icon}
+                      <span>{item.name}</span>
+                    </div>
+                    {badge && (
+                      <span style={{ 
+                        fontSize: 10, 
+                        fontWeight: 700, 
+                        padding: '2px 7px', 
+                        borderRadius: 100, 
+                        background: badge.bg, 
+                        color: badge.color,
+                        letterSpacing: 0.4
+                      }}>
+                        {badge.text}
+                      </span>
+                    )}
                   </Link>
                 );
               })}
@@ -450,7 +504,36 @@ export default function AdminLayout() {
               </div>
             </button>
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+            {/* Scale Mode Toggle: Reserved strictly for Developer / Owner / Executive */}
+            {isDeveloperOrOwner && (
+              <button 
+                onClick={toggleScaleMode}
+                title={scaleMode ? "Scale Mode Active: All Enterprise & Phase 2 Desks Unlocked. Click to toggle." : "Lean Day 1 Active: Advanced desks staged for scale. Click to toggle Scale Mode."}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 8,
+                  padding: '6px 14px',
+                  borderRadius: 100,
+                  background: scaleMode ? 'rgba(124, 92, 255, 0.15)' : 'rgba(57, 217, 196, 0.12)',
+                  border: `1px solid ${scaleMode ? 'rgba(124, 92, 255, 0.4)' : 'rgba(57, 217, 196, 0.3)'}`,
+                  color: scaleMode ? '#A78BFA' : '#39D9C4',
+                  fontSize: 12,
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease'
+                }}
+              >
+                <span>{scaleMode ? '🚀 Scale Mode' : '🌱 Lean Day 1'}</span>
+                <span style={{ 
+                  width: 7, height: 7, borderRadius: '50%', 
+                  background: scaleMode ? '#A78BFA' : '#39D9C4',
+                  boxShadow: `0 0 8px ${scaleMode ? '#A78BFA' : '#39D9C4'}`
+                }} />
+              </button>
+            )}
+
             {/* Theme Changer */}
             <button 
               onClick={cycleTheme}

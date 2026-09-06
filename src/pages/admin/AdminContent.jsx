@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
 import { toast } from 'sonner';
-import { Plus, Edit, Trash2, GripVertical, Image as ImageIcon, EyeOff, Layout, FileText, Bell, Globe } from 'lucide-react';
+import { Plus, Edit, Trash2, GripVertical, Image as ImageIcon, EyeOff, Layout, FileText, Bell, Globe, Lock } from 'lucide-react';
 import ScrollReveal from '../../components/ScrollReveal';
 import AdminSkeleton from '../../components/admin/AdminSkeleton';
 
@@ -12,6 +12,15 @@ export default function AdminContent() {
   const [modalOpen, setModalOpen] = useState(false);
   const [editingContent, setEditingContent] = useState(null);
   const [formData, setFormData] = useState({});
+  const [scaleMode, setScaleMode] = useState(() => localStorage.getItem('reavo-scale-mode') === 'true');
+
+  useEffect(() => {
+    const handleScaleMode = () => {
+      setScaleMode(localStorage.getItem('reavo-scale-mode') === 'true');
+    };
+    window.addEventListener('reavo-scale-mode-changed', handleScaleMode);
+    return () => window.removeEventListener('reavo-scale-mode-changed', handleScaleMode);
+  }, []);
 
   const mockContent = [
     { id: 1, type: 'banner', title: 'Summer Sale', subtitle: 'Up to 50% off all sneakers', cta_text: 'Shop Now', cta_link: '/category/sneakers', image_url: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff', status: 'live', position: 1, created_at: new Date().toISOString() },
@@ -125,6 +134,41 @@ export default function AdminContent() {
             <Plus size={18} /> New {activeTab === 'banners' ? 'Banner' : activeTab === 'announcements' ? 'Announcement' : 'Page'}
           </button>
         </div>
+
+        {/* Lean Day 1 Scale Notice */}
+        {!scaleMode && (
+          <div className="glass-panel" style={{ 
+            padding: '20px 24px', 
+            borderRadius: 16, 
+            border: '1px solid rgba(124, 92, 255, 0.3)', 
+            background: 'linear-gradient(135deg, rgba(124, 92, 255, 0.08) 0%, rgba(57, 217, 196, 0.04) 100%)', 
+            marginBottom: 28, 
+            display: 'flex', 
+            alignItems: 'center', 
+            justifyContent: 'space-between', 
+            flexWrap: 'wrap', 
+            gap: 16 
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+              <div style={{ width: 44, height: 44, borderRadius: 12, background: 'rgba(124, 92, 255, 0.18)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#A78BFA', flexShrink: 0 }}>
+                <Lock size={22} />
+              </div>
+              <div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 4 }}>
+                  <h3 style={{ fontSize: 16, fontWeight: 700, margin: 0, color: 'var(--text-primary)' }}>Dynamic CMS — Staged for Phase 2</h3>
+                  <span style={{ fontSize: 11, fontWeight: 700, padding: '2px 8px', borderRadius: 100, background: 'rgba(124, 92, 255, 0.2)', color: '#A78BFA' }}>Phase 2 CMS</span>
+                </div>
+                <p style={{ margin: 0, fontSize: 13, color: 'var(--text-secondary)', maxWidth: 640 }}>
+                  For Lean Day 1 launch, storefront hero banners and policies are locked to code-based templates for maximum sub-second render speeds and brand consistency. Dynamic in-browser CMS unlocks in Scale Phase.
+                </p>
+              </div>
+            </div>
+            <span style={{ fontSize: 11, fontWeight: 600, padding: '4px 10px', borderRadius: 8, background: 'rgba(255, 255, 255, 0.05)', border: '1px solid var(--border-subtle)', color: 'var(--text-secondary)' }}>
+              Toggle Scale Mode to Edit
+            </span>
+          </div>
+        )}
+
 
         <div style={{ display: 'flex', gap: 24, borderBottom: '1px solid var(--border-subtle)', marginBottom: 32 }}>
           {[

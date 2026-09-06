@@ -43,6 +43,16 @@ export default function AdminStaff() {
   const [generatedLink, setGeneratedLink] = useState(null);
   const [showEditModal, setShowEditModal] = useState(false);
   const [selectedStaff, setSelectedStaff] = useState(null);
+  const [scaleMode, setScaleMode] = useState(() => localStorage.getItem('reavo-scale-mode') === 'true');
+
+  useEffect(() => {
+    const handleScaleMode = () => {
+      setScaleMode(localStorage.getItem('reavo-scale-mode') === 'true');
+    };
+    window.addEventListener('reavo-scale-mode-changed', handleScaleMode);
+    return () => window.removeEventListener('reavo-scale-mode-changed', handleScaleMode);
+  }, []);
+
 
   useEffect(() => {
     fetchStaff();
@@ -271,6 +281,39 @@ export default function AdminStaff() {
           title="🛡️ RBAC Permissions Guide"
           hint="Admins & Owners can assign granular permission sets across 12 store domains. Each staff member can also customize their personal profile and layout at /admin/profile."
         />
+
+        {/* Lean Day 1 Single-Tier Notice */}
+        {!scaleMode && (
+          <div className="glass-panel" style={{ 
+            padding: '16px 20px', 
+            borderRadius: 14, 
+            border: '1px solid rgba(57, 217, 196, 0.25)', 
+            background: 'rgba(57, 217, 196, 0.05)', 
+            marginBottom: 24, 
+            display: 'flex', 
+            alignItems: 'center', 
+            justifyContent: 'space-between', 
+            flexWrap: 'wrap', 
+            gap: 12 
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+              <Shield size={20} color="var(--accent-teal)" />
+              <div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                  <span style={{ fontWeight: 600, fontSize: 14, color: 'var(--text-primary)' }}>Lean Day 1: Single-Tier Admin Operating Mode</span>
+                  <span style={{ fontSize: 11, padding: '2px 8px', borderRadius: 100, background: 'rgba(57, 217, 196, 0.15)', color: 'var(--accent-teal)', fontWeight: 600 }}>Active</span>
+                </div>
+                <p style={{ margin: '3px 0 0', fontSize: 12, color: 'var(--text-secondary)' }}>
+                  Standard Admin access is active. Multi-seat role delegation (7 specialized roles & 12-point permission matrices) is reserved for enterprise team scaling.
+                </p>
+              </div>
+            </div>
+            <span style={{ fontSize: 11, fontWeight: 600, padding: '4px 10px', borderRadius: 8, background: 'rgba(255, 255, 255, 0.05)', border: '1px solid var(--border-subtle)', color: 'var(--text-secondary)' }}>
+              Multi-Seat Role Management (Enterprise Scale)
+            </span>
+          </div>
+        )}
+
 
         {/* Stats */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: 24, marginBottom: 32 }}>
@@ -566,22 +609,55 @@ export default function AdminStaff() {
                   <input required name="email" type="email" style={{ width: '100%', padding: '10px 12px', borderRadius: 8, background: 'var(--bg-inner)', border: '1px solid var(--border-subtle)', color: 'var(--text-primary)' }} />
                 </div>
                 <div style={{ marginBottom: 24 }}>
-                  <label style={{ display: 'block', marginBottom: 8, color: 'var(--text-secondary)', fontSize: 14 }}>Assign Role</label>
-                  <select required name="role" style={{ width: '100%', padding: '10px 12px', borderRadius: 8, background: 'var(--bg-inner)', border: '1px solid var(--border-subtle)', color: 'var(--text-primary)' }}>
-                    {Object.keys(ROLE_COLORS).map(r => <option key={r} value={r}>{r}</option>)}
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
+                    <label style={{ color: 'var(--text-secondary)', fontSize: 14 }}>Assign Role</label>
+                    {!scaleMode && (
+                      <span style={{ fontSize: 11, padding: '2px 8px', borderRadius: 6, background: 'rgba(57, 217, 196, 0.15)', color: 'var(--accent-teal)', fontWeight: 600 }}>
+                        1-Tier Admin Standard
+                      </span>
+                    )}
+                  </div>
+                  <select required name="role" defaultValue="ADMIN" style={{ width: '100%', padding: '10px 12px', borderRadius: 8, background: 'var(--bg-inner)', border: '1px solid var(--border-subtle)', color: 'var(--text-primary)' }}>
+                    {scaleMode ? (
+                      Object.keys(ROLE_COLORS).map(r => <option key={r} value={r}>{r}</option>)
+                    ) : (
+                      <>
+                        <option value="ADMIN">ADMIN (Full Operations Access)</option>
+                        <option disabled value="INVENTORY">INVENTORY — [Enterprise Scale Only]</option>
+                        <option disabled value="ORDER MANAGER">ORDER MANAGER — [Enterprise Scale Only]</option>
+                        <option disabled value="CONTENT">CONTENT — [Enterprise Scale Only]</option>
+                        <option disabled value="SUPPORT">SUPPORT — [Enterprise Scale Only]</option>
+                        <option disabled value="ANALYST">ANALYST — [Enterprise Scale Only]</option>
+                      </>
+                    )}
                   </select>
+                  {!scaleMode && (
+                    <div style={{ fontSize: 11, color: 'var(--text-secondary)', marginTop: 6 }}>
+                      Multi-Seat Role Management (Enterprise Scale) — 6 specialized sub-roles unlock in Scale Mode.
+                    </div>
+                  )}
                 </div>
                 
                 <div style={{ marginBottom: 24 }}>
                   <label style={{ display: 'block', marginBottom: 8, color: 'var(--text-secondary)', fontSize: 14 }}>Permissions</label>
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
-                    {PERMISSIONS_LIST.map(p => (
-                      <label key={p} style={{ display: 'flex', alignItems: 'center', gap: 8, color: 'var(--text-primary)', fontSize: 13 }}>
-                        <input type="checkbox" name={`perm_${p}`} defaultChecked />
-                        {p}
-                      </label>
-                    ))}
-                  </div>
+                  {scaleMode ? (
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+                      {PERMISSIONS_LIST.map(p => (
+                        <label key={p} style={{ display: 'flex', alignItems: 'center', gap: 8, color: 'var(--text-primary)', fontSize: 13 }}>
+                          <input type="checkbox" name={`perm_${p}`} defaultChecked />
+                          {p}
+                        </label>
+                      ))}
+                    </div>
+                  ) : (
+                    <div style={{ padding: '12px 16px', borderRadius: 8, background: 'var(--bg-inner)', border: '1px solid var(--border-subtle)', fontSize: 13, color: 'var(--text-secondary)' }}>
+                      <div style={{ color: 'var(--text-primary)', fontWeight: 600, marginBottom: 4 }}>Standard Full Admin Access (12 Domains Active)</div>
+                      All store operational modules are enabled by default for Day-1 simplicity. Granular 12-point permission matrices unlock in Scale Mode.
+                      {PERMISSIONS_LIST.map(p => (
+                        <input key={p} type="hidden" name={`perm_${p}`} value="on" />
+                      ))}
+                    </div>
+                  )}
                 </div>
 
                 <div style={{ display: 'flex', gap: 12, justifyContent: 'flex-end' }}>
@@ -602,22 +678,56 @@ export default function AdminStaff() {
             <p style={{ color: 'var(--text-secondary)', marginBottom: 24 }}>Updating access for {selectedStaff.name}</p>
             <form onSubmit={handleUpdateRole}>
               <div style={{ marginBottom: 24 }}>
-                <label style={{ display: 'block', marginBottom: 8, color: 'var(--text-secondary)', fontSize: 14 }}>Role</label>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
+                  <label style={{ color: 'var(--text-secondary)', fontSize: 14 }}>Role</label>
+                  {!scaleMode && (
+                    <span style={{ fontSize: 11, padding: '2px 8px', borderRadius: 6, background: 'rgba(57, 217, 196, 0.15)', color: 'var(--accent-teal)', fontWeight: 600 }}>
+                      1-Tier Admin Standard
+                    </span>
+                  )}
+                </div>
                 <select name="role" defaultValue={selectedStaff.role} style={{ width: '100%', padding: '10px 12px', borderRadius: 8, background: 'var(--bg-inner)', border: '1px solid var(--border-subtle)', color: 'var(--text-primary)' }}>
-                  {Object.keys(ROLE_COLORS).map(r => <option key={r} value={r}>{r}</option>)}
+                  {scaleMode ? (
+                    Object.keys(ROLE_COLORS).map(r => <option key={r} value={r}>{r}</option>)
+                  ) : (
+                    <>
+                      <option value="ADMIN">ADMIN (Full Operations Access)</option>
+                      <option value="OWNER">OWNER</option>
+                      <option disabled value="INVENTORY">INVENTORY — [Enterprise Scale Only]</option>
+                      <option disabled value="ORDER MANAGER">ORDER MANAGER — [Enterprise Scale Only]</option>
+                      <option disabled value="CONTENT">CONTENT — [Enterprise Scale Only]</option>
+                      <option disabled value="SUPPORT">SUPPORT — [Enterprise Scale Only]</option>
+                      <option disabled value="ANALYST">ANALYST — [Enterprise Scale Only]</option>
+                    </>
+                  )}
                 </select>
+                {!scaleMode && (
+                  <div style={{ fontSize: 11, color: 'var(--text-secondary)', marginTop: 6 }}>
+                    Multi-Seat Role Management (Enterprise Scale) — 6 specialized sub-roles unlock in Scale Mode.
+                  </div>
+                )}
               </div>
               
               <div style={{ marginBottom: 24 }}>
                 <label style={{ display: 'block', marginBottom: 12, color: 'var(--text-secondary)', fontSize: 14 }}>Permissions</label>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
-                  {PERMISSIONS_LIST.map(perm => (
-                    <label key={perm} style={{ display: 'flex', alignItems: 'center', gap: 8, color: 'var(--text-primary)', fontSize: 14 }}>
-                      <input type="checkbox" name={`perm_${perm}`} defaultChecked={selectedStaff.permissions?.includes(perm) || true} />
-                      {perm}
-                    </label>
-                  ))}
-                </div>
+                {scaleMode ? (
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+                    {PERMISSIONS_LIST.map(perm => (
+                      <label key={perm} style={{ display: 'flex', alignItems: 'center', gap: 8, color: 'var(--text-primary)', fontSize: 14 }}>
+                        <input type="checkbox" name={`perm_${perm}`} defaultChecked={selectedStaff.permissions?.includes(perm) || true} />
+                        {perm}
+                      </label>
+                    ))}
+                  </div>
+                ) : (
+                  <div style={{ padding: '12px 16px', borderRadius: 8, background: 'var(--bg-inner)', border: '1px solid var(--border-subtle)', fontSize: 13, color: 'var(--text-secondary)' }}>
+                    <div style={{ color: 'var(--text-primary)', fontWeight: 600, marginBottom: 4 }}>Standard Full Admin Access (12 Domains Active)</div>
+                    All permissions granted for standard operations. Granular 12-point matrix unlocks in Scale Mode.
+                    {PERMISSIONS_LIST.map(p => (
+                      <input key={p} type="hidden" name={`perm_${p}`} value="on" />
+                    ))}
+                  </div>
+                )}
               </div>
 
               <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 12 }}>
