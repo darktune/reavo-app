@@ -224,9 +224,12 @@ export default function LandingPage() {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                border: '1px solid var(--border-active)'
+                border: '1px solid var(--border-active)',
+                overflow: 'hidden',
+                padding: 'clamp(12px, 3vw, 24px)',
+                background: 'var(--bg-inner)'
               }}>
-                <img src={products[0].image} alt="Featured REAVO campus gadget — premium tech for Nigerian students" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: 23 }} />
+                <img src={products[0].image} alt="Featured REAVO campus gadget — premium tech for Nigerian students" style={{ width: '100%', height: '100%', objectFit: 'contain', borderRadius: 20 }} />
               </div>
             </div>
           </ScrollReveal>
@@ -287,8 +290,8 @@ export default function LandingPage() {
                   border: '1px solid var(--border-subtle)'
                 }}>
                   <div style={{ height: 4, background: categories.find(c => c.id === product.category)?.color || 'var(--accent-primary)' }}></div>
-                  <div style={{ height: 280, background: 'var(--bg-inner)' }}>
-                    <img src={product.image} alt={product.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  <div style={{ height: 'clamp(210px, 45vw, 260px)', background: 'var(--bg-inner)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16, overflow: 'hidden' }}>
+                    <img src={product.image} alt={product.name} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
                   </div>
                   <div style={{ padding: 24 }}>
                     <h3 style={{ fontSize: 18, marginBottom: 8 }}>{product.name}</h3>

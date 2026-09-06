@@ -27,22 +27,27 @@ export default function ProductCard({ product, onCompare }) {
         transform: isHovered ? 'translateY(-4px)' : 'none',
         cursor: 'pointer'
       }}
-      onMouseEnter={() => setIsHovered(true)}
+      onMouseEnter={() => {
+        if (typeof window !== 'undefined' && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+          setIsHovered(true);
+        }
+      }}
       onMouseLeave={() => setIsHovered(false)}
     >
       <div style={{ height: 4, background: categoryColor }}></div>
       
       {/* Image Area */}
-      <div style={{ height: 280, background: 'var(--bg-inner)', position: 'relative' }}>
+      <div style={{ height: 'clamp(210px, 45vw, 260px)', background: 'var(--bg-inner)', position: 'relative', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '16px' }}>
         <img 
           src={product.image} 
           alt={`${product.name} — REAVO Campus Gadget${product.category ? ` | ${product.category}` : ''}`}
           style={{ 
             width: '100%', 
             height: '100%', 
-            objectFit: 'cover',
+            objectFit: 'contain',
+            objectPosition: 'center',
             transition: 'transform 0.5s ease',
-            transform: isHovered ? 'scale(1.05)' : 'scale(1)'
+            transform: isHovered ? 'scale(1.04)' : 'scale(1)'
           }} 
         />
         

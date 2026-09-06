@@ -7,6 +7,7 @@ import { useCart } from '../context/CartContext';
 import { useWishlist } from '../context/WishlistContext';
 import { supabase } from '../lib/supabase';
 import ScrollReveal from '../components/ScrollReveal';
+import { products as fallbackProducts, categories as fallbackCategories } from '../data/products';
 
 export default function ProductPage() {
   const { id } = useParams();
@@ -14,20 +15,40 @@ export default function ProductPage() {
   const { addToCart, toggleCart } = useCart();
   const { toggleWishlist, isInWishlist } = useWishlist();
   
-  const [product, setProduct] = useState(null);
-  const [category, setCategory] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [product, setProduct] = useState(() => fallbackProducts.find(item => item.id === id) || null);
+  const [category, setCategory] = useState(() => {
+    const p = fallbackProducts.find(item => item.id === id);
+    return p ? fallbackCategories.find(c => c.id === p.category) || null : null;
+  });
+  const [loading, setLoading] = useState(false);
   const [selectedImage, setSelectedImage] = useState(0);
 
   useEffect(() => {
     async function loadProduct() {
-      const { data: p } = await supabase.from('products').select('*').eq('id', id).single();
-      if (p) {
-        setProduct(p);
-        const { data: c } = await supabase.from('categories').select('*').eq('id', p.category).single();
-        if (c) setCategory(c);
+      try {
+        const { data: p } = await supabase.from('products').select('*').eq('id', id).single();
+        if (p) {
+          setProduct(p);
+          const { data: c } = await supabase.from('categories').select('*').eq('id', p.category).single();
+          if (c) setCategory(c);
+        } else {
+          const fallback = fallbackProducts.find(item => item.id === id);
+          if (fallback) {
+            setProduct(fallback);
+            const cat = fallbackCategories.find(c => c.id === fallback.category);
+            if (cat) setCategory(cat);
+          }
+        }
+      } catch (err) {
+        const fallback = fallbackProducts.find(item => item.id === id);
+        if (fallback) {
+          setProduct(fallback);
+          const cat = fallbackCategories.find(c => c.id === fallback.category);
+          if (cat) setCategory(cat);
+        }
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     }
     loadProduct();
   }, [id]);
@@ -103,13 +124,13 @@ export default function ProductPage() {
         <article className="product-grid" style={{ alignItems: 'start' }}>
           <ScrollReveal delay={100}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-              <div className="glass-panel" style={{ width: '100%', aspectRatio: '1/1', borderRadius: 24, overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--bg-inner)' }}>
-                <img src={gallery[selectedImage]} alt={product.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+              <div className="glass-panel" style={{ width: '100%', aspectRatio: '1/1', borderRadius: 24, overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--bg-inner)', padding: 'clamp(16px, 4vw, 32px)' }}>
+                <img src={gallery[selectedImage]} alt={product.name} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
               </div>
               <div style={{ display: 'flex', gap: 12 }}>
                 {gallery.map((img, i) => (
-                  <button key={i} onClick={() => setSelectedImage(i)} style={{ width: 80, height: 80, borderRadius: 12, overflow: 'hidden', border: `2px solid ${selectedImage === i ? 'var(--text-primary)' : 'transparent'}`, background: 'var(--bg-inner)', opacity: selectedImage === i ? 1 : 0.6, cursor: 'pointer' }}>
-                    <img src={img} alt={`${product.name} — view ${i + 1}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  <button key={i} onClick={() => setSelectedImage(i)} style={{ width: 80, height: 80, borderRadius: 12, overflow: 'hidden', border: `2px solid ${selectedImage === i ? 'var(--text-primary)' : 'transparent'}`, background: 'var(--bg-inner)', opacity: selectedImage === i ? 1 : 0.6, cursor: 'pointer', padding: 6 }}>
+                    <img src={img} alt={`${product.name} — view ${i + 1}`} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
                   </button>
                 ))}
               </div>

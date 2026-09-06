@@ -59,8 +59,8 @@ export default function ComparePage() {
                         >
                           <X size={16} />
                         </button>
-                        <div style={{ height: 160, borderRadius: 12, overflow: 'hidden', marginBottom: 16 }}>
-                          <img src={p.image} alt={p.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                        <div style={{ height: 160, borderRadius: 12, overflow: 'hidden', marginBottom: 16, background: 'var(--bg-inner)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 8 }}>
+                          <img src={p.image} alt={p.name} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
                         </div>
                         <h3 style={{ fontSize: 18, marginBottom: 8, color: 'var(--text-primary)' }}>{p.name}</h3>
                         <div className="font-mono" style={{ fontSize: 14, color: 'var(--text-secondary)' }}>₦{p.price.toLocaleString()}</div>

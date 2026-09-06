@@ -6,6 +6,7 @@ import ProductCard from '../components/ProductCard';
 import CompareDrawer from '../components/CompareDrawer';
 import ScrollReveal from '../components/ScrollReveal';
 import { supabase } from '../lib/supabase';
+import { products as fallbackProducts, categories as fallbackCategories } from '../data/products';
 
 export default function ShopPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -13,19 +14,24 @@ export default function ShopPage() {
   const [sortBy, setSortBy] = useState('featured');
   const [compareItems, setCompareItems] = useState([]);
   
-  const [products, setProducts] = useState([]);
-  const [categories, setCategories] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [products, setProducts] = useState(fallbackProducts);
+  const [categories, setCategories] = useState(fallbackCategories);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     async function loadData() {
-      const [{ data: prodData }, { data: catData }] = await Promise.all([
-        supabase.from('products').select('*'),
-        supabase.from('categories').select('*')
-      ]);
-      if (prodData) setProducts(prodData);
-      if (catData) setCategories(catData);
-      setLoading(false);
+      try {
+        const [{ data: prodData }, { data: catData }] = await Promise.all([
+          supabase.from('products').select('*'),
+          supabase.from('categories').select('*')
+        ]);
+        if (prodData && prodData.length > 0) setProducts(prodData);
+        if (catData && catData.length > 0) setCategories(catData);
+      } catch (e) {
+        console.warn('Using fallback catalog data:', e);
+      } finally {
+        setLoading(false);
+      }
     }
     loadData();
   }, []);
