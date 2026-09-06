@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import * as Sentry from '@sentry/react';
 
 /**
  * Custom hook to load KoraPay's checkout SDK and expose a payment initializer.
@@ -36,6 +37,12 @@ export function useKorapay() {
   const initializePayment = ({ amount, email, name, onSuccess, onClose }) => {
     if (!window.Korapay) {
       console.error('KoraPay SDK not loaded yet');
+      if (import.meta.env.VITE_SENTRY_DSN) {
+        Sentry.captureMessage('KoraPay SDK not loaded when checkout attempted', {
+          level: 'warning',
+          extra: { email, amount }
+        });
+      }
       // Fallback: simulate success for demo purposes
       setTimeout(() => {
         if (onSuccess) onSuccess({ reference: 'DEMO_' + Date.now() });
@@ -44,6 +51,15 @@ export function useKorapay() {
     }
 
     const reference = 'REAVO_' + Date.now() + '_' + Math.random().toString(36).substring(2, 8);
+
+    if (import.meta.env.VITE_SENTRY_DSN) {
+      Sentry.addBreadcrumb({
+        category: 'checkout',
+        message: `KoraPay payment checkout initiated: ${reference}`,
+        level: 'info',
+        data: { amount, reference, customer: email }
+      });
+    }
 
     window.Korapay.initialize({
       key: import.meta.env.VITE_KORA_PUBLIC_KEY || 'pk_test_9Wk48evrLLtrBmwLmXctvtJoyRjQvCwLqmkZtmDR',
@@ -59,13 +75,35 @@ export function useKorapay() {
         : '',
       onSuccess: (data) => {
         console.log('KoraPay payment successful:', data);
+        if (import.meta.env.VITE_SENTRY_DSN) {
+          Sentry.addBreadcrumb({
+            category: 'payment',
+            message: 'Payment completed successfully',
+            level: 'info',
+            data: { reference: data?.reference || reference }
+          });
+        }
         if (onSuccess) onSuccess(data);
       },
       onFailed: (data) => {
         console.log('KoraPay payment failed:', data);
+        if (import.meta.env.VITE_SENTRY_DSN) {
+          Sentry.captureMessage(`KoraPay payment failed for ${email}`, {
+            level: 'error',
+            extra: { data, reference, amount, customer: email }
+          });
+        }
       },
       onClose: () => {
         console.log('KoraPay modal closed');
+        if (import.meta.env.VITE_SENTRY_DSN) {
+          Sentry.addBreadcrumb({
+            category: 'checkout',
+            message: `KoraPay modal closed/dropped off (ref: ${reference})`,
+            level: 'info',
+            data: { reference, amount }
+          });
+        }
         if (onClose) onClose();
       },
     });

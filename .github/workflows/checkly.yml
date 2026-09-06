@@ -1,0 +1,37 @@
+name: Checkly Synthetic Monitoring
+
+on:
+  push:
+    branches: [main, darktune-import-reavo-folder]
+  workflow_dispatch:
+
+jobs:
+  checkly-monitoring:
+    name: Checkly Synthetic Cloud Monitor
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Run Cloud Synthetic Checks
+        if: env.CHECKLY_API_KEY != ''
+        run: npx --yes checkly test -e ENVIRONMENT_URL=${{ secrets.REAVO_APP_URL || 'https://reavo-app.vercel.app' }}
+        env:
+          CHECKLY_API_KEY: ${{ secrets.CHECKLY_API_KEY }}
+          CHECKLY_ACCOUNT_ID: ${{ secrets.CHECKLY_ACCOUNT_ID }}
+
+      - name: Deploy Monitors to Checkly Cloud
+        if: github.ref == 'refs/heads/main' && env.CHECKLY_API_KEY != ''
+        run: npx --yes checkly deploy --force
+        env:
+          CHECKLY_API_KEY: ${{ secrets.CHECKLY_API_KEY }}
+          CHECKLY_ACCOUNT_ID: ${{ secrets.CHECKLY_ACCOUNT_ID }}

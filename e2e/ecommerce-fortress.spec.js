@@ -119,6 +119,8 @@ test.describe('Vibe-Coded E-Commerce Fortress Suite (VibeEval + testRigor + Mabl
       // Trigger appraisal modal
       const appraiseBtn = page.getByRole('button', { name: /Appraise New Gadget/i });
       if (await appraiseBtn.count() > 0) {
+        await appraiseBtn.scrollIntoViewIfNeeded();
+        await expect(appraiseBtn).toBeVisible({ timeout: 10000 });
         await appraiseBtn.click({ force: true });
 
         // Verify modal appears

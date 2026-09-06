@@ -5,6 +5,17 @@ export default function ScrollReveal({ children, delay = 0 }) {
   const ref = useRef(null);
 
   useEffect(() => {
+    const prefersReducedMotion = typeof window !== 'undefined' && 
+      (window.matchMedia('(prefers-reduced-motion: reduce)').matches || window.localStorage.getItem('reavo_skip_loader') === 'true');
+
+    if (prefersReducedMotion) {
+      if (ref.current) {
+        ref.current.style.opacity = 1;
+        ref.current.style.transform = 'none';
+      }
+      return;
+    }
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
