@@ -6,6 +6,7 @@ import { createClient } from '@supabase/supabase-js';
 import crypto from 'crypto';
 import chatHandler from './api/chat.js';
 import adminChatHandler from './api/adminChat.js';
+import createOrderHandler from './api/createOrder.js';
 
 dotenv.config();
 
@@ -58,6 +59,18 @@ app.post('/api/adminChat', async (req, res) => {
     await adminChatHandler(req, res);
   } catch (error) {
     console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+// ==========================================
+// SECURE SERVER-SIDE CHECKOUT (RLS-Protected)
+// ==========================================
+app.post('/api/checkout/create-order', async (req, res) => {
+  try {
+    await createOrderHandler(req, res);
+  } catch (error) {
+    console.error('[Checkout] Unhandled error:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });

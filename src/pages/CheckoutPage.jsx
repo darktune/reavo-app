@@ -134,64 +134,46 @@ export default function CheckoutPage() {
       name: `${formData.firstName} ${formData.lastName}`.trim(),
       onSuccess: async (data) => {
         try {
-          const orderId = 'ORD-' + Date.now() + '-' + Math.random().toString(36).substr(2, 5);
-          const deliveryPin = Math.floor(1000 + Math.random() * 9000).toString();
-          
-          // 1. Insert into orders table
-          const { error: orderError } = await supabase.from('orders').insert([{
-            id: orderId,
-            customer_name: `${formData.firstName} ${formData.lastName}`.trim(),
-            customer_email: formData.email,
-            total_amount: finalPayable,
-            subtotal: cartTotal,
-            discount_amount: discountAmount,
-            discount_code: appliedDiscount?.code || null,
-            delivery_pin: deliveryPin,
-            status: 'processing',
-            payment_status: 'paid',
-            shipping_address: {
-              address: formData.address,
-              city: formData.city,
-              state: formData.state,
-              phone: formData.phone,
-              whatsapp_phone: formData.whatsappPhone || formData.phone
-            },
-            kora_reference: data?.reference || 'KORA_TEST_REF'
-          }]);
+          // Server-side order processing — prices are re-validated from DB,
+          // stock is checked, and all writes use SUPABASE_SERVICE_ROLE_KEY.
+          // This prevents client-side price tampering and stock spoofing.
+          const res = await fetch('/api/checkout/create-order', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              items: items.map(item => ({
+                id: item.id,
+                quantity: item.quantity
+              })),
+              customerInfo: {
+                firstName: formData.firstName,
+                lastName: formData.lastName,
+                email: formData.email,
+                phone: formData.phone,
+                whatsappPhone: formData.whatsappPhone || formData.phone,
+                address: formData.address,
+                city: formData.city,
+                state: formData.state
+              },
+              discountCode: appliedDiscount?.code || null,
+              koraReference: data?.reference || null
+            })
+          });
 
-          if (orderError) {
-            console.error('Order Insert Error:', orderError);
-            alert('Failed to save order: ' + orderError.message);
-            return; // Stop execution
+          const result = await res.json();
+
+          if (!res.ok || !result.success) {
+            console.error('Order API Error:', result);
+            alert(result.error || 'Failed to process order. Please contact support.');
+            return;
           }
 
-          // 2. Insert into order_items
-          const orderItems = items.map(item => ({
-            order_id: orderId,
-            product_id: item.id,
-            quantity: item.quantity,
-            price_at_purchase: item.price
-          }));
-          const { error: itemsError } = await supabase.from('order_items').insert(orderItems);
-          
-          if (itemsError) {
-            console.error('Order Items Insert Error:', itemsError);
-          }
-          
-          // 3. Deduct stock quantity (client-side decrement)
-          for (const item of items) {
-            const { data: prodData } = await supabase.from('products').select('stock_quantity').eq('id', item.id).single();
-            if (prodData && prodData.stock_quantity > 0) {
-              await supabase.from('products').update({ stock_quantity: Math.max(0, prodData.stock_quantity - item.quantity) }).eq('id', item.id);
-            }
-          }
-          
-          // Only clear cart and navigate if everything succeeded
+          // Order successfully created server-side
           clearCart();
           navigate('/success');
 
         } catch (err) {
-          console.error('Failed to record order in database:', err);
+          console.error('Failed to record order:', err);
           alert('An unexpected error occurred: ' + err.message);
         }
       },
