@@ -52,34 +52,311 @@ export const products = [
     }
   },
   
-  // Tablets
+  // Tablets & iPads (Official REAVO Pricelist)
+  // iPad Mini Range
   {
-    id: 'ipad-pro-m4',
-    name: 'iPad Pro M4 + Magic Keyboard',
-    price: 960000,
-    category: 'creators',
+    id: 'ipad-mini-4-128gb',
+    name: 'iPad Mini 4 128GB',
+    price: 160000,
+    category: 'students',
     image: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&q=80&w=800',
-    description: 'Incredibly thin, outrageously powerful.',
-    specs: ['M4 Chip', 'OLED Display', 'FaceID', 'Thunderbolt'],
+    description: 'Ultra-portable, compact Apple performance for studying on the go.',
+    specs: ['128GB Storage', '7.9" Retina Display', 'A8 Chip', 'Touch ID'],
     technicalSpecs: {
-      Processor: 'Apple M4 Chip (9-core CPU)',
-      Memory: '8GB RAM',
-      Storage: '256GB NVMe',
-      Display: '11" Ultra Retina XDR (OLED)',
-      Battery: '31.29-watt-hour (Up to 10 hours)',
-      Ports: '1x Thunderbolt / USB 4'
+      Processor: 'Apple A8 chip',
+      Memory: '2GB RAM',
+      Storage: '128GB',
+      Display: '7.9" Retina (2048 x 1536)',
+      Battery: 'Up to 10 hours',
+      Ports: 'Lightning'
     }
   },
   {
-    id: 'ipad-10th-gen',
-    name: 'iPad 10th Gen + Pencil',
-    price: 520000,
+    id: 'ipad-mini-5-64gb',
+    name: 'iPad Mini 5 64GB',
+    price: 270000,
+    category: 'students',
+    image: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&q=80&w=800',
+    description: 'Pocketable power with Apple Pencil support and True Tone Retina display.',
+    specs: ['64GB Storage', 'A12 Bionic', 'Apple Pencil Support', 'True Tone'],
+    technicalSpecs: {
+      Processor: 'Apple A12 Bionic with Neural Engine',
+      Memory: '3GB RAM',
+      Storage: '64GB',
+      Display: '7.9" Retina with True Tone',
+      Battery: 'Up to 10 hours',
+      Ports: 'Lightning'
+    }
+  },
+  {
+    id: 'ipad-mini-5-256gb',
+    name: 'iPad Mini 5 256GB',
+    price: 350000,
+    category: 'students',
+    image: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&q=80&w=800',
+    description: 'High capacity compact powerhouse for students and creators.',
+    specs: ['256GB Storage', 'A12 Bionic', 'Apple Pencil 1st Gen', 'Retina'],
+    technicalSpecs: {
+      Processor: 'Apple A12 Bionic with Neural Engine',
+      Memory: '3GB RAM',
+      Storage: '256GB',
+      Display: '7.9" Retina',
+      Battery: 'Up to 10 hours',
+      Ports: 'Lightning'
+    }
+  },
+  {
+    id: 'ipad-mini-6-64gb',
+    name: 'iPad Mini 6 64GB',
+    price: 430000,
+    category: 'creators',
+    image: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&q=80&w=800',
+    description: 'All-screen modern design with A15 Bionic, USB-C, and 2nd Gen Pencil support.',
+    specs: ['A15 Bionic', '64GB Storage', '8.3" Liquid Retina', 'USB-C'],
+    technicalSpecs: {
+      Processor: 'Apple A15 Bionic chip',
+      Memory: '4GB RAM',
+      Storage: '64GB',
+      Display: '8.3" Liquid Retina Display',
+      Battery: 'Up to 10 hours',
+      Ports: 'USB-C'
+    }
+  },
+  {
+    id: 'ipad-mini-7-128gb',
+    name: 'iPad Mini 7 128GB',
+    price: 650000,
+    category: 'creators',
+    image: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&q=80&w=800',
+    description: 'Built for Apple Intelligence with A17 Pro performance and Apple Pencil Pro support.',
+    specs: ['A17 Pro Chip', '128GB Storage', 'Apple Intelligence', 'Pencil Pro'],
+    technicalSpecs: {
+      Processor: 'Apple A17 Pro chip',
+      Memory: '8GB Unified Memory',
+      Storage: '128GB NVMe',
+      Display: '8.3" Liquid Retina',
+      Battery: 'Up to 10 hours',
+      Ports: 'USB-C (10Gbps)'
+    }
+  },
+  {
+    id: 'ipad-mini-7-256gb',
+    name: 'iPad Mini 7 256GB',
+    price: 700000,
+    category: 'creators',
+    image: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&q=80&w=800',
+    description: 'The ultimate pro-grade miniature canvas with massive 256GB storage.',
+    specs: ['A17 Pro Chip', '256GB Storage', 'Apple Intelligence', 'WiFi 6E'],
+    technicalSpecs: {
+      Processor: 'Apple A17 Pro chip',
+      Memory: '8GB Unified Memory',
+      Storage: '256GB NVMe',
+      Display: '8.3" Liquid Retina',
+      Battery: 'Up to 10 hours',
+      Ports: 'USB-C (10Gbps)'
+    }
+  },
+
+  // Standard iPad Range
+  {
+    id: 'ipad-10th-gen-64gb',
+    name: 'iPad 10th Gen 64GB',
+    price: 490000,
     category: 'students',
     image: 'https://images.unsplash.com/photo-1585771724684-38269d6639fd?auto=format&fit=crop&q=80&w=800',
-    description: 'The ultimate notebook replacement.',
-    specs: ['A14 Bionic', '10.9" Display', 'USB-C', 'Apple Pencil Support'],
+    description: 'The colorful, versatile all-screen notebook replacement for campus life.',
+    specs: ['A14 Bionic', '64GB Storage', '10.9" Liquid Retina', 'USB-C'],
+    technicalSpecs: {
+      Processor: 'A14 Bionic chip (6-core CPU)',
+      Memory: '4GB RAM',
+      Storage: '64GB',
+      Display: '10.9" Liquid Retina Display',
+      Battery: 'Up to 10 hours',
+      Ports: 'USB-C'
+    }
+  },
+  {
+    id: 'ipad-10th-gen-256gb',
+    name: 'iPad 10th Gen 256GB',
+    price: 620000,
+    category: 'students',
+    image: 'https://images.unsplash.com/photo-1585771724684-38269d6639fd?auto=format&fit=crop&q=80&w=800',
+    description: 'High-storage campus classic. Download full course notes, videos, and sketches.',
+    specs: ['A14 Bionic', '256GB Storage', '10.9" Liquid Retina', 'USB-C'],
     technicalSpecs: {
       Processor: 'A14 Bionic chip',
+      Memory: '4GB RAM',
+      Storage: '256GB',
+      Display: '10.9" Liquid Retina',
+      Battery: 'Up to 10 hours',
+      Ports: 'USB-C'
+    }
+  },
+  {
+    id: 'ipad-11th-gen-wifi-128gb',
+    name: 'iPad 11th Gen WiFi 128GB',
+    price: 630000,
+    category: 'students',
+    image: 'https://images.unsplash.com/photo-1585771724684-38269d6639fd?auto=format&fit=crop&q=80&w=800',
+    description: 'Next-gen student workhorse featuring upgraded silicon and base 128GB storage.',
+    specs: ['Upgraded Silicon', '128GB Storage', '11" Liquid Retina', 'WiFi 6'],
+    technicalSpecs: {
+      Processor: 'Apple A16 Bionic Chip',
+      Memory: '6GB RAM',
+      Storage: '128GB',
+      Display: '11.0" Liquid Retina Display',
+      Battery: 'Up to 10 hours',
+      Ports: 'USB-C'
+    }
+  },
+  {
+    id: 'ipad-11th-gen-wifi-256gb',
+    name: 'iPad 11th Gen WiFi 256GB',
+    price: 790000,
+    category: 'students',
+    image: 'https://images.unsplash.com/photo-1585771724684-38269d6639fd?auto=format&fit=crop&q=80&w=800',
+    description: 'Massive storage capacity for demanding university courses, design, and media.',
+    specs: ['Upgraded Silicon', '256GB Storage', '11" Display', 'USB-C'],
+    technicalSpecs: {
+      Processor: 'Apple A16 Bionic Chip',
+      Memory: '6GB RAM',
+      Storage: '256GB',
+      Display: '11.0" Liquid Retina',
+      Battery: 'Up to 10 hours',
+      Ports: 'USB-C'
+    }
+  },
+  {
+    id: 'ipad-11th-gen-cell-128gb',
+    name: 'iPad 11th Gen WiFi + Cellular 128GB',
+    price: 720000,
+    category: 'students',
+    image: 'https://images.unsplash.com/photo-1585771724684-38269d6639fd?auto=format&fit=crop&q=80&w=800',
+    description: 'Stay connected anywhere on campus with high-speed 5G Cellular + WiFi.',
+    specs: ['WiFi + Cellular (5G)', '128GB Storage', '11" Display', 'GPS'],
+    technicalSpecs: {
+      Processor: 'Apple A16 Bionic Chip',
+      Memory: '6GB RAM',
+      Storage: '128GB',
+      Display: '11.0" Liquid Retina',
+      Battery: 'Up to 9 hours cellular web',
+      Ports: 'USB-C, eSIM / Nano-SIM'
+    }
+  },
+  {
+    id: 'ipad-11th-gen-cell-256gb',
+    name: 'iPad 11th Gen WiFi + Cellular 256GB',
+    price: 950000,
+    category: 'biz',
+    image: 'https://images.unsplash.com/photo-1585771724684-38269d6639fd?auto=format&fit=crop&q=80&w=800',
+    description: 'Top-tier connectivity and storage for field founders, executives, and students.',
+    specs: ['WiFi + Cellular (5G)', '256GB Storage', '11" Display', 'All-Day Battery'],
+    technicalSpecs: {
+      Processor: 'Apple A16 Bionic Chip',
+      Memory: '6GB RAM',
+      Storage: '256GB',
+      Display: '11.0" Liquid Retina',
+      Battery: 'Up to 9 hours cellular',
+      Ports: 'USB-C, eSIM'
+    }
+  },
+
+  // iPad Air Range
+  {
+    id: 'ipad-air-2-32gb',
+    name: 'iPad Air 2 32GB',
+    price: 130000,
+    category: 'students',
+    image: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&q=80&w=800',
+    description: 'Budget-friendly, ultra-thin Apple tablet for reading, browsing, and entertainment.',
+    specs: ['32GB Storage', '9.7" Retina', 'Touch ID', 'Ultra Slim'],
+    technicalSpecs: {
+      Processor: 'Apple A8X 64-bit',
+      Memory: '2GB RAM',
+      Storage: '32GB',
+      Display: '9.7" Retina',
+      Battery: 'Up to 10 hours',
+      Ports: 'Lightning'
+    }
+  },
+  {
+    id: 'ipad-air-2-64gb',
+    name: 'iPad Air 2 64GB',
+    price: 150000,
+    category: 'students',
+    image: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&q=80&w=800',
+    description: 'Slim, responsive Apple iPad Air with comfortable 64GB storage.',
+    specs: ['64GB Storage', '9.7" Retina', 'A8X Chip', 'Touch ID'],
+    technicalSpecs: {
+      Processor: 'Apple A8X',
+      Memory: '2GB RAM',
+      Storage: '64GB',
+      Display: '9.7" Retina',
+      Battery: 'Up to 10 hours',
+      Ports: 'Lightning'
+    }
+  },
+  {
+    id: 'ipad-air-2-128gb',
+    name: 'iPad Air 2 128GB',
+    price: 200000,
+    category: 'students',
+    image: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&q=80&w=800',
+    description: 'High storage Air 2 variant perfect for downloading series and study materials.',
+    specs: ['128GB Storage', '9.7" Retina', 'A8X Chip', 'Touch ID'],
+    technicalSpecs: {
+      Processor: 'Apple A8X',
+      Memory: '2GB RAM',
+      Storage: '128GB',
+      Display: '9.7" Retina',
+      Battery: 'Up to 10 hours',
+      Ports: 'Lightning'
+    }
+  },
+  {
+    id: 'ipad-air-3-64gb',
+    name: 'iPad Air 3 64GB',
+    price: 230000,
+    category: 'students',
+    image: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&q=80&w=800',
+    description: '10.5" Retina display with A12 Bionic and Smart Keyboard connector.',
+    specs: ['A12 Bionic', '64GB Storage', '10.5" Retina', 'Apple Pencil 1 Support'],
+    technicalSpecs: {
+      Processor: 'Apple A12 Bionic',
+      Memory: '3GB RAM',
+      Storage: '64GB',
+      Display: '10.5" Retina with True Tone',
+      Battery: 'Up to 10 hours',
+      Ports: 'Lightning'
+    }
+  },
+  {
+    id: 'ipad-air-3-256gb',
+    name: 'iPad Air 3 256GB',
+    price: 320000,
+    category: 'students',
+    image: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&q=80&w=800',
+    description: '256GB capacity with A12 Bionic speed and lightweight portability.',
+    specs: ['A12 Bionic', '256GB Storage', '10.5" Retina', 'Smart Keyboard Ready'],
+    technicalSpecs: {
+      Processor: 'Apple A12 Bionic',
+      Memory: '3GB RAM',
+      Storage: '256GB',
+      Display: '10.5" Retina',
+      Battery: 'Up to 10 hours',
+      Ports: 'Lightning'
+    }
+  },
+  {
+    id: 'ipad-air-4-64gb',
+    name: 'iPad Air 4 64GB',
+    price: 470000,
+    category: 'creators',
+    image: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&q=80&w=800',
+    description: 'Modern squared design with A14 Bionic, USB-C, and Magic Keyboard compatibility.',
+    specs: ['A14 Bionic', '64GB Storage', '10.9" Liquid Retina', 'Touch ID in Button'],
+    technicalSpecs: {
+      Processor: 'Apple A14 Bionic (5nm)',
       Memory: '4GB RAM',
       Storage: '64GB',
       Display: '10.9" Liquid Retina',
@@ -88,20 +365,725 @@ export const products = [
     }
   },
   {
-    id: 'samsung-tab-a9',
-    name: 'Samsung Galaxy Tab A9+',
-    price: 285000,
+    id: 'ipad-air-4-256gb',
+    name: 'iPad Air 4 256GB',
+    price: 530000,
+    category: 'creators',
+    image: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&q=80&w=800',
+    description: 'Pro performance in an Air body with 256GB storage for video and art creation.',
+    specs: ['A14 Bionic', '256GB Storage', '10.9" Display', 'Pencil 2 Support'],
+    technicalSpecs: {
+      Processor: 'Apple A14 Bionic',
+      Memory: '4GB RAM',
+      Storage: '256GB',
+      Display: '10.9" Liquid Retina',
+      Battery: 'Up to 10 hours',
+      Ports: 'USB-C'
+    }
+  },
+  {
+    id: 'ipad-air-5-m1-64gb',
+    name: 'iPad Air 5 M1 64GB',
+    price: 570000,
+    category: 'creators',
+    image: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&q=80&w=800',
+    description: 'Supercharged by the Apple M1 silicon chip with Stage Manager and Center Stage camera.',
+    specs: ['Apple M1 Chip', '64GB Storage', '8GB RAM', 'Stage Manager'],
+    technicalSpecs: {
+      Processor: 'Apple M1 Chip (8-core CPU, 8-core GPU)',
+      Memory: '8GB Unified Memory',
+      Storage: '64GB NVMe',
+      Display: '10.9" Liquid Retina with P3 Wide Color',
+      Battery: 'Up to 10 hours',
+      Ports: 'USB-C 3.1 Gen 2'
+    }
+  },
+  {
+    id: 'ipad-air-5-m1-256gb',
+    name: 'iPad Air 5 M1 256GB',
+    price: 700000,
+    category: 'creators',
+    image: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&q=80&w=800',
+    description: 'M1 power with 256GB storage. Edit 4K streams and design with zero lag.',
+    specs: ['Apple M1 Chip', '256GB Storage', '8GB RAM', 'Liquid Retina'],
+    technicalSpecs: {
+      Processor: 'Apple M1 Chip',
+      Memory: '8GB Unified Memory',
+      Storage: '256GB',
+      Display: '10.9" Liquid Retina',
+      Battery: 'Up to 10 hours',
+      Ports: 'USB-C'
+    }
+  },
+  {
+    id: 'ipad-air-6-m2-11-128gb',
+    name: 'iPad Air 6 M2 11” 128GB',
+    price: 680000,
+    category: 'creators',
+    image: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&q=80&w=800',
+    description: 'Blazing fast Apple M2 silicon with landscape front camera and Pencil Pro hover.',
+    specs: ['Apple M2 Chip', '128GB Storage', '11" Liquid Retina', 'Pencil Hover'],
+    technicalSpecs: {
+      Processor: 'Apple M2 Chip (8-core CPU, 9-core GPU)',
+      Memory: '8GB Unified Memory',
+      Storage: '128GB',
+      Display: '11" Liquid Retina',
+      Battery: 'Up to 10 hours',
+      Ports: 'USB-C'
+    }
+  },
+  {
+    id: 'ipad-air-6-m2-11-256gb',
+    name: 'iPad Air 6 M2 11” 256GB',
+    price: 770000,
+    category: 'creators',
+    image: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&q=80&w=800',
+    description: 'M2 performance with double the base storage for intense workflows.',
+    specs: ['Apple M2 Chip', '256GB Storage', '11" Liquid Retina', 'WiFi 6E'],
+    technicalSpecs: {
+      Processor: 'Apple M2 Chip',
+      Memory: '8GB Unified Memory',
+      Storage: '256GB',
+      Display: '11" Liquid Retina',
+      Battery: 'Up to 10 hours',
+      Ports: 'USB-C'
+    }
+  },
+  {
+    id: 'ipad-air-m2-13-128gb',
+    name: 'iPad Air M2 13” 128GB',
+    price: 850000,
+    category: 'biz',
+    image: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&q=80&w=800',
+    description: 'First ever 13-inch iPad Air. Massive canvas at a much more accessible price point.',
+    specs: ['13" Liquid Retina', 'Apple M2 Chip', '128GB Storage', 'Pencil Pro'],
+    technicalSpecs: {
+      Processor: 'Apple M2 Chip',
+      Memory: '8GB Unified Memory',
+      Storage: '128GB',
+      Display: '13" Liquid Retina (2732 x 2048)',
+      Battery: 'Up to 10 hours',
+      Ports: 'USB-C'
+    }
+  },
+  {
+    id: 'ipad-air-m2-13-256gb',
+    name: 'iPad Air M2 13” 256GB',
+    price: 900000,
+    category: 'biz',
+    image: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&q=80&w=800',
+    description: '13-inch expansive display with 256GB storage for serious multitasking.',
+    specs: ['13" Display', 'Apple M2 Chip', '256GB Storage', 'Landscape Stereo'],
+    technicalSpecs: {
+      Processor: 'Apple M2 Chip',
+      Memory: '8GB Unified Memory',
+      Storage: '256GB',
+      Display: '13" Liquid Retina',
+      Battery: 'Up to 10 hours',
+      Ports: 'USB-C'
+    }
+  },
+  {
+    id: 'ipad-air-m3-13-128gb',
+    name: 'iPad Air M3 13” 128GB',
+    price: 920000,
+    category: 'creators',
+    image: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&q=80&w=800',
+    description: 'Enhanced 3nm silicon architecture with ray-tracing graphics support.',
+    specs: ['Apple M3 Chip', '13" Liquid Retina', '128GB Storage', 'Hardware Ray-Tracing'],
+    technicalSpecs: {
+      Processor: 'Apple M3 Chip (3nm)',
+      Memory: '8GB Unified Memory',
+      Storage: '128GB',
+      Display: '13" Liquid Retina',
+      Battery: 'Up to 10 hours',
+      Ports: 'USB-C'
+    }
+  },
+  {
+    id: 'ipad-air-m3-13-256gb',
+    name: 'iPad Air M3 13” 256GB',
+    price: 990000,
+    category: 'creators',
+    image: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&q=80&w=800',
+    description: 'High capacity 13-inch M3 powerhouse built for heavy architectural and audio projects.',
+    specs: ['Apple M3 Chip', '13" Liquid Retina', '256GB Storage', 'Pencil Pro'],
+    technicalSpecs: {
+      Processor: 'Apple M3 Chip',
+      Memory: '8GB Unified Memory',
+      Storage: '256GB',
+      Display: '13" Liquid Retina',
+      Battery: 'Up to 10 hours',
+      Ports: 'USB-C'
+    }
+  },
+  {
+    id: 'ipad-air-m4-11-128gb',
+    name: 'iPad Air M4 11” 128GB',
+    price: 980000,
+    category: 'creators',
+    image: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&q=80&w=800',
+    description: 'Next-gen M4 architecture with cutting-edge AI neural engine acceleration.',
+    specs: ['Apple M4 Chip', '11" Liquid Retina', '128GB Storage', 'Next-Gen Neural Engine'],
+    technicalSpecs: {
+      Processor: 'Apple M4 Chip',
+      Memory: '8GB Unified Memory',
+      Storage: '128GB',
+      Display: '11" Liquid Retina',
+      Battery: 'Up to 10 hours',
+      Ports: 'USB-C'
+    }
+  },
+  {
+    id: 'ipad-air-m4-13-128gb',
+    name: 'iPad Air M4 13” 128GB',
+    price: 1150000,
+    category: 'biz',
+    image: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&q=80&w=800',
+    description: 'The pinnacle of the Air series: massive 13-inch form factor driven by M4.',
+    specs: ['Apple M4 Chip', '13" Liquid Retina', '128GB Storage', 'Apple Intelligence Ready'],
+    technicalSpecs: {
+      Processor: 'Apple M4 Chip',
+      Memory: '8GB Unified Memory',
+      Storage: '128GB',
+      Display: '13" Liquid Retina',
+      Battery: 'Up to 10 hours',
+      Ports: 'USB-C'
+    }
+  },
+
+  // iPad Pro 10.5" Range
+  {
+    id: 'ipad-pro-10-5-64gb',
+    name: 'iPad Pro 10.5” 64GB',
+    price: 240000,
     category: 'students',
     image: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&q=80&w=800',
-    description: 'Affordable entertainment and productivity.',
-    specs: ['11" Display', '90Hz Refresh', 'Quad Speakers', 'Expandable Storage'],
+    description: 'Classic Pro performance featuring a buttery smooth 120Hz ProMotion display.',
+    specs: ['120Hz ProMotion', 'A10X Fusion', '64GB Storage', 'Quad Speakers'],
     technicalSpecs: {
-      Processor: 'Snapdragon 695 5G',
+      Processor: 'Apple A10X Fusion with 64-bit architecture',
       Memory: '4GB RAM',
-      Storage: '64GB (MicroSD up to 1TB)',
-      Display: '11.0" TFT LCD (90Hz)',
-      Battery: '7040 mAh',
-      Ports: 'USB-C 2.0'
+      Storage: '64GB',
+      Display: '10.5" ProMotion Retina (120Hz)',
+      Battery: 'Up to 10 hours',
+      Ports: 'Lightning'
+    }
+  },
+  {
+    id: 'ipad-pro-10-5-256gb',
+    name: 'iPad Pro 10.5” 256GB',
+    price: 270000,
+    category: 'students',
+    image: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&q=80&w=800',
+    description: 'High capacity 120Hz Pro tablet at an unbeatable student entry price.',
+    specs: ['120Hz ProMotion', 'A10X Fusion', '256GB Storage', 'Smart Connector'],
+    technicalSpecs: {
+      Processor: 'Apple A10X Fusion',
+      Memory: '4GB RAM',
+      Storage: '256GB',
+      Display: '10.5" ProMotion Retina (120Hz)',
+      Battery: 'Up to 10 hours',
+      Ports: 'Lightning'
+    }
+  },
+
+  // iPad Pro 11" Range
+  {
+    id: 'ipad-pro-11-2020-128gb',
+    name: 'iPad Pro 11” (2020) 128GB',
+    price: 700000,
+    category: 'creators',
+    image: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&q=80&w=800',
+    description: 'Dual cameras, LiDAR scanner, Face ID, and A12Z Bionic graphics power.',
+    specs: ['A12Z Bionic', 'LiDAR Scanner', '120Hz ProMotion', '128GB Storage'],
+    technicalSpecs: {
+      Processor: 'Apple A12Z Bionic with 8-core GPU',
+      Memory: '6GB RAM',
+      Storage: '128GB',
+      Display: '11" Liquid Retina with ProMotion',
+      Battery: 'Up to 10 hours',
+      Ports: 'USB-C'
+    }
+  },
+  {
+    id: 'ipad-pro-11-2020-256gb',
+    name: 'iPad Pro 11” (2020) 256GB',
+    price: 780000,
+    category: 'creators',
+    image: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&q=80&w=800',
+    description: '256GB 2020 Pro with dual ultra-wide camera and Face ID authentication.',
+    specs: ['A12Z Bionic', '256GB Storage', 'Face ID', 'ProMotion 120Hz'],
+    technicalSpecs: {
+      Processor: 'Apple A12Z Bionic',
+      Memory: '6GB RAM',
+      Storage: '256GB',
+      Display: '11" Liquid Retina',
+      Battery: 'Up to 10 hours',
+      Ports: 'USB-C'
+    }
+  },
+  {
+    id: 'ipad-pro-11-m1-128gb',
+    name: 'iPad Pro 11” M1 128GB',
+    price: 850000,
+    category: 'creators',
+    image: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&q=80&w=800',
+    description: 'Mac-grade Apple M1 silicon with Thunderbolt 4, 8GB RAM, and 120Hz ProMotion.',
+    specs: ['Apple M1 Chip', 'Thunderbolt / USB 4', '8GB RAM', '120Hz ProMotion'],
+    technicalSpecs: {
+      Processor: 'Apple M1 Chip (8-core CPU, 8-core GPU)',
+      Memory: '8GB Unified Memory',
+      Storage: '128GB',
+      Display: '11" Liquid Retina with ProMotion',
+      Battery: 'Up to 10 hours',
+      Ports: 'Thunderbolt 4 / USB 4'
+    }
+  },
+  {
+    id: 'ipad-pro-11-m1-256gb',
+    name: 'iPad Pro 11” M1 256GB',
+    price: 900000,
+    category: 'creators',
+    image: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&q=80&w=800',
+    description: 'M1 Pro workstation with double storage capacity for creative applications.',
+    specs: ['Apple M1 Chip', '256GB Storage', 'Thunderbolt', 'Center Stage'],
+    technicalSpecs: {
+      Processor: 'Apple M1 Chip',
+      Memory: '8GB Unified Memory',
+      Storage: '256GB',
+      Display: '11" Liquid Retina with ProMotion',
+      Battery: 'Up to 10 hours',
+      Ports: 'Thunderbolt 4'
+    }
+  },
+  {
+    id: 'ipad-pro-11-m2-128gb',
+    name: 'iPad Pro 11” M2 128GB',
+    price: 950000,
+    category: 'creators',
+    image: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&q=80&w=800',
+    description: 'Apple M2 silicon with Apple Pencil hover, ProRes video recording, and WiFi 6E.',
+    specs: ['Apple M2 Chip', 'Pencil Hover', 'ProRes Video', '128GB Storage'],
+    technicalSpecs: {
+      Processor: 'Apple M2 Chip (8-core CPU, 10-core GPU)',
+      Memory: '8GB Unified Memory',
+      Storage: '128GB',
+      Display: '11" Liquid Retina with ProMotion',
+      Battery: 'Up to 10 hours',
+      Ports: 'Thunderbolt / USB 4'
+    }
+  },
+  {
+    id: 'ipad-pro-11-m2-256gb',
+    name: 'iPad Pro 11” M2 256GB',
+    price: 980000,
+    category: 'creators',
+    image: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&q=80&w=800',
+    description: 'M2 speed and 256GB storage for studio-grade music production and 3D modeling.',
+    specs: ['Apple M2 Chip', '256GB Storage', 'ProRes Capture', 'Thunderbolt 4'],
+    technicalSpecs: {
+      Processor: 'Apple M2 Chip',
+      Memory: '8GB Unified Memory',
+      Storage: '256GB',
+      Display: '11" Liquid Retina with ProMotion',
+      Battery: 'Up to 10 hours',
+      Ports: 'Thunderbolt / USB 4'
+    }
+  },
+  {
+    id: 'ipad-pro-11-m4-256gb',
+    name: 'iPad Pro 11” M4 256GB',
+    price: 1230000,
+    category: 'creators',
+    image: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&q=80&w=800',
+    description: 'World’s thinnest Apple product. Tandem OLED Ultra Retina XDR with game-changing M4 speed.',
+    specs: ['Apple M4 Chip', 'Tandem OLED Display', 'Ultra Slim 5.3mm', '256GB Storage'],
+    technicalSpecs: {
+      Processor: 'Apple M4 Chip (9-core CPU, 10-core GPU)',
+      Memory: '8GB Unified Memory',
+      Storage: '256GB NVMe',
+      Display: '11" Ultra Retina XDR Tandem OLED',
+      Battery: 'Up to 10 hours',
+      Ports: 'Thunderbolt / USB 4'
+    }
+  },
+  {
+    id: 'ipad-pro-11-m4-512gb',
+    name: 'iPad Pro 11” M4 512GB',
+    price: 1380000,
+    category: 'biz',
+    image: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&q=80&w=800',
+    description: 'Pro flagship in 512GB capacity. Tandem OLED display and desktop-crushing M4.',
+    specs: ['Apple M4 Chip', '512GB Storage', 'Tandem OLED', 'ProMotion 120Hz'],
+    technicalSpecs: {
+      Processor: 'Apple M4 Chip',
+      Memory: '8GB Unified Memory',
+      Storage: '512GB NVMe',
+      Display: '11" Ultra Retina XDR Tandem OLED',
+      Battery: 'Up to 10 hours',
+      Ports: 'Thunderbolt / USB 4'
+    }
+  },
+
+  // iPad Pro 12.9" Range
+  {
+    id: 'ipad-pro-12-9-2nd-64gb',
+    name: 'iPad Pro 12.9” 2nd Gen 64GB',
+    price: 280000,
+    category: 'students',
+    image: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&q=80&w=800',
+    description: 'Huge 12.9" display with 120Hz ProMotion at an accessible price point.',
+    specs: ['12.9" ProMotion Display', '64GB Storage', 'A10X Fusion', 'Quad Speakers'],
+    technicalSpecs: {
+      Processor: 'Apple A10X Fusion',
+      Memory: '4GB RAM',
+      Storage: '64GB',
+      Display: '12.9" Retina with ProMotion (120Hz)',
+      Battery: 'Up to 10 hours',
+      Ports: 'Lightning'
+    }
+  },
+  {
+    id: 'ipad-pro-12-9-2nd-128gb',
+    name: 'iPad Pro 12.9” 2nd Gen 128GB',
+    price: 290000,
+    category: 'students',
+    image: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&q=80&w=800',
+    description: '12.9" large format display with 128GB storage for reading sheet music, PDFs, and media.',
+    specs: ['12.9" Display', '128GB Storage', '120Hz ProMotion', 'Touch ID'],
+    technicalSpecs: {
+      Processor: 'Apple A10X Fusion',
+      Memory: '4GB RAM',
+      Storage: '128GB',
+      Display: '12.9" Retina ProMotion',
+      Battery: 'Up to 10 hours',
+      Ports: 'Lightning'
+    }
+  },
+  {
+    id: 'ipad-pro-12-9-2nd-256gb',
+    name: 'iPad Pro 12.9” 2nd Gen 256GB',
+    price: 340000,
+    category: 'students',
+    image: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&q=80&w=800',
+    description: 'High storage 12.9" tablet for students needing expansive screen real estate.',
+    specs: ['12.9" Display', '256GB Storage', 'ProMotion 120Hz', 'Pencil Support'],
+    technicalSpecs: {
+      Processor: 'Apple A10X Fusion',
+      Memory: '4GB RAM',
+      Storage: '256GB',
+      Display: '12.9" Retina ProMotion',
+      Battery: 'Up to 10 hours',
+      Ports: 'Lightning'
+    }
+  },
+  {
+    id: 'ipad-pro-12-9-2nd-512gb',
+    name: 'iPad Pro 12.9” 2nd Gen 512GB',
+    price: 420000,
+    category: 'students',
+    image: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&q=80&w=800',
+    description: 'Massive 512GB storage on a 12.9" canvas with high-volume quad stereo speakers.',
+    specs: ['512GB Storage', '12.9" ProMotion', 'A10X Fusion', 'Quad Audio'],
+    technicalSpecs: {
+      Processor: 'Apple A10X Fusion',
+      Memory: '4GB RAM',
+      Storage: '512GB',
+      Display: '12.9" Retina',
+      Battery: 'Up to 10 hours',
+      Ports: 'Lightning'
+    }
+  },
+  {
+    id: 'ipad-pro-12-9-3rd-64gb',
+    name: 'iPad Pro 12.9” 3rd Gen 64GB',
+    price: 550000,
+    category: 'creators',
+    image: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&q=80&w=800',
+    description: 'All-screen bezels with Face ID, A12X Bionic silicon, USB-C, and Pencil 2 magnetic snap.',
+    specs: ['A12X Bionic', 'Face ID', '12.9" Liquid Retina', 'USB-C'],
+    technicalSpecs: {
+      Processor: 'Apple A12X Bionic',
+      Memory: '4GB RAM',
+      Storage: '64GB',
+      Display: '12.9" Liquid Retina with ProMotion',
+      Battery: 'Up to 10 hours',
+      Ports: 'USB-C'
+    }
+  },
+  {
+    id: 'ipad-pro-12-9-3rd-256gb',
+    name: 'iPad Pro 12.9” 3rd Gen 256GB',
+    price: 650000,
+    category: 'creators',
+    image: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&q=80&w=800',
+    description: 'Pro creator favorite with 256GB storage and all-day battery life.',
+    specs: ['A12X Bionic', '256GB Storage', '12.9" Liquid Retina', 'ProMotion'],
+    technicalSpecs: {
+      Processor: 'Apple A12X Bionic',
+      Memory: '4GB RAM',
+      Storage: '256GB',
+      Display: '12.9" Liquid Retina',
+      Battery: 'Up to 10 hours',
+      Ports: 'USB-C'
+    }
+  },
+  {
+    id: 'ipad-pro-12-9-3rd-512gb',
+    name: 'iPad Pro 12.9” 3rd Gen 512GB',
+    price: 700000,
+    category: 'creators',
+    image: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&q=80&w=800',
+    description: 'Half-terabyte capacity for high-resolution RAW photo editing and illustration.',
+    specs: ['512GB Storage', '12.9" Liquid Retina', 'Face ID', 'USB-C'],
+    technicalSpecs: {
+      Processor: 'Apple A12X Bionic',
+      Memory: '4GB RAM',
+      Storage: '512GB',
+      Display: '12.9" Liquid Retina',
+      Battery: 'Up to 10 hours',
+      Ports: 'USB-C'
+    }
+  },
+  {
+    id: 'ipad-pro-12-9-4th-128gb',
+    name: 'iPad Pro 12.9” 4th Gen 128GB',
+    price: 750000,
+    category: 'creators',
+    image: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&q=80&w=800',
+    description: '2020 12.9" Pro featuring LiDAR scanner, A12Z Bionic, and dual ultra-wide cameras.',
+    specs: ['A12Z Bionic', 'LiDAR Scanner', '128GB Storage', 'ProMotion 120Hz'],
+    technicalSpecs: {
+      Processor: 'Apple A12Z Bionic',
+      Memory: '6GB RAM',
+      Storage: '128GB',
+      Display: '12.9" Liquid Retina',
+      Battery: 'Up to 10 hours',
+      Ports: 'USB-C'
+    }
+  },
+  {
+    id: 'ipad-pro-12-9-4th-256gb',
+    name: 'iPad Pro 12.9” 4th Gen 256GB',
+    price: 800000,
+    category: 'creators',
+    image: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&q=80&w=800',
+    description: 'The optimal balance of storage and performance with 256GB and LiDAR.',
+    specs: ['A12Z Bionic', '256GB Storage', 'LiDAR', 'ProMotion 120Hz'],
+    technicalSpecs: {
+      Processor: 'Apple A12Z Bionic',
+      Memory: '6GB RAM',
+      Storage: '256GB',
+      Display: '12.9" Liquid Retina',
+      Battery: 'Up to 10 hours',
+      Ports: 'USB-C'
+    }
+  },
+  {
+    id: 'ipad-pro-12-9-4th-512gb',
+    name: 'iPad Pro 12.9” 4th Gen 512GB',
+    price: 870000,
+    category: 'biz',
+    image: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&q=80&w=800',
+    description: '512GB 4th Gen flagship for intense architectural blueprints and video timelines.',
+    specs: ['A12Z Bionic', '512GB Storage', '12.9" Display', 'Face ID'],
+    technicalSpecs: {
+      Processor: 'Apple A12Z Bionic',
+      Memory: '6GB RAM',
+      Storage: '512GB',
+      Display: '12.9" Liquid Retina',
+      Battery: 'Up to 10 hours',
+      Ports: 'USB-C'
+    }
+  },
+  {
+    id: 'ipad-pro-12-9-4th-1tb',
+    name: 'iPad Pro 12.9” 4th Gen 1TB',
+    price: 920000,
+    category: 'biz',
+    image: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&q=80&w=800',
+    description: 'Enormous 1TB enterprise storage tier for unlimited offline project libraries.',
+    specs: ['1TB Massive Storage', 'A12Z Bionic', '12.9" ProMotion', 'LiDAR'],
+    technicalSpecs: {
+      Processor: 'Apple A12Z Bionic',
+      Memory: '6GB RAM',
+      Storage: '1TB NVMe',
+      Display: '12.9" Liquid Retina',
+      Battery: 'Up to 10 hours',
+      Ports: 'USB-C'
+    }
+  },
+  {
+    id: 'ipad-pro-12-9-5th-m1-128gb',
+    name: 'iPad Pro 12.9” 5th Gen M1 128GB',
+    price: 950000,
+    category: 'creators',
+    image: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&q=80&w=800',
+    description: 'Revolutionary Liquid Retina XDR Mini-LED display with 1600 nits peak brightness and M1 speed.',
+    specs: ['Liquid Retina XDR (Mini-LED)', 'Apple M1 Chip', '128GB Storage', 'Thunderbolt 4'],
+    technicalSpecs: {
+      Processor: 'Apple M1 Chip (8-core CPU, 8-core GPU)',
+      Memory: '8GB Unified Memory',
+      Storage: '128GB',
+      Display: '12.9" Liquid Retina XDR with Mini-LED (1,000,000:1 contrast)',
+      Battery: 'Up to 10 hours',
+      Ports: 'Thunderbolt 4 / USB 4'
+    }
+  },
+  {
+    id: 'ipad-pro-12-9-5th-m1-256gb',
+    name: 'iPad Pro 12.9” 5th Gen M1 256GB',
+    price: 980000,
+    category: 'creators',
+    image: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&q=80&w=800',
+    description: 'Mini-LED HDR reference screen with 256GB storage and M1 processing power.',
+    specs: ['Mini-LED XDR Display', 'Apple M1 Chip', '256GB Storage', 'Thunderbolt 4'],
+    technicalSpecs: {
+      Processor: 'Apple M1 Chip',
+      Memory: '8GB Unified Memory',
+      Storage: '256GB',
+      Display: '12.9" Liquid Retina XDR',
+      Battery: 'Up to 10 hours',
+      Ports: 'Thunderbolt 4'
+    }
+  },
+  {
+    id: 'ipad-pro-12-9-5th-m1-512gb',
+    name: 'iPad Pro 12.9” 5th Gen M1 512GB',
+    price: 970000,
+    category: 'creators',
+    image: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&q=80&w=800',
+    description: '512GB Mini-LED production flagship for color grading and broadcast design.',
+    specs: ['Mini-LED XDR Display', 'Apple M1 Chip', '512GB Storage', '8GB RAM'],
+    technicalSpecs: {
+      Processor: 'Apple M1 Chip',
+      Memory: '8GB Unified Memory',
+      Storage: '512GB',
+      Display: '12.9" Liquid Retina XDR',
+      Battery: 'Up to 10 hours',
+      Ports: 'Thunderbolt 4'
+    }
+  },
+  {
+    id: 'ipad-pro-12-9-5th-m1-1tb',
+    name: 'iPad Pro 12.9” 5th Gen M1 1TB',
+    price: 1100000,
+    category: 'biz',
+    image: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&q=80&w=800',
+    description: 'Massive 1TB NVMe storage equipped with 16GB Unified RAM for intense rendering.',
+    specs: ['1TB NVMe Storage', '16GB RAM', 'Apple M1 Chip', 'Mini-LED XDR'],
+    technicalSpecs: {
+      Processor: 'Apple M1 Chip',
+      Memory: '16GB Unified Memory',
+      Storage: '1TB NVMe',
+      Display: '12.9" Liquid Retina XDR',
+      Battery: 'Up to 10 hours',
+      Ports: 'Thunderbolt 4'
+    }
+  },
+  {
+    id: 'ipad-pro-12-9-6th-m2-128gb',
+    name: 'iPad Pro 12.9” 6th Gen M2 128GB',
+    price: 850000,
+    category: 'creators',
+    image: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&q=80&w=800',
+    description: 'Apple M2 silicon with Apple Pencil hover detection and Mini-LED XDR screen.',
+    specs: ['Apple M2 Chip', 'Pencil Hover', 'Mini-LED XDR', '128GB Storage'],
+    technicalSpecs: {
+      Processor: 'Apple M2 Chip',
+      Memory: '8GB Unified Memory',
+      Storage: '128GB',
+      Display: '12.9" Liquid Retina XDR',
+      Battery: 'Up to 10 hours',
+      Ports: 'Thunderbolt / USB 4'
+    }
+  },
+  {
+    id: 'ipad-pro-12-9-6th-m2-256gb',
+    name: 'iPad Pro 12.9” 6th Gen M2 256GB',
+    price: 990000,
+    category: 'creators',
+    image: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&q=80&w=800',
+    description: '256GB M2 Pro with ProRes encode engine, WiFi 6E, and hover precision.',
+    specs: ['Apple M2 Chip', '256GB Storage', 'Mini-LED XDR', 'WiFi 6E'],
+    technicalSpecs: {
+      Processor: 'Apple M2 Chip',
+      Memory: '8GB Unified Memory',
+      Storage: '256GB',
+      Display: '12.9" Liquid Retina XDR',
+      Battery: 'Up to 10 hours',
+      Ports: 'Thunderbolt / USB 4'
+    }
+  },
+  {
+    id: 'ipad-pro-12-9-6th-m2-512gb',
+    name: 'iPad Pro 12.9” 6th Gen M2 512GB',
+    price: 1020000,
+    category: 'biz',
+    image: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&q=80&w=800',
+    description: 'Half-terabyte M2 12.9" powerhouse for professional studio grade media creation.',
+    specs: ['Apple M2 Chip', '512GB Storage', 'ProRes Hardware', 'Mini-LED'],
+    technicalSpecs: {
+      Processor: 'Apple M2 Chip',
+      Memory: '8GB Unified Memory',
+      Storage: '512GB',
+      Display: '12.9" Liquid Retina XDR',
+      Battery: 'Up to 10 hours',
+      Ports: 'Thunderbolt / USB 4'
+    }
+  },
+  {
+    id: 'ipad-pro-12-9-6th-m2-1tb',
+    name: 'iPad Pro 12.9” 6th Gen M2 1TB',
+    price: 1150000,
+    category: 'biz',
+    image: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&q=80&w=800',
+    description: '1TB enterprise M2 tablet with 16GB RAM for workstation level workloads.',
+    specs: ['1TB Storage', '16GB RAM', 'Apple M2 Chip', 'Mini-LED XDR'],
+    technicalSpecs: {
+      Processor: 'Apple M2 Chip',
+      Memory: '16GB Unified Memory',
+      Storage: '1TB NVMe',
+      Display: '12.9" Liquid Retina XDR',
+      Battery: 'Up to 10 hours',
+      Ports: 'Thunderbolt / USB 4'
+    }
+  },
+
+  // iPad Pro M4 13" Range
+  {
+    id: 'ipad-pro-m4-13-256gb',
+    name: 'iPad Pro M4 13” 256GB',
+    price: 1350000,
+    category: 'biz',
+    image: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&q=80&w=800',
+    description: 'The crowning achievement of Apple design. Tandem OLED Ultra Retina XDR in a 5.1mm chassis.',
+    specs: ['Apple M4 Chip', '13" Tandem OLED', '256GB Storage', 'Ultra Slim 5.1mm'],
+    technicalSpecs: {
+      Processor: 'Apple M4 Chip (9-core CPU, 10-core GPU)',
+      Memory: '8GB Unified Memory',
+      Storage: '256GB NVMe',
+      Display: '13" Ultra Retina XDR Tandem OLED (2752 x 2064)',
+      Battery: 'Up to 10 hours',
+      Ports: 'Thunderbolt / USB 4'
+    }
+  },
+  {
+    id: 'ipad-pro-m4-13-512gb',
+    name: 'iPad Pro M4 13” 512GB',
+    price: 1450000,
+    category: 'biz',
+    image: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&q=80&w=800',
+    description: 'The definitive 13-inch M4 Pro with 512GB storage. Built for next-gen campus leaders.',
+    specs: ['Apple M4 Chip', '13" Tandem OLED', '512GB Storage', '10-Core GPU'],
+    technicalSpecs: {
+      Processor: 'Apple M4 Chip',
+      Memory: '8GB Unified Memory',
+      Storage: '512GB NVMe',
+      Display: '13" Ultra Retina XDR Tandem OLED',
+      Battery: 'Up to 10 hours',
+      Ports: 'Thunderbolt / USB 4'
     }
   },
 
@@ -176,21 +1158,107 @@ export const products = [
       Ports: 'Lightning'
     }
   },
+  // Official REAVO iPod Touch Pricelist
   {
-    id: 'ipod-7th-gen',
-    name: 'iPod 7th Gen 32GB',
-    price: 750000,
+    id: 'ipod-touch-6th-16gb',
+    name: 'iPod Touch 6th Gen 16GB',
+    price: 65000,
     category: 'students',
     image: 'https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?auto=format&fit=crop&q=80&w=800',
-    description: 'Your music, in your pocket.',
-    specs: ['A10 Fusion', '4" Retina', '32GB Storage', 'iOS'],
+    description: 'Pocketable Apple media player with 4" Retina display and 8MP camera.',
+    specs: ['Apple A8 Chip', '16GB Storage', '4.0" Retina', 'Ultralight 88g'],
     technicalSpecs: {
-      Processor: 'A10 Fusion chip',
+      Processor: 'Apple A8 chip with 64-bit architecture',
+      Memory: '1GB RAM',
+      Storage: '16GB',
+      Display: '4.0" Multi-Touch IPS Retina (1136 x 640)',
+      Battery: 'Up to 40 hours audio playback',
+      Ports: 'Lightning, 3.5mm Headphone Jack'
+    }
+  },
+  {
+    id: 'ipod-touch-6th-32gb',
+    name: 'iPod Touch 6th Gen 32GB',
+    price: 85000,
+    category: 'students',
+    image: 'https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?auto=format&fit=crop&q=80&w=800',
+    description: 'Compact 32GB music and offline media library for distraction-free listening.',
+    specs: ['Apple A8 Chip', '32GB Storage', '4.0" Retina', 'Siri & Bluetooth 4.1'],
+    technicalSpecs: {
+      Processor: 'Apple A8 chip',
+      Memory: '1GB RAM',
+      Storage: '32GB',
+      Display: '4.0" Retina Display',
+      Battery: 'Up to 40 hours audio',
+      Ports: 'Lightning, 3.5mm Jack'
+    }
+  },
+  {
+    id: 'ipod-touch-6th-64gb',
+    name: 'iPod Touch 6th Gen 64GB',
+    price: 115000,
+    category: 'students',
+    image: 'https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?auto=format&fit=crop&q=80&w=800',
+    description: 'High capacity 64GB iPod 6th Gen for massive offline music and podcasts.',
+    specs: ['Apple A8 Chip', '64GB Storage', '1080p HD Video', 'AirPlay'],
+    technicalSpecs: {
+      Processor: 'Apple A8 chip',
+      Memory: '1GB RAM',
+      Storage: '64GB',
+      Display: '4.0" Retina',
+      Battery: 'Up to 40 hours audio',
+      Ports: 'Lightning, 3.5mm Jack'
+    }
+  },
+  {
+    id: 'ipod-touch-7th-32gb',
+    name: 'iPod Touch 7th Gen 32GB',
+    price: 155000,
+    category: 'students',
+    image: 'https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?auto=format&fit=crop&q=80&w=800',
+    description: 'Powered by the A10 Fusion chip for AR games, Apple Arcade, and high-res audio.',
+    specs: ['Apple A10 Fusion', '32GB Storage', 'Group FaceTime', 'iOS Supported'],
+    technicalSpecs: {
+      Processor: 'Apple A10 Fusion chip (64-bit quad-core)',
       Memory: '2GB RAM',
       Storage: '32GB',
-      Display: '4.0" IPS LCD',
-      Battery: 'Up to 40 hours music',
-      Ports: 'Lightning, 3.5mm headphone jack'
+      Display: '4.0" Retina Display (326 ppi)',
+      Battery: 'Up to 40 hours audio, 8 hours video',
+      Ports: 'Lightning, 3.5mm Headphone Jack'
+    }
+  },
+  {
+    id: 'ipod-touch-7th-128gb',
+    name: 'iPod Touch 7th Gen 128GB',
+    price: 190000,
+    category: 'students',
+    image: 'https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?auto=format&fit=crop&q=80&w=800',
+    description: '128GB high capacity player. Store thousands of lossless audio tracks.',
+    specs: ['Apple A10 Fusion', '128GB Storage', 'Apple Music Lossless', 'Ultra Slim 6.1mm'],
+    technicalSpecs: {
+      Processor: 'Apple A10 Fusion',
+      Memory: '2GB RAM',
+      Storage: '128GB',
+      Display: '4.0" Retina',
+      Battery: 'Up to 40 hours audio',
+      Ports: 'Lightning, 3.5mm Jack'
+    }
+  },
+  {
+    id: 'ipod-touch-7th-256gb',
+    name: 'iPod Touch 7th Gen 256GB',
+    price: 230000,
+    category: 'creators',
+    image: 'https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?auto=format&fit=crop&q=80&w=800',
+    description: 'The maximum 256GB capacity iPod Touch ever made. Collector and audiophile tier.',
+    specs: ['Apple A10 Fusion', '256GB Max Storage', 'Audiophile Portable', 'Touch Display'],
+    technicalSpecs: {
+      Processor: 'Apple A10 Fusion',
+      Memory: '2GB RAM',
+      Storage: '256GB NVMe',
+      Display: '4.0" Retina Display',
+      Battery: 'Up to 40 hours audio',
+      Ports: 'Lightning, 3.5mm Headphone Jack'
     }
   },
 

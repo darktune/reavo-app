@@ -40,8 +40,8 @@ export default function FaqPage() {
       icon: <ShieldCheck size={24} color="var(--text-primary)" />,
       items: [
         {
-          question: 'What is your return policy?',
-          answer: 'We accept returns within 14 days of delivery. Items must be unworn, unwashed, and have original tags attached. To initiate a return, go to Profile > Customer Support and email us your order details.'
+          question: 'What is your warranty & return policy?',
+          answer: 'We offer a 7-day direct replacement warranty for any verified hardware or factory defects. Gadgets must be in their original condition with serial numbers matching, all included accessories, and undamaged packaging. To initiate a claim, reach out via our WhatsApp Desk (09158554158) or email support@reavoglobal.com.'
         },
         {
           question: 'When will I get my refund?',

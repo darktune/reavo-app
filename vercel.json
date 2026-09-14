@@ -24,7 +24,7 @@
       "destination": "/server.js"
     },
     {
-      "source": "/((?!assets/|images/|ambassadors/).*)",
+      "source": "/((?!assets/|images/|ambassadors/|founders/|videos/|logos/|.*\\..*).*)",
       "destination": "/index.html"
     }
   ]

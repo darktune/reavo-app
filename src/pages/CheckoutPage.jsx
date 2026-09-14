@@ -216,7 +216,7 @@ export default function CheckoutPage() {
 
             <div style={{ marginBottom: 20 }}>
               <label style={{ display: 'block', fontSize: 13, color: 'var(--text-secondary)', marginBottom: 8 }}>Phone Number</label>
-              <input required type="tel" name="phone" value={formData.phone} onChange={handleInputChange} className="form-input" />
+              <input required type="tel" name="phone" placeholder="e.g. 09158554158" value={formData.phone} onChange={handleInputChange} className="form-input" />
             </div>
 
             <div style={{ marginBottom: 20 }}>
@@ -232,7 +232,7 @@ export default function CheckoutPage() {
               <input 
                 type="tel" 
                 name="whatsappPhone" 
-                placeholder="+234 800 000 0000"
+                placeholder="e.g. 09158554158"
                 value={formData.whatsappPhone} 
                 onChange={handleInputChange} 
                 className="form-input" 

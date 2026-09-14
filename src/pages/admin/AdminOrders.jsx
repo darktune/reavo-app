@@ -476,7 +476,7 @@ export default function AdminOrders() {
                   <div style={{ fontSize: 28, fontWeight: 900, letterSpacing: -1, color: '#000' }}>REAVO</div>
                   <div style={{ fontSize: 12, color: '#666', marginTop: 4 }}>REAVO TECHNOLOGIES NIGERIA LTD.</div>
                   <div style={{ fontSize: 12, color: '#666' }}>14 Admiralty Way, Lekki Phase 1, Lagos</div>
-                  <div style={{ fontSize: 12, color: '#666' }}>support@reavo.ng | +234 800 000 7328</div>
+                  <div style={{ fontSize: 12, color: '#666' }}>support@reavoglobal.com | +234 915 855 4158</div>
                 </div>
                 <div style={{ textAlign: 'right' }}>
                   <div style={{ fontSize: 20, fontWeight: 800, color: '#000', textTransform: 'uppercase' }}>WAYBILL / INVOICE</div>

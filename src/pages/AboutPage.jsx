@@ -49,12 +49,13 @@ export default function AboutPage() {
                   The design and direction force at REAVO — shaping how the brand looks, feels, and speaks to a generation of ambitious young Nigerians. His conviction: that premium technology should be accessible without compromise, community-first, not ad-spend-first.
                 </p>
               </div>
-              <div style={{ background: 'var(--bg-inner)', display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: 300, order: 1 }}>
-                 {/* Placeholder for Oreoluwa's image */}
-                 <div style={{ textAlign: 'center', color: 'var(--text-secondary)' }}>
-                  <div style={{ fontSize: 48, marginBottom: 8 }}>O.O.</div>
-                  <div className="font-mono">cdo_headshot.jpg</div>
-                </div>
+              <div style={{ background: 'var(--bg-inner)', minHeight: 320, order: 1, position: 'relative', overflow: 'hidden' }}>
+                <img 
+                  src="/founders/oreoluwa.jpg" 
+                  alt="Oreoluwa Owojaiye — Co-Founder & CDO of REAVO" 
+                  style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', minHeight: 320 }}
+                  loading="lazy"
+                />
               </div>
             </div>
           </ScrollReveal>

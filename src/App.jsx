@@ -77,7 +77,6 @@ function App() {
               <Route path="/checkout" element={<CheckoutPage />} />
               <Route path="/success" element={<SuccessPage />} />
               <Route path="/staff-onboarding" element={<StaffOnboarding />} />
-              <Route path="*" element={<NotFoundPage />} />
 
               {/* Admin Routes */}
               <Route path="/admin" element={<AdminLayout />}>
@@ -100,6 +99,9 @@ function App() {
                 <Route path="settings" element={<AdminSettings />} />
                 <Route path="profile" element={<AdminProfile />} />
               </Route>
+
+              {/* 404 Catch-All Route */}
+              <Route path="*" element={<NotFoundPage />} />
               </Routes>
             </ErrorBoundary>
           </main>

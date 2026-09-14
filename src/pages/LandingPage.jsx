@@ -6,6 +6,7 @@ import ScrollReveal from '../components/ScrollReveal';
 import { products, categories } from '../data/products';
 import DotNav from '../components/DotNav';
 import SEO from '../components/SEO';
+import PreorderHeroBanner from '../components/PreorderHeroBanner';
 
 const communityImages = [
   "https://emit-dome-71800164.figma.site/_components/v2/30d1827fe34837c08bb982e13e2d71d7d108eee4/DSC04369.b9a907ea.jpeg",
@@ -118,7 +119,7 @@ export default function LandingPage() {
     "description": "Premium Campus Gadgets, Phones, Laptops & Electronics in Nigeria",
     "contactPoint": {
       "@type": "ContactPoint",
-      "telephone": "+234-XXX-XXX-XXXX",
+      "telephone": "+234-915-855-4158",
       "contactType": "Customer Service",
       "areaServed": "NG"
     }
@@ -235,6 +236,9 @@ export default function LandingPage() {
           </ScrollReveal>
         </div>
       </section>
+
+      {/* Flagship Pre-Order Video Hero Showcase (Apple & Spotify Style) */}
+      <PreorderHeroBanner />
 
       {/* Categories */}
       <section style={{ padding: 'clamp(60px, 10vw, 120px) 0', background: 'var(--bg-void)', position: 'relative' }}>

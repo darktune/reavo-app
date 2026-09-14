@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useWishlist } from '../context/WishlistContext';
 import { Navigate, useNavigate } from 'react-router';
-import { Package, User, LogOut, Settings, Heart, Loader2, LayoutDashboard, MapPin, MessageSquare, CreditCard, Tag, Search, Mail, HelpCircle, Smartphone, Key, CheckCircle, ArrowUpRight, RefreshCw } from 'lucide-react';
+import { Package, User, LogOut, Settings, Heart, Loader2, LayoutDashboard, MapPin, MessageSquare, CreditCard, Tag, Search, Mail, HelpCircle, Smartphone, Key, CheckCircle, ArrowUpRight, RefreshCw, Sparkles, Bell, Clock, Trash2 } from 'lucide-react';
 import ScrollReveal from '../components/ScrollReveal';
 import { products } from '../data/products';
 import ProductCard from '../components/ProductCard';
@@ -30,6 +30,30 @@ export default function ProfilePage() {
     { id: 'TRD-8842', device: 'MacBook Air M1 (256GB)', condition: 'Good', quote: 410000, status: 'Pending Inspection', created_at: new Date(Date.now() - 86400000 * 5).toISOString() }
   ]);
   const [showTradeInModal, setShowTradeInModal] = useState(false);
+
+  // Pre-Orders State
+  const [preorders, setPreorders] = useState([]);
+
+  useEffect(() => {
+    const loadPreorders = () => {
+      try {
+        const saved = JSON.parse(localStorage.getItem('reavo_preorders') || '[]');
+        setPreorders(saved);
+      } catch {
+        setPreorders([]);
+      }
+    };
+    loadPreorders();
+    window.addEventListener('storage', loadPreorders);
+    return () => window.removeEventListener('storage', loadPreorders);
+  }, []);
+
+  const handleCancelPreorder = (id) => {
+    if (!window.confirm('Are you sure you want to release your priority waitlist allocation?')) return;
+    const next = preorders.filter(p => p.id !== id);
+    setPreorders(next);
+    localStorage.setItem('reavo_preorders', JSON.stringify(next));
+  };
 
   // Notification States
   const [emailSettings, setEmailSettings] = useState({
@@ -194,8 +218,17 @@ export default function ProfilePage() {
                 </button>
                 <button 
                   onClick={() => setActiveTab('wishlist')}
-                  className={`profile-nav-btn ${activeTab === 'wishlist' ? 'active' : ''}`}>
-                  <Heart size={18} /> Saved Items
+                  className={`profile-nav-btn ${activeTab === 'wishlist' ? 'active' : ''}`}
+                  style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <Heart size={18} /> Wishlist & Pre-Orders
+                  </div>
+                  {preorders.length > 0 && (
+                    <span style={{ fontSize: 10, fontWeight: 700, padding: '2px 7px', borderRadius: 100, background: 'rgba(255, 184, 0, 0.2)', color: '#FFB800', border: '1px solid rgba(255, 184, 0, 0.4)' }}>
+                      {preorders.length} Pre-Order{preorders.length > 1 ? 's' : ''}
+                    </span>
+                  )}
                 </button>
                 <button 
                   onClick={() => setActiveTab('addresses')}
@@ -238,7 +271,7 @@ export default function ProfilePage() {
               {activeTab === 'overview' && (
                 <>
                   <h2 style={{ fontSize: 24, marginBottom: 24 }}>Dashboard Overview</h2>
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 24, marginBottom: 48 }}>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 24, marginBottom: 48 }}>
                     <div className="glass-panel" style={{ padding: 24, borderRadius: 16 }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16, color: 'var(--text-secondary)' }}>
                         <Package size={20} color="var(--accent-teal)" />
@@ -252,6 +285,13 @@ export default function ProfilePage() {
                         Saved Items
                       </div>
                       <div style={{ fontSize: 32, fontWeight: 600 }}>{wishlistProducts.length}</div>
+                    </div>
+                    <div className="glass-panel" style={{ padding: 24, borderRadius: 16 }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16, color: 'var(--text-secondary)' }}>
+                        <Sparkles size={20} color="#FFB800" />
+                        Active Pre-Orders
+                      </div>
+                      <div style={{ fontSize: 32, fontWeight: 600, color: preorders.length > 0 ? '#FFB800' : 'inherit' }}>{preorders.length}</div>
                     </div>
                   </div>
                   
@@ -380,7 +420,173 @@ export default function ProfilePage() {
 
               {activeTab === 'wishlist' && (
                 <>
-                  <h2 style={{ fontSize: 24, marginBottom: 24 }}>My Wishlist</h2>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24, flexWrap: 'wrap', gap: 16 }}>
+                    <div>
+                      <h2 style={{ fontSize: 24, margin: 0, color: 'var(--text-primary)' }}>Wishlist & Pre-Orders</h2>
+                      <p style={{ color: 'var(--text-secondary)', margin: '4px 0 0 0', fontSize: 14 }}>
+                        Track your saved gadgets and priority 2026 pre-order allocations.
+                      </p>
+                    </div>
+                    {preorders.length > 0 && (
+                      <span style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: 6,
+                        padding: '6px 14px',
+                        borderRadius: 100,
+                        fontSize: 12,
+                        fontWeight: 700,
+                        background: 'rgba(255, 184, 0, 0.15)',
+                        border: '1px solid rgba(255, 184, 0, 0.3)',
+                        color: '#FFB800'
+                      }}>
+                        <Sparkles size={14} /> {preorders.length} Active Pre-Order Allocation{preorders.length > 1 ? 's' : ''}
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Active Pre-Orders Waitlist Showcase */}
+                  {preorders.length > 0 && (
+                    <div style={{ marginBottom: 40 }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16 }}>
+                        <Clock size={18} color="#FFB800" />
+                        <h3 style={{ fontSize: 18, margin: 0, fontWeight: 600, color: 'var(--text-primary)' }}>
+                          Active 2026 Pre-Order Allocations
+                        </h3>
+                      </div>
+
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+                        {preorders.map((item) => (
+                          <div 
+                            key={item.id} 
+                            className="glass-panel" 
+                            style={{ 
+                              padding: 24, 
+                              borderRadius: 20, 
+                              border: '1px solid rgba(255, 184, 0, 0.3)',
+                              background: 'linear-gradient(135deg, rgba(255, 184, 0, 0.05) 0%, var(--bg-card) 100%)',
+                              display: 'flex',
+                              flexDirection: 'column',
+                              gap: 16
+                            }}
+                          >
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: 12 }}>
+                              <div>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6, flexWrap: 'wrap' }}>
+                                  <span className="font-mono" style={{ fontSize: 12, color: 'var(--text-secondary)' }}>{item.id}</span>
+                                  <span style={{ 
+                                    padding: '3px 10px', 
+                                    borderRadius: 100, 
+                                    fontSize: 11, 
+                                    fontWeight: 700, 
+                                    background: 'rgba(57, 217, 196, 0.15)', 
+                                    color: 'var(--accent-teal)',
+                                    border: '1px solid rgba(57, 217, 196, 0.3)'
+                                  }}>
+                                    Allocation Confirmed
+                                  </span>
+                                  <span style={{
+                                    padding: '3px 10px',
+                                    borderRadius: 100,
+                                    fontSize: 11,
+                                    fontWeight: 700,
+                                    background: 'rgba(255, 184, 0, 0.15)',
+                                    color: '#FFB800',
+                                    border: '1px solid rgba(255, 184, 0, 0.3)'
+                                  }}>
+                                    Priority Queue #{item.queuePosition || 18}
+                                  </span>
+                                </div>
+                                <h4 style={{ fontSize: 20, margin: '4px 0', fontWeight: 700, color: 'var(--text-primary)' }}>
+                                  {item.productName}
+                                </h4>
+                                <div style={{ fontSize: 13, color: 'var(--text-secondary)' }}>
+                                  Configuration: <strong>{item.storage}</strong> • Color: <strong>{item.color}</strong> • Reserved {new Date(item.createdAt).toLocaleDateString()}
+                                </div>
+                              </div>
+
+                              <button
+                                onClick={() => handleCancelPreorder(item.id)}
+                                className="btn-ghost"
+                                style={{
+                                  padding: '8px 14px',
+                                  fontSize: 12,
+                                  borderRadius: 100,
+                                  color: 'var(--text-secondary)',
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  gap: 6
+                                }}
+                              >
+                                <Trash2 size={13} /> Cancel Allocation
+                              </button>
+                            </div>
+
+                            {/* WhatsApp Release Notification Alert */}
+                            <div style={{
+                              padding: '16px 20px',
+                              borderRadius: 14,
+                              background: 'rgba(37, 211, 102, 0.08)',
+                              border: '1px solid rgba(37, 211, 102, 0.25)',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'space-between',
+                              flexWrap: 'wrap',
+                              gap: 16
+                            }}>
+                              <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+                                <div style={{
+                                  width: 42,
+                                  height: 42,
+                                  borderRadius: '50%',
+                                  background: 'rgba(37, 211, 102, 0.18)',
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  justifyContent: 'center',
+                                  flexShrink: 0
+                                }}>
+                                  <MessageSquare size={20} color="#25D366" />
+                                </div>
+                                <div>
+                                  <div style={{ fontWeight: 700, fontSize: 13, color: '#25D366', display: 'flex', alignItems: 'center', gap: 6 }}>
+                                    <Bell size={14} /> WhatsApp Release Notification Alert
+                                  </div>
+                                  <div style={{ fontSize: 12, color: 'var(--text-secondary)', marginTop: 3 }}>
+                                    When this flagship officially lands in Nigeria, REAVO student ops will message your registered WhatsApp (<strong>{whatsappNumber || user?.phone || '09158554158'}</strong>) with your day-one reservation PIN and direct checkout link.
+                                  </div>
+                                </div>
+                              </div>
+
+                              <a
+                                href={`https://wa.me/2349158554158?text=Hi%20REAVO%2C%20I'm%20checking%20on%20my%20pre-order%20waitlist%20spot%20(${item.id})%20for%20${encodeURIComponent(item.productName)}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                style={{
+                                  display: 'inline-flex',
+                                  alignItems: 'center',
+                                  gap: 6,
+                                  padding: '10px 18px',
+                                  borderRadius: 100,
+                                  background: '#25D366',
+                                  color: '#000000',
+                                  fontSize: 12,
+                                  fontWeight: 700,
+                                  textDecoration: 'none',
+                                  border: 'none',
+                                  boxShadow: '0 4px 14px rgba(37, 211, 102, 0.3)'
+                                }}
+                              >
+                                Reach Concierge (09158554158)
+                              </a>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Standard Saved Items Section */}
+                  <h3 style={{ fontSize: 18, marginBottom: 16, fontWeight: 600, color: 'var(--text-primary)' }}>Saved Items</h3>
                   {wishlistProducts.length === 0 ? (
                     <div className="glass-panel" style={{ padding: 48, textAlign: 'center', color: 'var(--text-secondary)' }}>
                       <Heart size={48} style={{ margin: '0 auto 16px', opacity: 0.5 }} />
@@ -866,13 +1072,13 @@ export default function ProfilePage() {
                       <div style={{ fontWeight: 600, fontSize: 16 }}>Live WhatsApp Desk</div>
                       <p style={{ fontSize: 13, color: 'var(--text-secondary)', margin: 0 }}>Direct priority chat with our student operations team.</p>
                       <a 
-                        href={`https://wa.me/2348000000000?text=Hi%20REAVO%20Support%2C%20I'm%20${encodeURIComponent(user?.user_metadata?.full_name || 'a customer')}%20and%20need%20assistance.`} 
+                        href={`https://wa.me/2349158554158?text=Hi%20REAVO%20Support%2C%20I'm%20${encodeURIComponent(user?.user_metadata?.full_name || 'a customer')}%20and%20need%20assistance.`} 
                         target="_blank" 
                         rel="noopener noreferrer" 
                         className="btn-primary" 
                         style={{ marginTop: 'auto', textAlign: 'center', textDecoration: 'none', background: '#25D366', borderColor: '#25D366', color: '#000', fontWeight: 600, padding: '10px', borderRadius: 100 }}
                       >
-                        Message on WhatsApp
+                        Message WhatsApp (09158554158)
                       </a>
                     </div>
 
