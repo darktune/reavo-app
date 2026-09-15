@@ -5,6 +5,11 @@ node_modules
 dist
 *.log
 *.zip
+*.pdf
+conversations/
+playwright-report/
+test-results/
+"founders pics"
 REAVO shoots
 REAVO logos
 *.md
