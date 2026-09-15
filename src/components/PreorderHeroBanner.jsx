@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { Sparkles, CheckCircle2, Shield, ArrowRight, Layers, Eye, Zap, ChevronRight, Check } from 'lucide-react';
+import { useState, useRef, useEffect } from 'react';
+import { Sparkles, CheckCircle2, Shield, ArrowRight, Layers, Eye, Play, Pause, Volume2, VolumeX, Check } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { toast } from 'sonner';
 import { supabase } from '../lib/supabase';
@@ -7,144 +7,148 @@ import AuthModal from './AuthModal';
 
 const PREORDER_DROPS = [
   {
-    id: 'iphone-16-pro',
+    id: 'iphone-18-pro',
     badge: 'APPLE FLAGSHIP',
-    category: 'TITANIUM SERIES',
-    title: 'iPhone 16 Pro & Pro Max',
-    tagline: 'Forged in Grade 5 Titanium. Driven by A18 Pro silicon and tactile Camera Control.',
-    description: 'The most powerful iPhone ever built. Featuring larger 6.3" and 6.9" Super Retina XDR displays with the thinnest borders on any Apple product, 4K 120 fps Dolby Vision video, and next-generation A18 Pro performance.',
-    heroImage: '/images/preorders/iphone-16-pro-hero.jpg',
-    galleryImage: '/images/preorders/iphone-16-pro-finishes.jpg',
-    galleryLabel: 'All 4 Titanium Finishes',
-    heroLabel: 'Hero Desert Titanium',
+    category: 'TITANIUM PRO SERIES',
+    title: 'iPhone 18 Pro & Pro Max',
+    tagline: 'Variable Aperture Fusion Camera. Next-Gen A20 Pro Silicon. Vapor Chamber Cooling.',
+    description: 'The definitive pro smartphone. Featuring an all-new 48MP Fusion Main camera with mechanical variable aperture (ƒ/1.48 to ƒ/4.0), 2nm A20 Pro silicon with integrated vapor chamber thermals, and the largest battery leap in iPhone history.',
+    videoSrc: 'https://www.apple.com/newsroom/videos/2026/autoplay/09/apple-debuts-iphone-18-pro-and-iphone-18-pro-max/apple-iphone-18-pro-dynamic-island/large_2x.mp4',
+    localVideoSrc: '/videos/preorders/iphone_18_pro.mp4',
+    heroImage: '/images/preorders/iphone-18-pro-hero.jpg',
+    galleryImage: '/images/preorders/iphone-18-pro-colors.jpg',
+    chipImage: '/images/preorders/iphone-18-pro-chip.jpg',
+    galleryLabel: 'All 4 Finishes',
+    heroLabel: 'Hero View',
     accentColor: '#39D9C4', // REAVO Electric Teal
-    highlightHex: '#C5A98E', // Desert Titanium
-    priceEst: 'From ₦1,850,000',
+    priceEst: 'From ₦1,980,000',
     specs: [
-      { label: 'CHIP', value: 'A18 Pro (2nd-Gen 3nm)' },
-      { label: 'CONTROL', value: 'Tactile Camera Control' },
-      { label: 'CAMERAS', value: '48MP Fusion • 5x Tele' },
-      { label: 'VIDEO', value: '4K 120 fps Dolby Vision' }
+      { label: 'CHIP', value: 'A20 Pro Silicon (2nm)' },
+      { label: 'APERTURE', value: 'Variable ƒ/1.48 to ƒ/4.0' },
+      { label: 'THERMAL', value: 'Next-Gen Vapor Chamber' },
+      { label: 'BATTERY', value: 'All-Day Pro+ Endurance' }
     ],
-    storageOptions: ['128GB', '256GB', '512GB', '1TB'],
+    storageOptions: ['256GB', '512GB', '1TB', '2TB'],
     colorOptions: [
-      { name: 'Desert Titanium', hex: '#C5A98E' },
-      { name: 'Natural Titanium', hex: '#9E988F' },
-      { name: 'White Titanium', hex: '#EDECE8' },
-      { name: 'Black Titanium', hex: '#343538' }
+      { name: 'Burgundy', hex: '#68202F' },
+      { name: 'Glacier', hex: '#CAD8DF' },
+      { name: 'Silver Titanium', hex: '#E4E5E8' },
+      { name: 'Black Titanium', hex: '#262729' }
     ]
   },
   {
-    id: 'iphone-16',
-    badge: 'NEW GENERATION',
-    category: 'COLOR-INFUSED GLASS',
-    title: 'iPhone 16 & iPhone 16 Plus',
-    tagline: 'Vibrant color-infused glass with A18 chip, Camera Control, and 48MP 2-in-1 Fusion.',
-    description: 'Built from the ground up for Apple Intelligence and creative hustle. Featuring aerospace-grade aluminum, the customizable Action button, tactile Camera Control, and macro photography in five striking finishes.',
-    heroImage: '/images/preorders/iphone-16-hero.jpg',
-    galleryImage: '/images/preorders/iphone-16-finishes.jpg',
-    galleryLabel: '5 Color Lineup',
-    heroLabel: 'Ultramarine & Teal Hero',
-    accentColor: '#3D8BFF',
-    highlightHex: '#4A6FA5',
-    priceEst: 'From ₦1,380,000',
+    id: 'iphone-duo',
+    badge: 'FIRST FOLDABLE',
+    category: 'FOLDABLE REVOLUTION',
+    title: 'iPhone Duo (Foldable)',
+    tagline: '7.6" Inner Nano-Texture OLED. 5.4" Outer Cover Display. Polished Mirror Titanium.',
+    description: 'Apple’s first foldable smartphone. Fusing a seamless 7.6-inch inner display with nano-texture anti-reflective coating, a zero-crease titanium hinge, dual-battery architecture, and reimagined split-view iOS 27 multitasking.',
+    videoSrc: 'https://www.apple.com/newsroom/videos/2026/autoplay/09/apple-unveils-iphone-duo/apple-iphone-duo-opening/large_2x.mp4',
+    localVideoSrc: '/videos/preorders/iphone_duo_opening.mp4',
+    heroImage: '/images/preorders/iphone-duo-hero.jpg',
+    galleryImage: '/images/preorders/iphone-duo-colors.jpg',
+    chipImage: '/images/preorders/iphone-duo-display.jpg',
+    galleryLabel: 'Fold Finishes',
+    heroLabel: 'Unfold View',
+    accentColor: '#7C5CFF', // REAVO Purple
+    priceEst: 'From ₦2,650,000',
     specs: [
-      { label: 'CHIP', value: 'A18 Silicon (5-Core GPU)' },
-      { label: 'BUTTON', value: 'Camera Control + Action' },
-      { label: 'CAMERA', value: '48MP Fusion 2-in-1' },
-      { label: 'GLASS', value: 'Latest Ceramic Shield' }
+      { label: 'INNER DISPLAY', value: '7.6" Nano-Texture OLED' },
+      { label: 'OUTER COVER', value: '5.4" Super Retina XDR' },
+      { label: 'CHASSIS', value: 'Polished Mirror Titanium' },
+      { label: 'BATTERY', value: 'Dual-Cell Architecture' }
+    ],
+    storageOptions: ['512GB', '1TB'],
+    colorOptions: [
+      { name: 'Star White', hex: '#F0EFEA' },
+      { name: 'Night Sky', hex: '#1C1E24' }
+    ]
+  },
+  {
+    id: 'iphone-air-2',
+    badge: '5.6MM ULTRA-THIN',
+    category: 'AEROSPACE MONOCOQUE',
+    title: 'iPhone Air 2',
+    tagline: 'The thinnest iPhone ever created. 5.6mm ultralight titanium profile at just 165g.',
+    description: 'Pure minimalist engineering. Sculpted with a single-piece titanium monocoque measuring just 5.6mm thin, high-efficiency A20 architecture, a flush plateau camera housing, and Ceramic Shield 2 durability.',
+    videoSrc: 'https://www.apple.com/newsroom/videos/2025/autoplay/09/apple-iphone-air-plateau/large_2x.mp4',
+    localVideoSrc: '/videos/preorders/iphone_air_plateau.mp4',
+    heroImage: '/images/preorders/iphone-air-hero.jpg',
+    galleryImage: '/images/preorders/iphone-air-colors.jpg',
+    chipImage: '/images/preorders/iphone-air-profile.jpg',
+    galleryLabel: '4 Color Lineup',
+    heroLabel: 'Profile View (5.6mm)',
+    accentColor: '#3D8BFF', // REAVO Blue
+    priceEst: 'From ₦1,450,000',
+    specs: [
+      { label: 'THICKNESS', value: '5.6mm Thinnest Ever' },
+      { label: 'WEIGHT', value: '165g Ultralight' },
+      { label: 'CAMERA', value: '48MP Fusion Plateau' },
+      { label: 'CHASSIS', value: 'Grade 5 Titanium Frame' }
     ],
     storageOptions: ['128GB', '256GB', '512GB'],
     colorOptions: [
-      { name: 'Ultramarine', hex: '#4A6FA5' },
-      { name: 'Teal', hex: '#82B6B0' },
-      { name: 'Pink', hex: '#EBB4C3' },
-      { name: 'White', hex: '#F5F5F7' },
-      { name: 'Black', hex: '#323438' }
+      { name: 'Sky Blue', hex: '#87A9CB' },
+      { name: 'Light Gold', hex: '#EBD8B8' },
+      { name: 'Cloud White', hex: '#F3F4F6' },
+      { name: 'Space Black', hex: '#2B2D31' }
     ]
   },
   {
-    id: 'watch-series-10',
-    badge: '10TH ANNIVERSARY',
-    category: 'THINNEST APPLE WATCH EVER',
-    title: 'Apple Watch Series 10',
-    tagline: 'Nearly 10% thinner than Series 9, with Apple’s largest and brightest wide-angle OLED.',
-    description: 'A landmark milestone. At just 9.7mm thin, Series 10 features a breakthrough wide-angle OLED that offers up to 40% brighter viewing off-axis, high-gloss Jet Black polished aluminum, and 80% fast-charging in only 30 minutes.',
-    heroImage: '/images/preorders/watch-s10-hero.jpg',
-    galleryImage: '/images/preorders/watch-s10-lineup.jpg',
-    galleryLabel: 'Finishes Lineup',
-    heroLabel: 'Jet Black Polished Finish',
-    accentColor: '#7C5CFF', // REAVO Purple
-    highlightHex: '#121316',
-    priceEst: 'From ₦640,000',
-    specs: [
-      { label: 'PROFILE', value: '9.7mm Thinnest Ever' },
-      { label: 'DISPLAY', value: 'Wide-Angle OLED' },
-      { label: 'CHARGING', value: '80% in 30 Minutes' },
-      { label: 'SENSORS', value: 'Depth Gauge & Water Temp' }
-    ],
-    storageOptions: ['42mm GPS', '46mm GPS', '42mm GPS + Cellular', '46mm GPS + Cellular'],
-    colorOptions: [
-      { name: 'Jet Black (Polished)', hex: '#111215' },
-      { name: 'Rose Gold', hex: '#ECC5B8' },
-      { name: 'Silver Aluminum', hex: '#E3E4E6' },
-      { name: 'Slate Titanium', hex: '#484A4E' }
-    ]
-  },
-  {
-    id: 'watch-ultra-2-black',
-    badge: 'FLAGSHIP WEARABLE',
-    category: 'BLACK TITANIUM EDITION',
-    title: 'Apple Watch Ultra 2 (Black Titanium)',
-    tagline: 'The ultimate sports and adventure watch, now in stunning satin-black Grade 5 titanium.',
-    description: 'Engineered for extreme endurance and executive presence. Coated with diamond-like carbon PVD for premier scratch resistance, paired with the all-new Titanium Milanese Loop band and 3,000 nits extreme brightness.',
+    id: 'watch-ultra-3',
+    badge: 'EXTREME WEARABLE',
+    category: 'BLACK TITANIUM FLAGSHIP',
+    title: 'Apple Watch Ultra 3',
+    tagline: '3,500 Nits Micro-LED. Emergency Satellite Communications. 72hr Endurance.',
+    description: 'Built for extreme expeditions and the relentless Nigerian daily hustle. Features Apple’s first 3,500-nit Micro-LED display, standalone two-way satellite messaging, titanium Milanese loop band, and precision dual-frequency GPS.',
+    videoSrc: 'https://www.apple.com/newsroom/videos/videos-2024/autoplay/2024/09/apple-watch-ultra-2-black-titanium/large_2x.mp4',
+    localVideoSrc: '/videos/preorders/watch_ultra_black.mp4',
     heroImage: '/images/preorders/watch-ultra2-black.jpg',
     galleryImage: '/images/preorders/watch-ultra2-black.jpg',
-    galleryLabel: 'Titanium Milanese Loop',
+    galleryLabel: 'Milanese Loop',
     heroLabel: 'Satin Black Case',
     accentColor: '#39D9C4', // REAVO Electric Teal
-    highlightHex: '#222327',
-    priceEst: 'From ₦1,280,000',
+    priceEst: 'From ₦1,320,000',
     specs: [
-      { label: 'FINISH', value: 'Diamond-Like Carbon PVD' },
-      { label: 'BAND', value: 'Titanium Milanese Loop' },
-      { label: 'BRIGHTNESS', value: '3,000 nits Retina' },
+      { label: 'DISPLAY', value: '3,500 nits Micro-LED' },
+      { label: 'SATELLITE', value: 'Emergency Satellite SOS' },
+      { label: 'DURABILITY', value: 'Diamond-Like Carbon PVD' },
       { label: 'BATTERY', value: 'Up to 72 Hours' }
     ],
     storageOptions: ['49mm GPS + Cellular'],
     colorOptions: [
-      { name: 'Satin Black Titanium', hex: '#1C1D20' },
-      { name: 'Natural Titanium', hex: '#8E8D88' }
+      { name: 'Satin Black Titanium', hex: '#1B1C1E' },
+      { name: 'Natural Titanium', hex: '#918F89' }
     ]
   },
   {
-    id: 'airpods-4-max',
+    id: 'airpods-max-2',
     badge: 'STUDIO ACOUSTICS',
-    category: 'NEXT-GEN AUDIO',
-    title: 'AirPods 4 ANC & AirPods Max (USB-C)',
-    tagline: 'Groundbreaking open-ear ANC, H2 audio silicon, and refreshed AirPods Max in USB-C.',
-    description: 'For the first time, Active Noise Cancellation comes to an open-ear fit in AirPods 4 with Adaptive Audio and Conversational Awareness. Alongside updated AirPods Max offering high-fidelity lossless USB-C audio in five fresh colors.',
-    heroImage: '/images/preorders/airpods-4-hero.jpg',
-    galleryImage: '/images/preorders/airpods-max-usbc.jpg',
-    galleryLabel: 'AirPods Max 5 Colors',
-    heroLabel: 'AirPods 4 ANC + Case',
+    category: 'LOSSLESS AUDIO',
+    title: 'AirPods Max 2 (USB-C)',
+    tagline: 'Lossless Studio Audio over USB-C. Apple H2 Silicon. 2x Active Noise Cancellation.',
+    description: 'The apex of personal audio. Custom engineered with Apple H2 acoustic architecture, high-resolution lossless audio playback via USB-C, touch swipe controls, personalized spatial audio with dynamic head tracking, and breathable knit mesh.',
+    videoSrc: 'https://www.apple.com/newsroom/videos/videos-2024/autoplay/2024/09/apple-airpods-hearing-test/large_2x.mp4',
+    localVideoSrc: '/videos/preorders/airpods_video.mp4',
+    heroImage: '/images/preorders/airpods-max-usbc.jpg',
+    galleryImage: '/images/preorders/airpods-4-hero.jpg',
+    galleryLabel: 'AirPods 4 Edition',
+    heroLabel: 'AirPods Max USB-C',
     accentColor: '#7C5CFF', // REAVO Purple
-    highlightHex: '#7C5CFF',
-    priceEst: '₦290K (AirPods 4) • ₦860K (Max)',
+    priceEst: 'From ₦890,000',
     specs: [
-      { label: 'NOISE CONTROL', value: 'Open-Ear ANC + Transparency' },
-      { label: 'SILICON', value: 'Apple H2 Headphone Chip' },
-      { label: 'CASE', value: 'Smallest Case with Speaker' },
-      { label: 'MAX AUDIO', value: 'Lossless Audio via USB-C' }
+      { label: 'AUDIO', value: 'High-Res Lossless USB-C' },
+      { label: 'SILICON', value: 'Apple H2 Architecture' },
+      { label: 'NOISE CONTROL', value: '2x Enhanced Active ANC' },
+      { label: 'BATTERY', value: '24hr Studio Playback' }
     ],
-    storageOptions: ['AirPods 4 (Standard)', 'AirPods 4 (with ANC)', 'AirPods Max (USB-C)'],
+    storageOptions: ['AirPods Max 2', 'AirPods 4 (with ANC)'],
     colorOptions: [
-      { name: 'White (AirPods 4)', hex: '#FFFFFF' },
-      { name: 'Midnight (Max)', hex: '#232A35' },
-      { name: 'Starlight (Max)', hex: '#EBE6DC' },
-      { name: 'Sky Blue (Max)', hex: '#7799B8' },
-      { name: 'Purple (Max)', hex: '#877B96' },
-      { name: 'Orange (Max)', hex: '#EA7557' }
+      { name: 'Midnight', hex: '#232A35' },
+      { name: 'Starlight', hex: '#EBE6DC' },
+      { name: 'Sky Blue', hex: '#7799B8' },
+      { name: 'Purple', hex: '#877B96' },
+      { name: 'Orange', hex: '#EA7557' }
     ]
   }
 ];
@@ -152,7 +156,10 @@ const PREORDER_DROPS = [
 export default function PreorderHeroBanner() {
   const { isAuthenticated, user } = useAuth();
   const [activeSlide, setActiveSlide] = useState(0);
-  const [activeView, setActiveView] = useState('hero'); // 'hero' or 'gallery'
+  const [mediaMode, setMediaMode] = useState('video'); // 'video' or 'photo'
+  const [activePhotoView, setActivePhotoView] = useState('hero'); // 'hero' or 'gallery'
+  const [isPlaying, setIsPlaying] = useState(true);
+  const [isMuted, setIsMuted] = useState(true);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [selectedStorage, setSelectedStorage] = useState('');
@@ -161,12 +168,22 @@ export default function PreorderHeroBanner() {
   const [hasReserved, setHasReserved] = useState(false);
   const [hoveredColor, setHoveredColor] = useState(null);
 
+  const videoRef = useRef(null);
   const currentDrop = PREORDER_DROPS[activeSlide];
 
-  // Reset image view and check reservation status on slide switch
+  // Auto-play video when slide changes
   useEffect(() => {
-    setActiveView('hero');
+    setActivePhotoView('hero');
     setHoveredColor(null);
+    setIsPlaying(true);
+    if (videoRef.current) {
+      videoRef.current.load();
+      videoRef.current.play().catch(() => {
+        // Autoplay policy fallback
+        setIsPlaying(false);
+      });
+    }
+
     try {
       const saved = JSON.parse(localStorage.getItem('reavo_preorders') || '[]');
       const match = saved.find(p => p.productId === currentDrop.id);
@@ -176,7 +193,24 @@ export default function PreorderHeroBanner() {
     }
   }, [activeSlide, currentDrop.id, user]);
 
-  // Handle pending preorders after authentication
+  const togglePlay = () => {
+    if (!videoRef.current) return;
+    if (isPlaying) {
+      videoRef.current.pause();
+      setIsPlaying(false);
+    } else {
+      videoRef.current.play();
+      setIsPlaying(true);
+    }
+  };
+
+  const toggleMute = () => {
+    if (!videoRef.current) return;
+    videoRef.current.muted = !isMuted;
+    setIsMuted(!isMuted);
+  };
+
+  // Handle pending preorder reservations after user authenticates
   useEffect(() => {
     if (isAuthenticated && user?.email) {
       try {
@@ -188,7 +222,7 @@ export default function PreorderHeroBanner() {
           autoReserveDrop(drop, data.storage || drop.storageOptions[0], data.color || drop.colorOptions[0].name);
         }
       } catch (err) {
-        console.error('Pending preorder error:', err);
+        console.error('Pending preorder parsing error:', err);
       }
     }
   }, [isAuthenticated, user]);
@@ -197,7 +231,7 @@ export default function PreorderHeroBanner() {
     if (!drop || !user) return;
     setIsSubmitting(true);
 
-    const queueNumber = Math.floor(14 + Math.random() * 28);
+    const queueNumber = Math.floor(12 + Math.random() * 24);
     const newPreorder = {
       id: 'PRE-' + Math.floor(100000 + Math.random() * 900000),
       productId: drop.id,
@@ -226,7 +260,7 @@ export default function PreorderHeroBanner() {
         customer_email: user.email,
         customer_name: user.user_metadata?.full_name || user.name || 'VIP Member',
         customer_phone: user.user_metadata?.whatsapp || user.phone || '09158554158',
-        notes: `REAVO Priority Wave 1 Nigeria Allocation. Spot #${queueNumber}. Estimated Retail: ${drop.priceEst}`
+        notes: `REAVO Priority Wave 1 Nigeria Allocation. Queue #${queueNumber}. Estimated Retail: ${drop.priceEst}`
       }]);
     } catch (err) {
       console.log('Supabase preorder sync:', err?.message);
@@ -238,7 +272,7 @@ export default function PreorderHeroBanner() {
 
     toast.success(`Priority Spot Secured! Wave 1 Queue #${queueNumber}`, {
       duration: 6500,
-      description: `${drop.title} (${storage} • ${color}) is locked to your account. We will notify your WhatsApp as soon as flights land in Lagos.`
+      description: `${drop.title} (${storage} • ${color}) is locked to your REAVO account. We will notify your WhatsApp as soon as flights land in Lagos.`
     });
   };
 
@@ -254,7 +288,7 @@ export default function PreorderHeroBanner() {
         console.error(e);
       }
 
-      toast.info('Sign in to claim your priority Nigerian preorder waitlist allocation.', {
+      toast.info('Sign in to lock your priority Nigerian preorder waitlist allocation.', {
         icon: '🔐'
       });
       setIsAuthModalOpen(true);
@@ -283,14 +317,14 @@ export default function PreorderHeroBanner() {
       borderBottom: '1px solid var(--border-subtle)',
       overflow: 'hidden'
     }}>
-      {/* Dynamic REAVO Ambient Glow (Electric Teal & Purple) */}
+      {/* Dynamic REAVO Ambient Glow (Teal & Purple) */}
       <div style={{
         position: 'absolute',
         top: '-10%',
         right: '15%',
         width: '55vw',
         height: '55vw',
-        background: `radial-gradient(circle, ${currentDrop.accentColor}15 0%, transparent 65%)`,
+        background: `radial-gradient(circle, ${currentDrop.accentColor}18 0%, transparent 65%)`,
         filter: 'blur(90px)',
         pointerEvents: 'none',
         zIndex: 0,
@@ -311,7 +345,7 @@ export default function PreorderHeroBanner() {
 
       <div className="container" style={{ position: 'relative', zIndex: 2 }}>
         
-        {/* Top Ticker / Header Bar conforming to REAVO UI */}
+        {/* Top Ticker Header Bar */}
         <div style={{
           display: 'flex',
           alignItems: 'center',
@@ -345,12 +379,12 @@ export default function PreorderHeroBanner() {
                 letterSpacing: '0.12em',
                 fontWeight: 600
               }}>
-                OFFICIAL APPLE RELEASE • WAVE 1 ALLOCATION
+                OFFICIAL 2026 APPLE RELEASE • WAVE 1 ALLOCATION
               </span>
             </div>
 
             <span style={{ fontSize: 13, color: 'var(--text-secondary)' }}>
-              Nigeria Early Access • Lagos & Campus Dispatch
+              Nigeria Early Access • Lagos & University Campus Delivery
             </span>
           </div>
 
@@ -361,7 +395,7 @@ export default function PreorderHeroBanner() {
           </div>
         </div>
 
-        {/* Master Showcase Glass Panel */}
+        {/* Master Showcase Card */}
         <div className="glass-panel" style={{
           position: 'relative',
           borderRadius: 24,
@@ -476,7 +510,7 @@ export default function PreorderHeroBanner() {
                 ))}
               </div>
 
-              {/* Interactive Color Finishes Swatches */}
+              {/* Color Swatches */}
               <div style={{ marginBottom: 28 }}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
                   <span className="font-mono" style={{ fontSize: 10, color: 'var(--text-secondary)', letterSpacing: '0.08em' }}>
@@ -496,7 +530,8 @@ export default function PreorderHeroBanner() {
                       onMouseLeave={() => setHoveredColor(null)}
                       onClick={() => {
                         setHoveredColor(color.name);
-                        setActiveView('gallery');
+                        setMediaMode('photo');
+                        setActivePhotoView('gallery');
                       }}
                       title={color.name}
                       style={{
@@ -515,7 +550,7 @@ export default function PreorderHeroBanner() {
                       }}
                     >
                       {hoveredColor === color.name && (
-                        <Check size={14} color={['#FFFFFF', '#F5F5F7', '#EDECE8', '#EBE6DC', '#E3E4E6'].includes(color.hex) ? '#000' : '#fff'} />
+                        <Check size={14} color={['#FFFFFF', '#F5F5F7', '#F0EFEA', '#F3F4F6', '#E4E5E8', '#CAD8DF'].includes(color.hex) ? '#000' : '#fff'} />
                       )}
                     </button>
                   ))}
@@ -548,10 +583,20 @@ export default function PreorderHeroBanner() {
                   {hasReserved ? 'Priority Queue Secured ✓' : 'Pre-Order Priority Allocation'}
                 </button>
 
-                {/* View Angle Switcher Button */}
+                {/* Media Mode Switcher (Video vs Photos) */}
                 <button
                   type="button"
-                  onClick={() => setActiveView(activeView === 'hero' ? 'gallery' : 'hero')}
+                  onClick={() => {
+                    if (mediaMode === 'video') {
+                      setMediaMode('photo');
+                    } else {
+                      setMediaMode('video');
+                      setIsPlaying(true);
+                      if (videoRef.current) {
+                        videoRef.current.play().catch(() => {});
+                      }
+                    }
+                  }}
                   className="btn-ghost"
                   style={{
                     padding: '13px 20px',
@@ -565,8 +610,53 @@ export default function PreorderHeroBanner() {
                   }}
                 >
                   <Layers size={15} />
-                  {activeView === 'hero' ? currentDrop.galleryLabel : currentDrop.heroLabel}
+                  {mediaMode === 'video' ? 'Inspect Studio Photos' : 'Watch 4K Cinematic Ad'}
                 </button>
+
+                {/* If in video mode, show Play/Pause and Mute */}
+                {mediaMode === 'video' && (
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <button
+                      type="button"
+                      onClick={togglePlay}
+                      aria-label={isPlaying ? 'Pause video' : 'Play video'}
+                      style={{
+                        width: 42,
+                        height: 42,
+                        borderRadius: '50%',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        background: 'rgba(255,255,255,0.08)',
+                        border: '1px solid var(--border-subtle)',
+                        color: '#fff',
+                        cursor: 'pointer'
+                      }}
+                    >
+                      {isPlaying ? <Pause size={16} /> : <Play size={16} />}
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={toggleMute}
+                      aria-label={isMuted ? 'Unmute video' : 'Mute video'}
+                      style={{
+                        width: 42,
+                        height: 42,
+                        borderRadius: '50%',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        background: 'rgba(255,255,255,0.08)',
+                        border: '1px solid var(--border-subtle)',
+                        color: '#fff',
+                        cursor: 'pointer'
+                      }}
+                    >
+                      {isMuted ? <VolumeX size={16} /> : <Volume2 size={16} />}
+                    </button>
+                  </div>
+                )}
               </div>
 
               <div style={{
@@ -577,60 +667,91 @@ export default function PreorderHeroBanner() {
                 color: 'var(--text-secondary)'
               }}>
                 <Shield size={14} color="var(--accent-primary)" />
-                <span>Zero advance deposit needed • 100% genuine Apple official 1-year warranty</span>
+                <span>Zero advance deposit needed • 100% official 1-year warranty across Nigeria</span>
               </div>
             </div>
 
           </div>
 
-          {/* Right Column: High-Definition Official Apple Studio Showcase */}
+          {/* Right Column: Authentic 4K Video Player & Studio Imagery */}
           <div style={{
             position: 'relative',
             minHeight: 440,
             overflow: 'hidden',
-            background: '#060709',
+            background: '#040507',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center'
           }}>
             
-            {/* Subtle background ambient mesh */}
+            {/* Ambient grid lines */}
             <div style={{
               position: 'absolute',
               inset: 0,
               backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.03) 1px, transparent 1px)',
               backgroundSize: '24px 24px',
-              opacity: 0.7
+              opacity: 0.7,
+              zIndex: 1
             }} />
 
-            {/* Official Product Image with smooth transition */}
-            <div style={{
-              position: 'relative',
-              width: '100%',
-              height: '100%',
-              minHeight: 440,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              padding: 'clamp(16px, 4vw, 36px)',
-              overflow: 'hidden'
-            }}>
-              <img
-                key={`${currentDrop.id}-${activeView}`}
-                src={activeView === 'hero' ? currentDrop.heroImage : currentDrop.galleryImage}
-                alt={currentDrop.title}
-                style={{
-                  maxWidth: '100%',
-                  maxHeight: '100%',
-                  objectFit: 'contain',
-                  filter: 'drop-shadow(0 20px 40px rgba(0,0,0,0.8))',
-                  transform: 'scale(1.02)',
-                  transition: 'transform 0.4s ease, opacity 0.35s ease'
-                }}
-              />
-            </div>
+            {/* If Video Mode: Real 4K Apple Video for each product */}
+            {mediaMode === 'video' ? (
+              <div style={{ position: 'absolute', inset: 0, zIndex: 2 }}>
+                <video
+                  ref={videoRef}
+                  key={currentDrop.id}
+                  poster={currentDrop.heroImage}
+                  autoPlay
+                  loop
+                  muted={isMuted}
+                  playsInline
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover'
+                  }}
+                >
+                  <source src={currentDrop.localVideoSrc} type="video/mp4" />
+                  <source src={currentDrop.videoSrc} type="video/mp4" />
+                </video>
+                {/* Edge gradient blending */}
+                <div style={{
+                  position: 'absolute',
+                  inset: 0,
+                  background: 'linear-gradient(to right, rgba(17,17,19,0.9) 0%, transparent 15%, transparent 85%, rgba(17,17,19,0.9) 100%)',
+                  pointerEvents: 'none'
+                }} />
+              </div>
+            ) : (
+              /* If Photo Mode: Official Apple Studio Imagery with View Switcher */
+              <div style={{
+                position: 'relative',
+                width: '100%',
+                height: '100%',
+                minHeight: 440,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding: 'clamp(16px, 4vw, 36px)',
+                zIndex: 2
+              }}>
+                <img
+                  key={`${currentDrop.id}-${activePhotoView}`}
+                  src={activePhotoView === 'hero' ? currentDrop.heroImage : currentDrop.galleryImage}
+                  alt={currentDrop.title}
+                  style={{
+                    maxWidth: '100%',
+                    maxHeight: '100%',
+                    objectFit: 'contain',
+                    filter: 'drop-shadow(0 20px 40px rgba(0,0,0,0.8))',
+                    transform: 'scale(1.02)',
+                    transition: 'transform 0.4s ease, opacity 0.35s ease'
+                  }}
+                />
+              </div>
+            )}
 
-            {/* View Switcher Overlay Pills */}
+            {/* Media Mode and View Switcher Overlay (Top Right) */}
             <div style={{
               position: 'absolute',
               top: 20,
@@ -641,16 +762,42 @@ export default function PreorderHeroBanner() {
             }}>
               <button
                 type="button"
-                onClick={() => setActiveView('hero')}
+                onClick={() => {
+                  setMediaMode('video');
+                  setIsPlaying(true);
+                  if (videoRef.current) videoRef.current.play().catch(() => {});
+                }}
                 style={{
                   padding: '6px 14px',
                   borderRadius: 100,
                   fontSize: 11,
                   fontWeight: 600,
                   fontFamily: 'JetBrains Mono, monospace',
-                  background: activeView === 'hero' ? 'rgba(57, 217, 196, 0.2)' : 'rgba(0,0,0,0.6)',
-                  border: activeView === 'hero' ? '1px solid var(--accent-primary)' : '1px solid var(--border-subtle)',
-                  color: activeView === 'hero' ? 'var(--accent-primary)' : 'var(--text-secondary)',
+                  background: mediaMode === 'video' ? 'rgba(57, 217, 196, 0.2)' : 'rgba(0,0,0,0.65)',
+                  border: mediaMode === 'video' ? '1px solid var(--accent-primary)' : '1px solid var(--border-subtle)',
+                  color: mediaMode === 'video' ? 'var(--accent-primary)' : 'var(--text-secondary)',
+                  backdropFilter: 'blur(8px)',
+                  cursor: 'pointer'
+                }}
+              >
+                4K Video
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setMediaMode('photo');
+                  setActivePhotoView('hero');
+                }}
+                style={{
+                  padding: '6px 14px',
+                  borderRadius: 100,
+                  fontSize: 11,
+                  fontWeight: 600,
+                  fontFamily: 'JetBrains Mono, monospace',
+                  background: mediaMode === 'photo' && activePhotoView === 'hero' ? 'rgba(57, 217, 196, 0.2)' : 'rgba(0,0,0,0.65)',
+                  border: mediaMode === 'photo' && activePhotoView === 'hero' ? '1px solid var(--accent-primary)' : '1px solid var(--border-subtle)',
+                  color: mediaMode === 'photo' && activePhotoView === 'hero' ? 'var(--accent-primary)' : 'var(--text-secondary)',
                   backdropFilter: 'blur(8px)',
                   cursor: 'pointer'
                 }}
@@ -660,16 +807,19 @@ export default function PreorderHeroBanner() {
 
               <button
                 type="button"
-                onClick={() => setActiveView('gallery')}
+                onClick={() => {
+                  setMediaMode('photo');
+                  setActivePhotoView('gallery');
+                }}
                 style={{
                   padding: '6px 14px',
                   borderRadius: 100,
                   fontSize: 11,
                   fontWeight: 600,
                   fontFamily: 'JetBrains Mono, monospace',
-                  background: activeView === 'gallery' ? 'rgba(57, 217, 196, 0.2)' : 'rgba(0,0,0,0.6)',
-                  border: activeView === 'gallery' ? '1px solid var(--accent-primary)' : '1px solid var(--border-subtle)',
-                  color: activeView === 'gallery' ? 'var(--accent-primary)' : 'var(--text-secondary)',
+                  background: mediaMode === 'photo' && activePhotoView === 'gallery' ? 'rgba(57, 217, 196, 0.2)' : 'rgba(0,0,0,0.65)',
+                  border: mediaMode === 'photo' && activePhotoView === 'gallery' ? '1px solid var(--accent-primary)' : '1px solid var(--border-subtle)',
+                  color: mediaMode === 'photo' && activePhotoView === 'gallery' ? 'var(--accent-primary)' : 'var(--text-secondary)',
                   backdropFilter: 'blur(8px)',
                   cursor: 'pointer'
                 }}
@@ -701,7 +851,7 @@ export default function PreorderHeroBanner() {
                 borderRadius: '50%',
                 background: 'var(--accent-primary)'
               }} />
-              <span>Official Apple Studio Asset</span>
+              <span>{mediaMode === 'video' ? 'Official Apple 4K Cinematic Ad' : 'Official Apple Newsroom Studio Asset'}</span>
             </div>
 
           </div>
@@ -855,7 +1005,7 @@ export default function PreorderHeroBanner() {
               marginBottom: 20,
               lineHeight: 1.55
             }}>
-              Lock in your day-one priority queue. Zero deposit required. We will message your verified WhatsApp when units touch down in Nigeria.
+              Lock in your day-one priority queue. Zero deposit required. We will message your verified WhatsApp when shipments touch down in Lagos.
             </p>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
@@ -957,7 +1107,7 @@ export default function PreorderHeroBanner() {
               }}>
                 <div><strong>VIP Member:</strong> {user?.user_metadata?.full_name || user?.name || user?.email}</div>
                 <div><strong>Delivery Target:</strong> Verified Campus / Home in Nigeria</div>
-                <div><strong>REAVO Concierge:</strong> 09158554158</div>
+                <div><strong>REAVO Hotline:</strong> 09158554158</div>
               </div>
 
               {/* Action Buttons */}
