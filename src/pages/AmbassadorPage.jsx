@@ -90,7 +90,7 @@ export default function AmbassadorPage() {
                   >
                     <img 
                       src={photo} 
-                      alt={`REAVO Campus Ambassador ${colIndex * col.length + i + 1} — Nigeria`} 
+                      alt={`REAVO Campus Ambassador ${colIndex * col.length + i + 1} • Nigeria`} 
                       style={{ width: '100%', display: 'block', objectFit: 'cover' }} 
                       loading="lazy"
                     />

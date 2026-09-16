@@ -926,7 +926,7 @@ export default function ProfilePage() {
                       <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
                         <h2 style={{ fontSize: 24, margin: 0, color: 'var(--text-primary)' }}>Device Trade-Ins</h2>
                         <span style={{ fontSize: 11, fontWeight: 700, padding: '3px 9px', borderRadius: 100, background: 'rgba(255, 184, 0, 0.15)', color: '#FFB800', border: '1px solid rgba(255, 184, 0, 0.3)' }}>
-                          REAVO Trade-In Hub — Beta / Rolling Out to Select Campuses
+                          REAVO Trade-In Hub • Beta / Rolling Out to Select Campuses
                         </span>
                       </div>
                       <p style={{ color: 'var(--text-secondary)', margin: '4px 0 0 0', fontSize: 14 }}>Exchange your pre-owned smartphone or laptop for store credit or verified campus payouts.</p>

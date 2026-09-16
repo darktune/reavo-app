@@ -10,7 +10,7 @@ export default function SEO({
   noindex = false
 }) {
   const siteTitle = 'REAVO';
-  const defaultDescription = 'REAVO — Campus Gadgets, Phones, Laptops & Electronics in Nigeria';
+  const defaultDescription = 'REAVO • Campus Gadgets, Phones, Laptops & Electronics in Nigeria';
   const defaultImage = 'https://reavo-app.vercel.app/logos/favicon_black.png';
   const siteUrl = 'https://reavo-app.vercel.app';
 

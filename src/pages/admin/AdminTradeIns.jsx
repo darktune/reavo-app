@@ -272,7 +272,7 @@ export default function AdminTradeIns() {
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 8, flexWrap: 'wrap' }}>
             <h1 style={{ fontSize: 28, margin: 0, color: 'var(--text-primary)', fontWeight: 700 }}>Device Trade-Ins & Circular Economy</h1>
             <span style={{ fontSize: 12, fontWeight: 700, padding: '4px 10px', borderRadius: 100, background: 'rgba(255, 184, 0, 0.15)', color: '#FFB800', border: '1px solid rgba(255, 184, 0, 0.3)' }}>
-              REAVO Trade-In Hub — Beta / Rolling Out to Select Campuses
+              REAVO Trade-In Hub • Beta / Rolling Out to Select Campuses
             </span>
           </div>
           <p style={{ margin: 0, color: 'var(--text-secondary)' }}>Review device submissions, inspect uploaded condition photos, and authorize trade-in valuations for campus beta cohorts.</p>

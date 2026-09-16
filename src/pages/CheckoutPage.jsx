@@ -134,7 +134,7 @@ export default function CheckoutPage() {
       name: `${formData.firstName} ${formData.lastName}`.trim(),
       onSuccess: async (data) => {
         try {
-          // Server-side order processing — prices are re-validated from DB,
+          // Server-side order processing • prices are re-validated from DB,
           // stock is checked, and all writes use SUPABASE_SERVICE_ROLE_KEY.
           // This prevents client-side price tampering and stock spoofing.
           const res = await fetch('/api/checkout/create-order', {

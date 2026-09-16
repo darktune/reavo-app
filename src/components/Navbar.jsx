@@ -74,7 +74,7 @@ export default function Navbar() {
         justifyContent: 'space-between',
       }}>
 
-        {/* Left — Logo */}
+        {/* Left • Logo */}
         <div style={{ flex: 1, display: 'flex', alignItems: 'center' }}>
           <CardHover
             onClick={() => navigate('/home')}
@@ -90,7 +90,7 @@ export default function Navbar() {
           </CardHover>
         </div>
 
-        {/* Center — Links (truly centered via absolute) */}
+        {/* Center • Links (truly centered via absolute) */}
         <div
           className="hidden-mobile"
           style={{
@@ -122,7 +122,7 @@ export default function Navbar() {
           ))}
         </div>
 
-        {/* Right — Icons */}
+        {/* Right • Icons */}
         <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 4 }}>
           <CardHover style={{ borderRadius: 12, padding: 8 }} title="Toggle Theme">
             <ThemeToggle />

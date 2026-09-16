@@ -130,7 +130,7 @@ export default function ProductPage() {
               <div style={{ display: 'flex', gap: 12 }}>
                 {gallery.map((img, i) => (
                   <button key={i} onClick={() => setSelectedImage(i)} style={{ width: 80, height: 80, borderRadius: 12, overflow: 'hidden', border: `2px solid ${selectedImage === i ? 'var(--text-primary)' : 'transparent'}`, background: 'var(--bg-inner)', opacity: selectedImage === i ? 1 : 0.6, cursor: 'pointer', padding: 6 }}>
-                    <img src={img} alt={`${product.name} — view ${i + 1}`} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+                    <img src={img} alt={`${product.name} • view ${i + 1}`} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
                   </button>
                 ))}
               </div>

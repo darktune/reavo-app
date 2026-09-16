@@ -34,7 +34,7 @@ export default function AboutPage() {
                 <h2 style={{ fontSize: 32, marginBottom: 4 }}>Emuan Edison</h2>
                 <div style={{ fontSize: 16, color: 'var(--text-secondary)', fontStyle: 'italic', marginBottom: 24 }}>a.k.a Mr. Reavo</div>
                 <p style={{ color: 'var(--text-secondary)', lineHeight: 1.7 }}>
-                  The vision and the engine behind REAVO — campus presence, product curation, and the relationships that turned a brand built on zero paid ads into a ₦30M+ operation spanning 6+ states and 5+ universities. Mr. Reavo doesn't just sell tech; he embodies it.
+                  The vision and the engine behind REAVO • campus presence, product curation, and the relationships that turned a brand built on zero paid ads into a ₦30M+ operation spanning 6+ states and 5+ universities. Mr. Reavo doesn't just sell tech; he embodies it.
                 </p>
               </div>
             </div>
@@ -46,13 +46,13 @@ export default function AboutPage() {
                 <div style={{ color: 'var(--accent-purple)', fontSize: 13, fontWeight: 700, letterSpacing: '0.1em', marginBottom: 12 }}>CO-FOUNDER · CDO</div>
                 <h2 style={{ fontSize: 32, marginBottom: 24 }}>Oreoluwa Owojaiye</h2>
                 <p style={{ color: 'var(--text-secondary)', lineHeight: 1.7 }}>
-                  The design and direction force at REAVO — shaping how the brand looks, feels, and speaks to a generation of ambitious young Nigerians. His conviction: that premium technology should be accessible without compromise, community-first, not ad-spend-first.
+                  The design and direction force at REAVO • shaping how the brand looks, feels, and speaks to a generation of ambitious young Nigerians. His conviction: that premium technology should be accessible without compromise, community-first, not ad-spend-first.
                 </p>
               </div>
               <div style={{ background: 'var(--bg-inner)', minHeight: 320, order: 1, position: 'relative', overflow: 'hidden' }}>
                 <img 
                   src="/founders/oreoluwa.jpg" 
-                  alt="Oreoluwa Owojaiye — Co-Founder & CDO of REAVO" 
+                  alt="Oreoluwa Owojaiye • Co-Founder & CDO of REAVO" 
                   style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', minHeight: 320 }}
                   loading="lazy"
                 />
@@ -74,13 +74,13 @@ export default function AboutPage() {
               <div className="glass-panel" style={{ padding: 40, borderRadius: 24 }}>
                 <h3 style={{ fontSize: 20, marginBottom: 16 }}>The tech should fit the person.</h3>
                 <p style={{ color: 'var(--text-secondary)', lineHeight: 1.7 }}>
-                  Not the other way around. REAVO starts with who you are — creator, student, founder, institution — and works backwards to the right product.
+                  Not the other way around. REAVO starts with who you are • creator, student, founder, institution • and works backwards to the right product.
                 </p>
               </div>
               <div className="glass-panel" style={{ padding: 40, borderRadius: 24 }}>
                 <h3 style={{ fontSize: 20, marginBottom: 16 }}>Trust is built in person.</h3>
                 <p style={{ color: 'var(--text-secondary)', lineHeight: 1.7 }}>
-                  That's why REAVO is physically present on campuses, at trade fairs, and in communities. Word-of-mouth isn't a strategy — it's the result of showing up right.
+                  That's why REAVO is physically present on campuses, at trade fairs, and in communities. Word-of-mouth isn't a strategy • it's the result of showing up right.
                 </p>
               </div>
               <div className="glass-panel" style={{ padding: 40, borderRadius: 24 }}>

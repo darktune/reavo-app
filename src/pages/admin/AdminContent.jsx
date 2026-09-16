@@ -155,7 +155,7 @@ export default function AdminContent() {
               </div>
               <div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 4 }}>
-                  <h3 style={{ fontSize: 16, fontWeight: 700, margin: 0, color: 'var(--text-primary)' }}>Dynamic CMS — Staged for Phase 2</h3>
+                  <h3 style={{ fontSize: 16, fontWeight: 700, margin: 0, color: 'var(--text-primary)' }}>Dynamic CMS • Staged for Phase 2</h3>
                   <span style={{ fontSize: 11, fontWeight: 700, padding: '2px 8px', borderRadius: 100, background: 'rgba(124, 92, 255, 0.2)', color: '#A78BFA' }}>Phase 2 CMS</span>
                 </div>
                 <p style={{ margin: 0, fontSize: 13, color: 'var(--text-secondary)', maxWidth: 640 }}>

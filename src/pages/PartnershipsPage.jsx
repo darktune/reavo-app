@@ -26,7 +26,7 @@ const partnershipTypes = [
     id: 'event',
     icon: Calendar,
     title: 'Event Tech Deployment',
-    description: 'For conferences, convocations, and large-scale events. AV equipment, camera kits, PA systems — all handled.',
+    description: 'For conferences, convocations, and large-scale events. AV equipment, camera kits, PA systems • all handled.',
     features: ['PA systems & stage audio', 'Camera & livestream setups', 'Projectors & display screens', 'Lighting rigs for venues'],
     color: '#39D9C4',
   },
@@ -120,7 +120,7 @@ export default function PartnershipsPage() {
           <ScrollReveal delay={200}>
             <p style={{ fontSize: 18, color: 'var(--text-secondary)', maxWidth: 580, marginBottom: 40 }}>
               REAVO partners with schools, institutions, and event organisers to supply, activate,
-              and deploy the right technology — without the procurement theatre.
+              and deploy the right technology • without the procurement theatre.
             </p>
           </ScrollReveal>
 
@@ -132,7 +132,7 @@ export default function PartnershipsPage() {
         </div>
       </section>
 
-      {/* What We Do — 3 Cards */}
+      {/* What We Do • 3 Cards */}
       <section style={{ padding: '80px 0', borderTop: '1px solid var(--border-subtle)' }}>
         <div className="container">
           <ScrollReveal>
@@ -246,7 +246,7 @@ export default function PartnershipsPage() {
         </div>
       </section>
 
-      {/* Contact Form — Simple & Straightforward */}
+      {/* Contact Form • Simple & Straightforward */}
       <section id="book-a-call" style={{ padding: '100px 0' }}>
         <div className="container" style={{ maxWidth: 640, margin: '0 auto' }}>
           <ScrollReveal>
@@ -258,7 +258,7 @@ export default function PartnershipsPage() {
             </h2>
             <p style={{ fontSize: 16, color: 'var(--text-secondary)', marginBottom: 40, lineHeight: 1.6 }}>
               Tell us who you are and what you're trying to do. We'll have a real conversation
-              about whether REAVO is the right fit — no decks, no formalities.
+              about whether REAVO is the right fit • no decks, no formalities.
             </p>
           </ScrollReveal>
 
@@ -377,7 +377,7 @@ export default function PartnershipsPage() {
                   />
                 </div>
 
-                {/* Partnership Type — Simple pill selector */}
+                {/* Partnership Type • Simple pill selector */}
                 <div>
                   <label style={{ fontSize: 13, fontWeight: 600, marginBottom: 10, display: 'block', color: 'var(--text-secondary)' }}>
                     What are you looking for?
@@ -407,7 +407,7 @@ export default function PartnershipsPage() {
                   </div>
                 </div>
 
-                {/* Message — optional */}
+                {/* Message • optional */}
                 <div>
                   <label style={{ fontSize: 13, fontWeight: 600, marginBottom: 6, display: 'block', color: 'var(--text-secondary)' }}>
                     Anything else? <span style={{ fontWeight: 400, opacity: 0.6 }}>(optional)</span>

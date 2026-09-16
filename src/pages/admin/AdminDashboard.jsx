@@ -280,7 +280,7 @@ export default function AdminDashboard() {
                   <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                     <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#FF6B4A', boxShadow: '0 0 8px #FF6B4A' }} />
                     <div>
-                      <div style={{ fontWeight: 600, color: '#FF6B4A', fontSize: 14 }}>CRITICAL — {outOfStock.length} product{outOfStock.length !== 1 ? 's' : ''} out of stock</div>
+                      <div style={{ fontWeight: 600, color: '#FF6B4A', fontSize: 14 }}>CRITICAL • {outOfStock.length} product{outOfStock.length !== 1 ? 's' : ''} out of stock</div>
                       <div style={{ fontSize: 13, color: 'var(--text-secondary)', marginTop: 2 }}>
                         {outOfStock.slice(0, 3).map(p => p.name).join(', ')}{outOfStock.length > 3 ? ` +${outOfStock.length - 3} more` : ''}
                       </div>
@@ -296,7 +296,7 @@ export default function AdminDashboard() {
                   <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                     <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#FFB800', boxShadow: '0 0 8px #FFB800' }} />
                     <div>
-                      <div style={{ fontWeight: 600, color: '#FFB800', fontSize: 14 }}>WARNING — {lowStock.length} product{lowStock.length !== 1 ? 's' : ''} running low</div>
+                      <div style={{ fontWeight: 600, color: '#FFB800', fontSize: 14 }}>WARNING • {lowStock.length} product{lowStock.length !== 1 ? 's' : ''} running low</div>
                       <div style={{ fontSize: 13, color: 'var(--text-secondary)', marginTop: 2 }}>
                         {lowStock.slice(0, 3).map(p => `${p.name} (${p.stock_quantity})`).join(', ')}
                       </div>

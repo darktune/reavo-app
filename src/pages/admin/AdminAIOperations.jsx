@@ -470,7 +470,7 @@ export default function AdminAIOperations() {
                 {msg.type === 'proposal' && msg.action && (
                   <div style={{ marginTop: 16, padding: 16, background: 'rgba(124, 92, 255, 0.08)', borderRadius: 12, border: '1px dashed rgba(124, 92, 255, 0.4)' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontWeight: 600, marginBottom: 8, color: '#7C5CFF', fontSize: 13 }}>
-                      <ShieldCheck size={16} /> TRANSACTION SAFETY GATE — AWAITING AUTHORIZATION
+                      <ShieldCheck size={16} /> TRANSACTION SAFETY GATE • AWAITING AUTHORIZATION
                     </div>
                     <p style={{ fontSize: 12, color: 'var(--text-secondary)', marginBottom: 12 }}>
                       This operation will write mutations to your production Supabase database and create an immutable audit record.

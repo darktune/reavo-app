@@ -36,9 +36,9 @@ export default function AdminLayout() {
     localStorage.setItem('reavo-scale-mode', next ? 'true' : 'false');
     window.dispatchEvent(new Event('reavo-scale-mode-changed'));
     if (next) {
-      toast.success('🚀 Scale Mode Activated — All Enterprise & Phase 2 Desks Unlocked');
+      toast.success('🚀 Scale Mode Activated • All Enterprise & Phase 2 Desks Unlocked');
     } else {
-      toast.info('🌱 Lean Day-1 Mode Active — Non-essential desks staged for scale');
+      toast.info('🌱 Lean Day-1 Mode Active • Non-essential desks staged for scale');
     }
   };
 

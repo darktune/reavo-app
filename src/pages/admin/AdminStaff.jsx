@@ -623,17 +623,17 @@ export default function AdminStaff() {
                     ) : (
                       <>
                         <option value="ADMIN">ADMIN (Full Operations Access)</option>
-                        <option disabled value="INVENTORY">INVENTORY — [Enterprise Scale Only]</option>
-                        <option disabled value="ORDER MANAGER">ORDER MANAGER — [Enterprise Scale Only]</option>
-                        <option disabled value="CONTENT">CONTENT — [Enterprise Scale Only]</option>
-                        <option disabled value="SUPPORT">SUPPORT — [Enterprise Scale Only]</option>
-                        <option disabled value="ANALYST">ANALYST — [Enterprise Scale Only]</option>
+                        <option disabled value="INVENTORY">INVENTORY • [Enterprise Scale Only]</option>
+                        <option disabled value="ORDER MANAGER">ORDER MANAGER • [Enterprise Scale Only]</option>
+                        <option disabled value="CONTENT">CONTENT • [Enterprise Scale Only]</option>
+                        <option disabled value="SUPPORT">SUPPORT • [Enterprise Scale Only]</option>
+                        <option disabled value="ANALYST">ANALYST • [Enterprise Scale Only]</option>
                       </>
                     )}
                   </select>
                   {!scaleMode && (
                     <div style={{ fontSize: 11, color: 'var(--text-secondary)', marginTop: 6 }}>
-                      Multi-Seat Role Management (Enterprise Scale) — 6 specialized sub-roles unlock in Scale Mode.
+                      Multi-Seat Role Management (Enterprise Scale) • 6 specialized sub-roles unlock in Scale Mode.
                     </div>
                   )}
                 </div>
@@ -693,17 +693,17 @@ export default function AdminStaff() {
                     <>
                       <option value="ADMIN">ADMIN (Full Operations Access)</option>
                       <option value="OWNER">OWNER</option>
-                      <option disabled value="INVENTORY">INVENTORY — [Enterprise Scale Only]</option>
-                      <option disabled value="ORDER MANAGER">ORDER MANAGER — [Enterprise Scale Only]</option>
-                      <option disabled value="CONTENT">CONTENT — [Enterprise Scale Only]</option>
-                      <option disabled value="SUPPORT">SUPPORT — [Enterprise Scale Only]</option>
-                      <option disabled value="ANALYST">ANALYST — [Enterprise Scale Only]</option>
+                      <option disabled value="INVENTORY">INVENTORY • [Enterprise Scale Only]</option>
+                      <option disabled value="ORDER MANAGER">ORDER MANAGER • [Enterprise Scale Only]</option>
+                      <option disabled value="CONTENT">CONTENT • [Enterprise Scale Only]</option>
+                      <option disabled value="SUPPORT">SUPPORT • [Enterprise Scale Only]</option>
+                      <option disabled value="ANALYST">ANALYST • [Enterprise Scale Only]</option>
                     </>
                   )}
                 </select>
                 {!scaleMode && (
                   <div style={{ fontSize: 11, color: 'var(--text-secondary)', marginTop: 6 }}>
-                    Multi-Seat Role Management (Enterprise Scale) — 6 specialized sub-roles unlock in Scale Mode.
+                    Multi-Seat Role Management (Enterprise Scale) • 6 specialized sub-roles unlock in Scale Mode.
                   </div>
                 )}
               </div>

@@ -97,7 +97,7 @@ function ImageGallery({ images, isAmbassadors = false }) {
             transform: `rotateY(${-skew}deg) scale(${1 - Math.abs(skew)/250})`,
             transition: 'transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)'
           }}>
-            <img src={src} alt={isAmbassadors ? `REAVO Campus Ambassador — Nigeria` : `REAVO community event — Nigerian student tech culture`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            <img src={src} alt={isAmbassadors ? `REAVO Campus Ambassador • Nigeria` : `REAVO community event • Nigerian student tech culture`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
           </div>
         ))}
       </div>
@@ -128,7 +128,7 @@ export default function LandingPage() {
   return (
     <main style={{ background: 'var(--bg-void)' }}>
       <SEO 
-        title="REAVO — Campus Gadgets in Nigeria" 
+        title="REAVO • Campus Gadgets in Nigeria" 
         url="/" 
         schema={orgSchema}
       />
@@ -178,7 +178,7 @@ export default function LandingPage() {
                   background: 'var(--glass-bg)'
                 }}>
                   <div style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--accent-primary)' }}></div>
-                  <span className="font-mono" style={{ fontSize: 10, color: 'var(--text-secondary)' }}>EST. 2023 — NIGERIA</span>
+                  <span className="font-mono" style={{ fontSize: 10, color: 'var(--text-secondary)' }}>EST. 2023 • NIGERIA</span>
                 </div>
               </div>
             </ScrollReveal>
@@ -199,7 +199,7 @@ export default function LandingPage() {
 
             <ScrollReveal delay={200}>
               <p style={{ fontSize: 18, color: 'var(--text-secondary)', maxWidth: 480, marginBottom: 40 }}>
-                REAVO is where Nigeria's most ambitious young people find the tech that fits who they are — trusted by 30,000+ students, zero ads spent.
+                REAVO is where Nigeria's most ambitious young people find the tech that fits who they are • trusted by 30,000+ students, zero ads spent.
               </p>
             </ScrollReveal>
 
@@ -217,20 +217,50 @@ export default function LandingPage() {
 
           <ScrollReveal delay={400}>
             {/* Mockup visual area */}
-            <div className="hero-visual" style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <div className="glass-panel" style={{
-                width: '80%',
-                height: '80%',
+            <div className="hero-visual" style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%' }}>
+              <div className="ios26-card" style={{
+                width: '100%',
+                maxWidth: 560,
                 borderRadius: 24,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                border: '1px solid var(--border-active)',
                 overflow: 'hidden',
-                padding: 'clamp(12px, 3vw, 24px)',
-                background: 'var(--bg-inner)'
+                border: '1px solid var(--border-subtle)',
+                position: 'relative'
               }}>
-                <img src={products[0].image} alt="Featured REAVO campus gadget — premium tech for Nigerian students" style={{ width: '100%', height: '100%', objectFit: 'contain', borderRadius: 20 }} />
+                <img 
+                  src={products[0].image} 
+                  alt="Featured REAVO campus gadget • premium tech for Nigerian students" 
+                  style={{ 
+                    width: '100%', 
+                    height: 'auto', 
+                    aspectRatio: '16 / 10', 
+                    objectFit: 'cover', 
+                    display: 'block' 
+                  }} 
+                />
+                <div style={{
+                  position: 'absolute',
+                  bottom: 14,
+                  left: 14,
+                  right: 14,
+                  padding: '12px 18px',
+                  borderRadius: 16,
+                  background: 'var(--glass-bg)',
+                  backdropFilter: 'blur(20px)',
+                  WebkitBackdropFilter: 'blur(20px)',
+                  border: '1px solid var(--border-subtle)',
+                  boxShadow: '0 8px 24px rgba(0,0,0,0.12)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between'
+                }}>
+                  <div>
+                    <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-primary)' }}>MacBook Pro M4</div>
+                    <div style={{ fontSize: 11, color: 'var(--text-secondary)' }}>Campus Ready • Liquid Retina XDR</div>
+                  </div>
+                  <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--accent-primary)', fontFamily: 'JetBrains Mono, monospace' }}>
+                    ₦1,950,000
+                  </span>
+                </div>
               </div>
             </div>
           </ScrollReveal>
@@ -317,7 +347,7 @@ export default function LandingPage() {
           <div className="container" style={{ textAlign: 'center', marginBottom: 48 }}>
             <h2 className="heading-primary" style={{ fontSize: 'clamp(32px, 6vw, 48px)', marginBottom: 16 }}>Loved by the Community.</h2>
             <p className="text-secondary" style={{ fontSize: 18, maxWidth: 600, margin: '0 auto' }}>
-              Built by students, for students. We're more than a tech brand — we're a movement across campuses.
+              Built by students, for students. We're more than a tech brand • we're a movement across campuses.
             </p>
           </div>
         </ScrollReveal>

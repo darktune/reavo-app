@@ -40,7 +40,7 @@ export default function ProductCard({ product, onCompare }) {
       <div style={{ height: 'clamp(210px, 45vw, 260px)', background: 'var(--bg-inner)', position: 'relative', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '16px' }}>
         <img 
           src={product.image} 
-          alt={`${product.name} — REAVO Campus Gadget${product.category ? ` | ${product.category}` : ''}`}
+          alt={`${product.name} • REAVO Campus Gadget${product.category ? ` | ${product.category}` : ''}`}
           style={{ 
             width: '100%', 
             height: '100%', 
