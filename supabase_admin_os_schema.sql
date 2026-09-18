@@ -1,91 +1,100 @@
 -- ==============================================================================
--- REAVO CORPORATE ADMIN OS — MASTER SUPABASE DATABASE SCHEMA
+-- REAVO CORPORATE ADMIN OS — MASTER SUPABASE DATABASE SCHEMA (SELF-HEALING & IDEMPOTENT)
 -- Compatible with PostgreSQL 15+ / Supabase
--- Includes: Products, Orders, Inventory, Customers, Trade-Ins, Payments,
--- Discounts, Content Blocks, Staff & RBAC, Audit Logs, Settings & Stored Procedures
+-- Handles brand-new installs AND upgrades to pre-existing databases without errors
 -- ==============================================================================
 
 -- Enable UUID Extension
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 -- ==============================================================================
--- 1. PRODUCTS & INVENTORY
+-- 1. PRODUCTS & INVENTORY TABLE & COLUMN MIGRATION
 -- ==============================================================================
 CREATE TABLE IF NOT EXISTS public.products (
     id TEXT PRIMARY KEY,
     name TEXT NOT NULL,
-    sku TEXT UNIQUE,
     price NUMERIC(12, 2) NOT NULL DEFAULT 0,
-    compare_at_price NUMERIC(12, 2),
-    cost_price NUMERIC(12, 2),
-    category TEXT NOT NULL DEFAULT 'creators',
-    brand TEXT DEFAULT 'REAVO',
-    stock_quantity INTEGER NOT NULL DEFAULT 0,
-    restock_threshold INTEGER NOT NULL DEFAULT 5,
-    image TEXT,
-    images TEXT[] DEFAULT ARRAY[]::TEXT[],
-    description TEXT,
-    specs TEXT,
-    seo_title TEXT,
-    seo_description TEXT,
-    quality_score INTEGER DEFAULT 85,
-    status TEXT DEFAULT 'published' CHECK (status IN ('draft', 'published', 'archived')),
-    is_featured BOOLEAN DEFAULT FALSE,
-    last_restocked_at TIMESTAMPTZ,
     created_at TIMESTAMPTZ DEFAULT NOW(),
     updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
+-- Ensure all required columns exist on pre-existing tables
+ALTER TABLE public.products ADD COLUMN IF NOT EXISTS sku TEXT;
+ALTER TABLE public.products ADD COLUMN IF NOT EXISTS compare_at_price NUMERIC(12, 2);
+ALTER TABLE public.products ADD COLUMN IF NOT EXISTS cost_price NUMERIC(12, 2);
+ALTER TABLE public.products ADD COLUMN IF NOT EXISTS category TEXT NOT NULL DEFAULT 'creators';
+ALTER TABLE public.products ADD COLUMN IF NOT EXISTS brand TEXT DEFAULT 'REAVO';
+ALTER TABLE public.products ADD COLUMN IF NOT EXISTS stock_quantity INTEGER NOT NULL DEFAULT 0;
+ALTER TABLE public.products ADD COLUMN IF NOT EXISTS restock_threshold INTEGER NOT NULL DEFAULT 5;
+ALTER TABLE public.products ADD COLUMN IF NOT EXISTS image TEXT;
+ALTER TABLE public.products ADD COLUMN IF NOT EXISTS images TEXT[] DEFAULT ARRAY[]::TEXT[];
+ALTER TABLE public.products ADD COLUMN IF NOT EXISTS description TEXT;
+ALTER TABLE public.products ADD COLUMN IF NOT EXISTS specs TEXT;
+ALTER TABLE public.products ADD COLUMN IF NOT EXISTS seo_title TEXT;
+ALTER TABLE public.products ADD COLUMN IF NOT EXISTS seo_description TEXT;
+ALTER TABLE public.products ADD COLUMN IF NOT EXISTS quality_score INTEGER DEFAULT 85;
+ALTER TABLE public.products ADD COLUMN IF NOT EXISTS status TEXT DEFAULT 'published';
+ALTER TABLE public.products ADD COLUMN IF NOT EXISTS is_featured BOOLEAN DEFAULT FALSE;
+ALTER TABLE public.products ADD COLUMN IF NOT EXISTS last_restocked_at TIMESTAMPTZ;
+
+-- Safe Index Creation
 CREATE INDEX IF NOT EXISTS idx_products_category ON public.products(category);
 CREATE INDEX IF NOT EXISTS idx_products_sku ON public.products(sku);
 CREATE INDEX IF NOT EXISTS idx_products_status ON public.products(status);
 
 -- ==============================================================================
--- 2. CUSTOMERS CRM
+-- 2. CUSTOMERS CRM TABLE & COLUMN MIGRATION
 -- ==============================================================================
 CREATE TABLE IF NOT EXISTS public.customers (
     id TEXT PRIMARY KEY DEFAULT ('cust_' || substr(md5(random()::text), 1, 8)),
     name TEXT NOT NULL,
     email TEXT UNIQUE NOT NULL,
-    phone TEXT,
-    avatar_url TEXT,
-    total_orders INTEGER DEFAULT 0,
-    total_spent NUMERIC(14, 2) DEFAULT 0,
-    ltv_tier TEXT DEFAULT 'New' CHECK (ltv_tier IN ('VIP', 'Regular', 'New')),
-    status TEXT DEFAULT 'Active' CHECK (status IN ('Active', 'Inactive')),
-    notes TEXT,
-    last_order_at TIMESTAMPTZ,
     created_at TIMESTAMPTZ DEFAULT NOW(),
     updated_at TIMESTAMPTZ DEFAULT NOW()
 );
+
+ALTER TABLE public.customers ADD COLUMN IF NOT EXISTS phone TEXT;
+ALTER TABLE public.customers ADD COLUMN IF NOT EXISTS avatar_url TEXT;
+ALTER TABLE public.customers ADD COLUMN IF NOT EXISTS total_orders INTEGER DEFAULT 0;
+ALTER TABLE public.customers ADD COLUMN IF NOT EXISTS total_spent NUMERIC(14, 2) DEFAULT 0;
+ALTER TABLE public.customers ADD COLUMN IF NOT EXISTS ltv_tier TEXT DEFAULT 'New';
+ALTER TABLE public.customers ADD COLUMN IF NOT EXISTS status TEXT DEFAULT 'Active';
+ALTER TABLE public.customers ADD COLUMN IF NOT EXISTS notes TEXT;
+ALTER TABLE public.customers ADD COLUMN IF NOT EXISTS last_order_at TIMESTAMPTZ;
 
 CREATE INDEX IF NOT EXISTS idx_customers_email ON public.customers(email);
 CREATE INDEX IF NOT EXISTS idx_customers_ltv ON public.customers(ltv_tier);
 
 -- ==============================================================================
--- 3. ORDERS & FULFILLMENT
+-- 3. ORDERS & FULFILLMENT TABLE & COLUMN MIGRATION
 -- ==============================================================================
 CREATE TABLE IF NOT EXISTS public.orders (
     id TEXT PRIMARY KEY DEFAULT ('ord-' || substr(md5(random()::text), 1, 8)),
     customer_name TEXT NOT NULL,
     customer_email TEXT NOT NULL,
-    customer_phone TEXT,
     total_amount NUMERIC(12, 2) NOT NULL DEFAULT 0,
-    subtotal NUMERIC(12, 2),
-    discount_amount NUMERIC(12, 2) DEFAULT 0,
-    delivery_fee NUMERIC(12, 2) DEFAULT 0,
-    status TEXT DEFAULT 'Pending' CHECK (status IN ('Pending', 'Paid', 'Shipped', 'Delivered', 'Cancelled', 'Refunded')),
-    payment_method TEXT DEFAULT 'Kora Pay',
-    payment_reference TEXT,
-    shipping_address JSONB,
-    notes TEXT,
     created_at TIMESTAMPTZ DEFAULT NOW(),
     updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
+ALTER TABLE public.orders ADD COLUMN IF NOT EXISTS customer_phone TEXT;
+ALTER TABLE public.orders ADD COLUMN IF NOT EXISTS subtotal NUMERIC(12, 2);
+ALTER TABLE public.orders ADD COLUMN IF NOT EXISTS discount_amount NUMERIC(12, 2) DEFAULT 0;
+ALTER TABLE public.orders ADD COLUMN IF NOT EXISTS discount_code TEXT;
+ALTER TABLE public.orders ADD COLUMN IF NOT EXISTS delivery_fee NUMERIC(12, 2) DEFAULT 0;
+ALTER TABLE public.orders ADD COLUMN IF NOT EXISTS delivery_pin TEXT;
+ALTER TABLE public.orders ADD COLUMN IF NOT EXISTS status TEXT DEFAULT 'Pending';
+ALTER TABLE public.orders ADD COLUMN IF NOT EXISTS payment_method TEXT DEFAULT 'Kora Pay';
+ALTER TABLE public.orders ADD COLUMN IF NOT EXISTS payment_reference TEXT;
+ALTER TABLE public.orders ADD COLUMN IF NOT EXISTS kora_reference TEXT;
+ALTER TABLE public.orders ADD COLUMN IF NOT EXISTS payment_status TEXT;
+ALTER TABLE public.orders ADD COLUMN IF NOT EXISTS shipping_address JSONB;
+ALTER TABLE public.orders ADD COLUMN IF NOT EXISTS notes TEXT;
+
 CREATE INDEX IF NOT EXISTS idx_orders_customer_email ON public.orders(customer_email);
 CREATE INDEX IF NOT EXISTS idx_orders_status ON public.orders(status);
 CREATE INDEX IF NOT EXISTS idx_orders_created_at ON public.orders(created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_orders_kora_ref ON public.orders(kora_reference);
 
 -- Order Items Join Table
 CREATE TABLE IF NOT EXISTS public.order_items (
@@ -105,23 +114,24 @@ CREATE INDEX IF NOT EXISTS idx_order_items_order_id ON public.order_items(order_
 CREATE TABLE IF NOT EXISTS public.trade_ins (
     id TEXT PRIMARY KEY DEFAULT ('ti-' || substr(md5(random()::text), 1, 8)),
     device_name TEXT NOT NULL,
-    device_brand TEXT,
-    device_model TEXT,
-    device_storage TEXT,
-    condition TEXT DEFAULT 'Good' CHECK (condition IN ('Flawless', 'Excellent', 'Good', 'Fair', 'Damaged')),
-    condition_notes TEXT,
-    images TEXT[] DEFAULT ARRAY[]::TEXT[],
     customer_name TEXT NOT NULL,
     customer_email TEXT NOT NULL,
-    customer_phone TEXT,
-    estimated_value NUMERIC(12, 2) DEFAULT 0,
-    payout_amount NUMERIC(12, 2),
-    admin_grade TEXT,
-    admin_notes TEXT,
-    status TEXT DEFAULT 'Pending' CHECK (status IN ('Pending', 'Approved', 'Rejected', 'Completed')),
     created_at TIMESTAMPTZ DEFAULT NOW(),
     updated_at TIMESTAMPTZ DEFAULT NOW()
 );
+
+ALTER TABLE public.trade_ins ADD COLUMN IF NOT EXISTS device_brand TEXT;
+ALTER TABLE public.trade_ins ADD COLUMN IF NOT EXISTS device_model TEXT;
+ALTER TABLE public.trade_ins ADD COLUMN IF NOT EXISTS device_storage TEXT;
+ALTER TABLE public.trade_ins ADD COLUMN IF NOT EXISTS condition TEXT DEFAULT 'Good';
+ALTER TABLE public.trade_ins ADD COLUMN IF NOT EXISTS condition_notes TEXT;
+ALTER TABLE public.trade_ins ADD COLUMN IF NOT EXISTS images TEXT[] DEFAULT ARRAY[]::TEXT[];
+ALTER TABLE public.trade_ins ADD COLUMN IF NOT EXISTS customer_phone TEXT;
+ALTER TABLE public.trade_ins ADD COLUMN IF NOT EXISTS estimated_value NUMERIC(12, 2) DEFAULT 0;
+ALTER TABLE public.trade_ins ADD COLUMN IF NOT EXISTS payout_amount NUMERIC(12, 2);
+ALTER TABLE public.trade_ins ADD COLUMN IF NOT EXISTS admin_grade TEXT;
+ALTER TABLE public.trade_ins ADD COLUMN IF NOT EXISTS admin_notes TEXT;
+ALTER TABLE public.trade_ins ADD COLUMN IF NOT EXISTS status TEXT DEFAULT 'Pending';
 
 CREATE INDEX IF NOT EXISTS idx_trade_ins_status ON public.trade_ins(status);
 
@@ -130,19 +140,20 @@ CREATE INDEX IF NOT EXISTS idx_trade_ins_status ON public.trade_ins(status);
 -- ==============================================================================
 CREATE TABLE IF NOT EXISTS public.payments (
     id TEXT PRIMARY KEY DEFAULT ('tx_' || substr(md5(random()::text), 1, 10)),
-    order_id TEXT REFERENCES public.orders(id) ON DELETE SET NULL,
-    customer_name TEXT,
-    customer_email TEXT,
     amount NUMERIC(12, 2) NOT NULL DEFAULT 0,
-    currency TEXT DEFAULT 'NGN',
-    gateway TEXT DEFAULT 'Kora Pay' CHECK (gateway IN ('Kora Pay', 'Paystack', 'Bank Transfer', 'Card')),
-    gateway_reference TEXT UNIQUE,
-    status TEXT DEFAULT 'Successful' CHECK (status IN ('Successful', 'Pending', 'Failed', 'Refunded')),
-    card_type TEXT,
-    card_last4 TEXT,
     created_at TIMESTAMPTZ DEFAULT NOW(),
     updated_at TIMESTAMPTZ DEFAULT NOW()
 );
+
+ALTER TABLE public.payments ADD COLUMN IF NOT EXISTS order_id TEXT REFERENCES public.orders(id) ON DELETE SET NULL;
+ALTER TABLE public.payments ADD COLUMN IF NOT EXISTS customer_name TEXT;
+ALTER TABLE public.payments ADD COLUMN IF NOT EXISTS customer_email TEXT;
+ALTER TABLE public.payments ADD COLUMN IF NOT EXISTS currency TEXT DEFAULT 'NGN';
+ALTER TABLE public.payments ADD COLUMN IF NOT EXISTS gateway TEXT DEFAULT 'Kora Pay';
+ALTER TABLE public.payments ADD COLUMN IF NOT EXISTS gateway_reference TEXT;
+ALTER TABLE public.payments ADD COLUMN IF NOT EXISTS status TEXT DEFAULT 'Successful';
+ALTER TABLE public.payments ADD COLUMN IF NOT EXISTS card_type TEXT;
+ALTER TABLE public.payments ADD COLUMN IF NOT EXISTS card_last4 TEXT;
 
 CREATE INDEX IF NOT EXISTS idx_payments_status ON public.payments(status);
 CREATE INDEX IF NOT EXISTS idx_payments_order_id ON public.payments(order_id);
@@ -153,7 +164,7 @@ CREATE INDEX IF NOT EXISTS idx_payments_order_id ON public.payments(order_id);
 CREATE TABLE IF NOT EXISTS public.discounts (
     id TEXT PRIMARY KEY DEFAULT ('disc_' || substr(md5(random()::text), 1, 8)),
     code TEXT UNIQUE NOT NULL,
-    type TEXT DEFAULT 'percentage' CHECK (type IN ('percentage', 'fixed')),
+    type TEXT DEFAULT 'percentage',
     value NUMERIC(10, 2) NOT NULL DEFAULT 0,
     min_order_amount NUMERIC(12, 2) DEFAULT 0,
     max_uses INTEGER,
@@ -173,25 +184,26 @@ CREATE INDEX IF NOT EXISTS idx_discounts_code ON public.discounts(code);
 -- ==============================================================================
 CREATE TABLE IF NOT EXISTS public.content_blocks (
     id TEXT PRIMARY KEY DEFAULT ('cnt_' || substr(md5(random()::text), 1, 8)),
-    type TEXT NOT NULL CHECK (type IN ('banner', 'announcement', 'page')),
-    title TEXT,
-    subtitle TEXT,
-    message TEXT,
-    body TEXT,
-    image_url TEXT,
-    cta_text TEXT,
-    cta_link TEXT,
-    slug TEXT,
-    icon TEXT,
-    display_location TEXT DEFAULT 'banner_bar',
-    position INTEGER DEFAULT 1,
-    status TEXT DEFAULT 'live' CHECK (status IN ('live', 'draft', 'scheduled')),
-    valid_from TIMESTAMPTZ,
-    valid_until TIMESTAMPTZ,
-    is_active BOOLEAN DEFAULT TRUE,
+    type TEXT NOT NULL,
     created_at TIMESTAMPTZ DEFAULT NOW(),
     updated_at TIMESTAMPTZ DEFAULT NOW()
 );
+
+ALTER TABLE public.content_blocks ADD COLUMN IF NOT EXISTS title TEXT;
+ALTER TABLE public.content_blocks ADD COLUMN IF NOT EXISTS subtitle TEXT;
+ALTER TABLE public.content_blocks ADD COLUMN IF NOT EXISTS message TEXT;
+ALTER TABLE public.content_blocks ADD COLUMN IF NOT EXISTS body TEXT;
+ALTER TABLE public.content_blocks ADD COLUMN IF NOT EXISTS image_url TEXT;
+ALTER TABLE public.content_blocks ADD COLUMN IF NOT EXISTS cta_text TEXT;
+ALTER TABLE public.content_blocks ADD COLUMN IF NOT EXISTS cta_link TEXT;
+ALTER TABLE public.content_blocks ADD COLUMN IF NOT EXISTS slug TEXT;
+ALTER TABLE public.content_blocks ADD COLUMN IF NOT EXISTS icon TEXT;
+ALTER TABLE public.content_blocks ADD COLUMN IF NOT EXISTS display_location TEXT DEFAULT 'banner_bar';
+ALTER TABLE public.content_blocks ADD COLUMN IF NOT EXISTS position INTEGER DEFAULT 1;
+ALTER TABLE public.content_blocks ADD COLUMN IF NOT EXISTS status TEXT DEFAULT 'live';
+ALTER TABLE public.content_blocks ADD COLUMN IF NOT EXISTS valid_from TIMESTAMPTZ;
+ALTER TABLE public.content_blocks ADD COLUMN IF NOT EXISTS valid_until TIMESTAMPTZ;
+ALTER TABLE public.content_blocks ADD COLUMN IF NOT EXISTS is_active BOOLEAN DEFAULT TRUE;
 
 CREATE INDEX IF NOT EXISTS idx_content_blocks_type ON public.content_blocks(type);
 
@@ -203,7 +215,7 @@ CREATE TABLE IF NOT EXISTS public.staff (
     user_id UUID,
     name TEXT NOT NULL,
     email TEXT UNIQUE NOT NULL,
-    role TEXT NOT NULL DEFAULT 'Admin' CHECK (role IN ('Owner', 'Admin', 'Inventory', 'Order Manager', 'Content', 'Support', 'Analyst')),
+    role TEXT NOT NULL DEFAULT 'Admin',
     permissions JSONB DEFAULT '[]'::JSONB,
     avatar_url TEXT,
     is_active BOOLEAN DEFAULT TRUE,
@@ -219,7 +231,7 @@ CREATE TABLE IF NOT EXISTS public.staff_invites (
     role TEXT NOT NULL DEFAULT 'Admin',
     permissions JSONB DEFAULT '[]'::JSONB,
     invited_by TEXT,
-    status TEXT DEFAULT 'pending' CHECK (status IN ('pending', 'accepted', 'expired')),
+    status TEXT DEFAULT 'pending',
     created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
@@ -229,14 +241,14 @@ CREATE TABLE IF NOT EXISTS public.staff_invites (
 CREATE TABLE IF NOT EXISTS public.audit_logs (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     actor_name TEXT NOT NULL DEFAULT 'System',
-    actor_type TEXT NOT NULL DEFAULT 'admin' CHECK (actor_type IN ('admin', 'ai', 'system', 'automation')),
+    actor_type TEXT NOT NULL DEFAULT 'admin',
     action TEXT NOT NULL,
     entity_type TEXT NOT NULL,
     entity_id TEXT,
     entity_name TEXT,
     old_value JSONB,
     new_value JSONB,
-    severity TEXT DEFAULT 'info' CHECK (severity IN ('info', 'warning', 'critical')),
+    severity TEXT DEFAULT 'info',
     approved_by TEXT,
     metadata JSONB,
     created_at TIMESTAMPTZ DEFAULT NOW()
@@ -282,8 +294,64 @@ CREATE TABLE IF NOT EXISTS public.store_settings (
 );
 
 -- ==============================================================================
--- 11. STORED PROCEDURES & RPC HELPERS
+-- 11. PAYOUTS & PARTNERSHIPS
 -- ==============================================================================
+CREATE TABLE IF NOT EXISTS public.payouts (
+    id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+    recipient_name TEXT NOT NULL,
+    account_number TEXT NOT NULL,
+    bank_code TEXT NOT NULL,
+    amount NUMERIC(12, 2) NOT NULL,
+    status TEXT DEFAULT 'pending',
+    reference TEXT NOT NULL UNIQUE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc', now()) NOT NULL,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc', now()) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS public.partnership_inquiries (
+    id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+    name TEXT NOT NULL,
+    organisation TEXT NOT NULL,
+    email TEXT NOT NULL,
+    type TEXT NOT NULL,
+    message TEXT,
+    status TEXT DEFAULT 'pending',
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc', now()) NOT NULL
+);
+
+-- ==============================================================================
+-- 12. HELPER FUNCTIONS & AUTHENTICATION ROLES
+-- ==============================================================================
+
+-- Helper Function: Check if Authenticated User is Any Active REAVO Staff Member
+CREATE OR REPLACE FUNCTION public.is_staff_user()
+RETURNS BOOLEAN
+LANGUAGE sql
+SECURITY DEFINER
+STABLE
+AS $$
+    SELECT EXISTS (
+        SELECT 1 FROM public.staff 
+        WHERE user_id = auth.uid() AND is_active = TRUE
+    ) OR (
+        auth.jwt() -> 'app_metadata' ->> 'role' IN ('Owner', 'Admin', 'superadmin')
+    );
+$$;
+
+-- Helper Function: Check if Authenticated User is Primary Administrative Authority (Owner, Admin)
+CREATE OR REPLACE FUNCTION public.is_admin_user()
+RETURNS BOOLEAN
+LANGUAGE sql
+SECURITY DEFINER
+STABLE
+AS $$
+    SELECT EXISTS (
+        SELECT 1 FROM public.staff 
+        WHERE user_id = auth.uid() AND is_active = TRUE AND role IN ('Owner', 'Admin')
+    ) OR (
+        auth.jwt() -> 'app_metadata' ->> 'role' IN ('Owner', 'Admin', 'superadmin')
+    );
+$$;
 
 -- Stored Procedure: Increment Stock Atomically
 CREATE OR REPLACE FUNCTION public.increment_stock(p_id TEXT, p_qty INTEGER)
@@ -328,20 +396,32 @@ BEGIN
 END;
 $$;
 
--- Enable Realtime for all tables
-ALTER PUBLICATION supabase_realtime ADD TABLE public.products;
-ALTER PUBLICATION supabase_realtime ADD TABLE public.orders;
-ALTER PUBLICATION supabase_realtime ADD TABLE public.customers;
-ALTER PUBLICATION supabase_realtime ADD TABLE public.trade_ins;
-ALTER PUBLICATION supabase_realtime ADD TABLE public.payments;
-ALTER PUBLICATION supabase_realtime ADD TABLE public.discounts;
-ALTER PUBLICATION supabase_realtime ADD TABLE public.content_blocks;
-ALTER PUBLICATION supabase_realtime ADD TABLE public.staff;
-ALTER PUBLICATION supabase_realtime ADD TABLE public.audit_logs;
-ALTER PUBLICATION supabase_realtime ADD TABLE public.store_settings;
+-- ==============================================================================
+-- 13. REALTIME PUBLICATION SETUP (SAFE & IDEMPOTENT)
+-- ==============================================================================
+DO $$
+DECLARE
+    tbl text;
+    tbls text[] := ARRAY[
+        'products', 'orders', 'customers', 'trade_ins', 
+        'payments', 'discounts', 'content_blocks', 
+        'staff', 'audit_logs', 'store_settings'
+    ];
+BEGIN
+    FOREACH tbl IN ARRAY tbls LOOP
+        IF NOT EXISTS (
+            SELECT 1 FROM pg_publication_tables 
+            WHERE pubname = 'supabase_realtime' 
+              AND schemaname = 'public' 
+              AND tablename = tbl
+        ) THEN
+            EXECUTE format('ALTER PUBLICATION supabase_realtime ADD TABLE public.%I', tbl);
+        END IF;
+    END LOOP;
+END $$;
 
 -- ==============================================================================
--- 12. ROW LEVEL SECURITY (RLS) ZERO-TRUST HARDENING
+-- 14. ROW LEVEL SECURITY (RLS) ZERO-TRUST HARDENING
 -- ==============================================================================
 
 -- Enable RLS on all operational tables
@@ -357,36 +437,34 @@ ALTER TABLE public.staff ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.staff_invites ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.audit_logs ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.store_settings ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.payouts ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.partnership_inquiries ENABLE ROW LEVEL SECURITY;
 
--- Helper Function: Check if Authenticated User is Any Active REAVO Staff Member
-CREATE OR REPLACE FUNCTION public.is_staff_user()
-RETURNS BOOLEAN
-LANGUAGE sql
-SECURITY DEFINER
-STABLE
-AS $$
-    SELECT EXISTS (
-        SELECT 1 FROM public.staff 
-        WHERE user_id = auth.uid() AND is_active = TRUE
-    ) OR (
-        auth.jwt() -> 'app_metadata' ->> 'role' IN ('Owner', 'Admin', 'superadmin')
-    );
-$$;
+-- Drop existing policies before creating to ensure idempotency
+DROP POLICY IF EXISTS "Public Read Active Products" ON public.products;
+DROP POLICY IF EXISTS "Public Read Active Discounts" ON public.discounts;
+DROP POLICY IF EXISTS "Public Read Content" ON public.content_blocks;
 
--- Helper Function: Check if Authenticated User is Primary Administrative Authority (Owner, Admin)
-CREATE OR REPLACE FUNCTION public.is_admin_user()
-RETURNS BOOLEAN
-LANGUAGE sql
-SECURITY DEFINER
-STABLE
-AS $$
-    SELECT EXISTS (
-        SELECT 1 FROM public.staff 
-        WHERE user_id = auth.uid() AND is_active = TRUE AND role IN ('Owner', 'Admin')
-    ) OR (
-        auth.jwt() -> 'app_metadata' ->> 'role' IN ('Owner', 'Admin', 'superadmin')
-    );
-$$;
+DROP POLICY IF EXISTS "Staff Full Products Access" ON public.products;
+DROP POLICY IF EXISTS "Staff Full Orders Access" ON public.orders;
+DROP POLICY IF EXISTS "Staff Full Order Items Access" ON public.order_items;
+DROP POLICY IF EXISTS "Staff Full Customers Access" ON public.customers;
+DROP POLICY IF EXISTS "Staff Full TradeIns Access" ON public.trade_ins;
+DROP POLICY IF EXISTS "Staff Full Payments Access" ON public.payments;
+DROP POLICY IF EXISTS "Staff Full Discounts Access" ON public.discounts;
+DROP POLICY IF EXISTS "Staff Full Content Access" ON public.content_blocks;
+
+DROP POLICY IF EXISTS "Staff Read Staff Directory" ON public.staff;
+DROP POLICY IF EXISTS "Admin Full Staff Access" ON public.staff;
+DROP POLICY IF EXISTS "Admin Full Settings Access" ON public.store_settings;
+DROP POLICY IF EXISTS "Admin Read Audit Logs" ON public.audit_logs;
+DROP POLICY IF EXISTS "System Insert Audit Logs" ON public.audit_logs;
+DROP POLICY IF EXISTS "Admin Full Payouts Access" ON public.payouts;
+DROP POLICY IF EXISTS "System Insert Payouts" ON public.payouts;
+DROP POLICY IF EXISTS "System Update Payouts" ON public.payouts;
+DROP POLICY IF EXISTS "Admin Full Partnership Inquiries Access" ON public.partnership_inquiries;
+DROP POLICY IF EXISTS "System Insert Partnership Inquiries" ON public.partnership_inquiries;
+DROP POLICY IF EXISTS "Admin Full Staff Invites Access" ON public.staff_invites;
 
 -- Public Read Policies for Storefront
 CREATE POLICY "Public Read Active Products" ON public.products FOR SELECT USING (status = 'published' OR public.is_staff_user());
@@ -408,54 +486,23 @@ CREATE POLICY "Staff Read Staff Directory" ON public.staff FOR SELECT USING (pub
 CREATE POLICY "Admin Full Staff Access" ON public.staff FOR ALL USING (public.is_admin_user());
 CREATE POLICY "Admin Full Settings Access" ON public.store_settings FOR ALL USING (public.is_admin_user());
 
--- IMMUTABLE AUDIT LOG POLICY: Inserts and Reads allowed, NO UPDATES OR DELETIONS
+-- Immutable Audit Log Policy: Inserts and Reads allowed, NO UPDATES OR DELETIONS
 CREATE POLICY "Admin Read Audit Logs" ON public.audit_logs FOR SELECT USING (public.is_admin_user());
 CREATE POLICY "System Insert Audit Logs" ON public.audit_logs FOR INSERT WITH CHECK (TRUE);
--- (No UPDATE or DELETE policy is defined, rendering audit logs immutable)
 
--- ==========================================
--- ADDED DURING KORA INTEGRATION & PARTNERSHIPS
--- ==========================================
-
-CREATE TABLE IF NOT EXISTS public.payouts (
-    id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-    recipient_name TEXT NOT NULL,
-    account_number TEXT NOT NULL,
-    bank_code TEXT NOT NULL,
-    amount NUMERIC(12, 2) NOT NULL,
-    status TEXT DEFAULT 'pending',
-    reference TEXT NOT NULL UNIQUE,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc', now()) NOT NULL,
-    updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc', now()) NOT NULL
-);
-
-CREATE TABLE IF NOT EXISTS public.partnership_inquiries (
-    id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-    name TEXT NOT NULL,
-    organisation TEXT NOT NULL,
-    email TEXT NOT NULL,
-    type TEXT NOT NULL,
-    message TEXT,
-    status TEXT DEFAULT 'pending',
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc', now()) NOT NULL
-);
-
-ALTER TABLE public.payouts ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.partnership_inquiries ENABLE ROW LEVEL SECURITY;
-
+-- Payouts & Partnerships Access
 CREATE POLICY "Admin Full Payouts Access" ON public.payouts FOR ALL USING (public.is_admin_user() OR auth.role() = 'service_role');
-
 CREATE POLICY "Admin Full Partnership Inquiries Access" ON public.partnership_inquiries FOR ALL USING (public.is_admin_user());
 CREATE POLICY "System Insert Partnership Inquiries" ON public.partnership_inquiries FOR INSERT WITH CHECK (TRUE);
 
--- ==============================================================================
--- 13. SECURE STAFF ONBOARDING RPCS & PERMISSIONS (ZERO-TRUST PRIVILEGE ENFORCEMENT)
--- ==============================================================================
-
--- Admin-only access policy for managing staff invites directly
+-- Admin Full Staff Invites Access
 CREATE POLICY "Admin Full Staff Invites Access" ON public.staff_invites FOR ALL USING (public.is_admin_user());
 
--- Public RPC: Retrieve non-sensitive invite metadata for pending token without leaking full table
+-- ==============================================================================
+-- 15. SECURE STAFF ONBOARDING RPCS (ZERO-TRUST PRIVILEGE ENFORCEMENT)
+-- ==============================================================================
+
+-- Public RPC: Retrieve non-sensitive invite metadata for pending token
 CREATE OR REPLACE FUNCTION public.get_staff_invite(p_token UUID)
 RETURNS TABLE (
     id UUID,
@@ -526,5 +573,3 @@ BEGIN
     RETURN jsonb_build_object('success', TRUE, 'staff_id', v_staff_id, 'role', v_invite.role);
 END;
 $$;
-
-
