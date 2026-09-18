@@ -161,6 +161,63 @@ export default async function createOrderHandler(req, res) {
     }
 
     const totalAmount = Math.max(0, subtotal - discountAmount);
+
+    // ──────────────────────────────────────────────
+    // 3b. IDEMPOTENCY CHECK (Prevent duplicate orders)
+    // ──────────────────────────────────────────────
+    if (koraReference) {
+      const { data: existingOrder } = await admin
+        .from('orders')
+        .select('id, delivery_pin, total_amount, status')
+        .or(`kora_reference.eq.${koraReference},payment_reference.eq.${koraReference}`)
+        .maybeSingle();
+
+      if (existingOrder) {
+        console.log(`[CreateOrder] Order already exists for reference ${koraReference}: ${existingOrder.id}`);
+        return res.status(200).json({
+          success: true,
+          orderId: existingOrder.id,
+          deliveryPin: existingOrder.delivery_pin || '0000',
+          totalAmount: existingOrder.total_amount,
+          existing: true
+        });
+      }
+    }
+
+    // ──────────────────────────────────────────────
+    // 3c. SERVER-SIDE KORAPAY RECONCILIATION
+    // ──────────────────────────────────────────────
+    let isPaymentVerified = false;
+    const koraSecret = process.env.KORAPAY_SECRET_KEY;
+
+    if (koraReference && koraSecret) {
+      try {
+        const koraRes = await fetch(`https://api.korapay.com/merchant/api/v1/charges/${encodeURIComponent(koraReference)}`, {
+          headers: {
+            'Authorization': `Bearer ${koraSecret}`
+          }
+        });
+        const koraData = await koraRes.json();
+        if (koraRes.ok && koraData.status && koraData.data) {
+          const paidAmount = Number(koraData.data.amount);
+          const paidStatus = koraData.data.status;
+          const paidCurrency = koraData.data.currency;
+
+          // Reconcile amount, currency, and status
+          if (paidStatus === 'success' && Math.abs(paidAmount - totalAmount) < 1 && paidCurrency === 'NGN') {
+            isPaymentVerified = true;
+          } else {
+            console.warn(`[CreateOrder] Kora reconciliation mismatch: status=${paidStatus}, amount=${paidAmount} vs expected ${totalAmount}`);
+          }
+        }
+      } catch (koraErr) {
+        console.error('[CreateOrder] Kora verification check failed:', koraErr);
+      }
+    }
+
+    // If running in development without a secret, or payment verified, allow Paid
+    const initialOrderStatus = isPaymentVerified || (process.env.NODE_ENV !== 'production' && !koraSecret) ? 'Paid' : 'Pending';
+
     const orderId = 'ORD-' + Date.now() + '-' + Math.random().toString(36).substr(2, 5);
     const deliveryPin = Math.floor(1000 + Math.random() * 9000).toString();
 
@@ -177,7 +234,7 @@ export default async function createOrderHandler(req, res) {
       discount_amount: discountAmount,
       discount_code: verifiedDiscountCode,
       delivery_pin: deliveryPin,
-      status: 'Paid',
+      status: initialOrderStatus,
       payment_method: 'Kora Pay',
       payment_reference: koraReference || null,
       kora_reference: koraReference || null,
@@ -202,7 +259,7 @@ export default async function createOrderHandler(req, res) {
         total_amount: totalAmount,
         shipping_address: fullOrderPayload.shipping_address,
         kora_reference: koraReference || null,
-        status: 'Paid'
+        status: initialOrderStatus
       };
       const retryResult = await admin.from('orders').insert([coreOrderPayload]);
       orderError = retryResult.error;
@@ -254,10 +311,12 @@ export default async function createOrderHandler(req, res) {
         });
 
         if (rpcError) {
+          // Conditional update to guard against concurrent overselling
           await admin
             .from('products')
             .update({ stock_quantity: Math.max(0, item.stock_quantity - item.quantity) })
-            .eq('id', item.id);
+            .eq('id', item.id)
+            .gte('stock_quantity', item.quantity);
         }
       } catch (stockErr) {
         console.error(`[CreateOrder] Stock decrement failed for ${item.id}:`, stockErr);

@@ -274,11 +274,23 @@ app.post('/api/korapay/webhook', async (req, res) => {
   try {
     const secret = process.env.KORAPAY_SECRET_KEY;
     const signature = req.headers['x-korapay-signature'];
+
+    if (!secret) {
+      console.error('[Kora Webhook Error] KORAPAY_SECRET_KEY is not configured on the server.');
+      return res.status(500).send('Server webhook configuration error');
+    }
+
+    if (!signature) {
+      console.warn('[Kora Webhook Warning] Missing x-korapay-signature header.');
+      return res.status(401).send('Missing webhook signature');
+    }
+
     const payload = req.rawBody ? req.rawBody.toString('utf8') : JSON.stringify(req.body);
     const hash = crypto.createHmac('sha256', secret).update(payload).digest('hex');
 
-    // Verify signature (allowing sandbox mock bypass in local dev if secret is test mode)
-    const isSignatureValid = hash === signature || (!signature && process.env.NODE_ENV !== 'production');
+    const hashBuf = Buffer.from(hash, 'utf8');
+    const sigBuf = Buffer.from(signature, 'utf8');
+    const isSignatureValid = hashBuf.length === sigBuf.length && crypto.timingSafeEqual(hashBuf, sigBuf);
 
     if (isSignatureValid) {
       const event = req.body;
@@ -289,6 +301,18 @@ app.post('/api/korapay/webhook', async (req, res) => {
         const reference = event.data?.reference;
         console.log(`[Webhook] Customer charge succeeded for ref: ${reference}`);
         
+        // Idempotency: check if order is already marked paid
+        const { data: existingOrder } = await supabase
+          .from('orders')
+          .select('id, status, payment_status')
+          .or(`kora_reference.eq.${reference},id.eq.${reference}`)
+          .maybeSingle();
+
+        if (existingOrder && (existingOrder.payment_status === 'paid' || existingOrder.status === 'Paid')) {
+          console.log(`[Webhook] Order ${existingOrder.id} already processed. Acknowledging.`);
+          return res.status(200).send('Webhook already processed');
+        }
+
         await supabase
           .from('orders')
           .update({ status: 'processing', payment_status: 'paid' })
@@ -389,10 +413,32 @@ app.post('/api/partnerships', async (req, res) => {
 // AI AUTOMATIONS & CRON JOBS
 // ==========================================
 const verifyCron = (req, res, next) => {
+  const cronSecret = process.env.CRON_SECRET;
   const authHeader = req.headers.authorization;
-  if (process.env.CRON_SECRET && authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
-    return res.status(401).json({ error: 'Unauthorized CRON execution' });
+
+  // In production, CRON_SECRET must be configured
+  if (process.env.NODE_ENV === 'production' && !cronSecret) {
+    console.error('[CRON Security] CRON_SECRET is not configured in production environment.');
+    return res.status(500).json({ error: 'Server configuration error: CRON_SECRET required' });
   }
+
+  // If secret is set, enforce constant-time bearer validation
+  if (cronSecret) {
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return res.status(401).json({ error: 'Unauthorized CRON execution: Missing Bearer token' });
+    }
+
+    const providedToken = authHeader.slice(7).trim();
+    const tokenBuf = Buffer.from(providedToken, 'utf8');
+    const secretBuf = Buffer.from(cronSecret, 'utf8');
+
+    if (tokenBuf.length !== secretBuf.length || !crypto.timingSafeEqual(tokenBuf, secretBuf)) {
+      return res.status(401).json({ error: 'Unauthorized CRON execution: Invalid token' });
+    }
+  } else {
+    console.warn('[CRON Security Warning] CRON_SECRET not configured in non-production mode.');
+  }
+
   next();
 };
 
@@ -403,16 +449,26 @@ app.get('/api/cron/daily-briefing', verifyCron, async (req, res) => {
     const yesterdayStart = new Date(yesterday.setHours(0,0,0,0)).toISOString();
     const yesterdayEnd = new Date(yesterday.setHours(23,59,59,999)).toISOString();
 
-    const { data: orders } = await supabase
+    const { data: orders, error: ordersError } = await supabase
       .from('orders')
       .select('total_amount, status')
       .gte('created_at', yesterdayStart)
       .lte('created_at', yesterdayEnd);
 
-    const { data: lowStockProducts } = await supabase
+    if (ordersError) {
+      console.error('[CRON daily-briefing] Orders query error:', ordersError);
+      return res.status(500).json({ error: 'Database query failed for orders: ' + ordersError.message });
+    }
+
+    const { data: lowStockProducts, error: stockError } = await supabase
       .from('products')
       .select('name, stock_quantity')
       .lte('stock_quantity', 5);
+
+    if (stockError) {
+      console.error('[CRON daily-briefing] Stock query error:', stockError);
+      return res.status(500).json({ error: 'Database query failed for stock: ' + stockError.message });
+    }
 
     const totalRevenue = (orders || []).reduce((sum, o) => sum + Number(o.total_amount || 0), 0);
     const orderCount = (orders || []).length;
@@ -448,10 +504,15 @@ app.get('/api/cron/daily-briefing', verifyCron, async (req, res) => {
 
 app.get('/api/cron/hourly-stock', verifyCron, async (req, res) => {
   try {
-    const { data: outOfStock } = await supabase
+    const { data: outOfStock, error: stockError } = await supabase
       .from('products')
       .select('name, stock_quantity')
       .eq('stock_quantity', 0);
+
+    if (stockError) {
+      console.error('[CRON hourly-stock] Database query error:', stockError);
+      return res.status(500).json({ error: 'Database query failed for out-of-stock check: ' + stockError.message });
+    }
 
     if (outOfStock && outOfStock.length > 0) {
       await sendEmail({
@@ -462,6 +523,7 @@ app.get('/api/cron/hourly-stock', verifyCron, async (req, res) => {
     }
     res.status(200).json({ success: true, outOfStockCount: outOfStock?.length || 0 });
   } catch (error) {
+    console.error('[CRON hourly-stock] Unhandled exception:', error);
     res.status(500).json({ error: error.message });
   }
 });

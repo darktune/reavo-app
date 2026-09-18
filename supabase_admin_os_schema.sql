@@ -305,19 +305,26 @@ BEGIN
 END;
 $$;
 
--- Stored Procedure: Decrement Stock on Purchase
+-- Stored Procedure: Decrement Stock on Purchase (Atomic Concurrency-Safe)
 CREATE OR REPLACE FUNCTION public.decrement_stock(p_id TEXT, p_qty INTEGER)
 RETURNS VOID
 LANGUAGE plpgsql
 SECURITY DEFINER
 SET search_path = public
 AS $$
+DECLARE
+    v_updated INTEGER;
 BEGIN
-    -- Allow admins OR the system to decrement during checkout, but protect against negative stock
+    -- Atomic conditional update: guards against negative stock and race conditions
     UPDATE public.products
-    SET stock_quantity = GREATEST(0, stock_quantity - p_qty),
+    SET stock_quantity = stock_quantity - p_qty,
         updated_at = NOW()
-    WHERE id = p_id;
+    WHERE id = p_id AND stock_quantity >= p_qty;
+
+    GET DIAGNOSTICS v_updated = ROW_COUNT;
+    IF v_updated = 0 THEN
+        RAISE EXCEPTION 'Insufficient stock for product ID: % (requested %)', p_id, p_qty;
+    END IF;
 END;
 $$;
 
@@ -351,8 +358,8 @@ ALTER TABLE public.staff_invites ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.audit_logs ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.store_settings ENABLE ROW LEVEL SECURITY;
 
--- Helper Function: Check if Authenticated User is REAVO Staff/Admin
-CREATE OR REPLACE FUNCTION public.is_admin_user()
+-- Helper Function: Check if Authenticated User is Any Active REAVO Staff Member
+CREATE OR REPLACE FUNCTION public.is_staff_user()
 RETURNS BOOLEAN
 LANGUAGE sql
 SECURITY DEFINER
@@ -366,20 +373,38 @@ AS $$
     );
 $$;
 
--- Public Read Policies for Storefront
-CREATE POLICY "Public Read Active Products" ON public.products FOR SELECT USING (status = 'published' OR public.is_admin_user());
-CREATE POLICY "Public Read Active Discounts" ON public.discounts FOR SELECT USING (is_active = TRUE OR public.is_admin_user());
-CREATE POLICY "Public Read Content" ON public.content_blocks FOR SELECT USING (is_active = TRUE OR public.is_admin_user());
+-- Helper Function: Check if Authenticated User is Primary Administrative Authority (Owner, Admin)
+CREATE OR REPLACE FUNCTION public.is_admin_user()
+RETURNS BOOLEAN
+LANGUAGE sql
+SECURITY DEFINER
+STABLE
+AS $$
+    SELECT EXISTS (
+        SELECT 1 FROM public.staff 
+        WHERE user_id = auth.uid() AND is_active = TRUE AND role IN ('Owner', 'Admin')
+    ) OR (
+        auth.jwt() -> 'app_metadata' ->> 'role' IN ('Owner', 'Admin', 'superadmin')
+    );
+$$;
 
--- Admin Full Access Policies
-CREATE POLICY "Admin Full Products Access" ON public.products FOR ALL USING (public.is_admin_user());
-CREATE POLICY "Admin Full Orders Access" ON public.orders FOR ALL USING (public.is_admin_user());
-CREATE POLICY "Admin Full Order Items Access" ON public.order_items FOR ALL USING (public.is_admin_user());
-CREATE POLICY "Admin Full Customers Access" ON public.customers FOR ALL USING (public.is_admin_user());
-CREATE POLICY "Admin Full TradeIns Access" ON public.trade_ins FOR ALL USING (public.is_admin_user());
-CREATE POLICY "Admin Full Payments Access" ON public.payments FOR ALL USING (public.is_admin_user());
-CREATE POLICY "Admin Full Discounts Access" ON public.discounts FOR ALL USING (public.is_admin_user());
-CREATE POLICY "Admin Full Content Access" ON public.content_blocks FOR ALL USING (public.is_admin_user());
+-- Public Read Policies for Storefront
+CREATE POLICY "Public Read Active Products" ON public.products FOR SELECT USING (status = 'published' OR public.is_staff_user());
+CREATE POLICY "Public Read Active Discounts" ON public.discounts FOR SELECT USING (is_active = TRUE OR public.is_staff_user());
+CREATE POLICY "Public Read Content" ON public.content_blocks FOR SELECT USING (is_active = TRUE OR public.is_staff_user());
+
+-- Staff Access Policies (Day-to-day operations)
+CREATE POLICY "Staff Full Products Access" ON public.products FOR ALL USING (public.is_staff_user());
+CREATE POLICY "Staff Full Orders Access" ON public.orders FOR ALL USING (public.is_staff_user());
+CREATE POLICY "Staff Full Order Items Access" ON public.order_items FOR ALL USING (public.is_staff_user());
+CREATE POLICY "Staff Full Customers Access" ON public.customers FOR ALL USING (public.is_staff_user());
+CREATE POLICY "Staff Full TradeIns Access" ON public.trade_ins FOR ALL USING (public.is_staff_user());
+CREATE POLICY "Staff Full Payments Access" ON public.payments FOR ALL USING (public.is_staff_user());
+CREATE POLICY "Staff Full Discounts Access" ON public.discounts FOR ALL USING (public.is_staff_user());
+CREATE POLICY "Staff Full Content Access" ON public.content_blocks FOR ALL USING (public.is_staff_user());
+
+-- Restricted High-Privilege Policies (Owner & Admin ONLY)
+CREATE POLICY "Staff Read Staff Directory" ON public.staff FOR SELECT USING (public.is_staff_user());
 CREATE POLICY "Admin Full Staff Access" ON public.staff FOR ALL USING (public.is_admin_user());
 CREATE POLICY "Admin Full Settings Access" ON public.store_settings FOR ALL USING (public.is_admin_user());
 
@@ -418,9 +443,7 @@ CREATE TABLE IF NOT EXISTS public.partnership_inquiries (
 ALTER TABLE public.payouts ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.partnership_inquiries ENABLE ROW LEVEL SECURITY;
 
-CREATE POLICY "Admin Full Payouts Access" ON public.payouts FOR ALL USING (public.is_admin_user());
-CREATE POLICY "System Insert Payouts" ON public.payouts FOR INSERT WITH CHECK (TRUE);
-CREATE POLICY "System Update Payouts" ON public.payouts FOR UPDATE USING (TRUE);
+CREATE POLICY "Admin Full Payouts Access" ON public.payouts FOR ALL USING (public.is_admin_user() OR auth.role() = 'service_role');
 
 CREATE POLICY "Admin Full Partnership Inquiries Access" ON public.partnership_inquiries FOR ALL USING (public.is_admin_user());
 CREATE POLICY "System Insert Partnership Inquiries" ON public.partnership_inquiries FOR INSERT WITH CHECK (TRUE);
