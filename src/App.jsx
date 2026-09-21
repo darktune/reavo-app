@@ -48,7 +48,13 @@ import { ErrorBoundary } from './components/ErrorBoundary';
 
 function App() {
   const location = useLocation();
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(() => {
+    try {
+      return typeof window !== 'undefined' && localStorage.getItem('reavo_skip_loader') === 'true';
+    } catch {
+      return false;
+    }
+  });
   const hideNavAndFooter = location.pathname === '/' || location.pathname === '/story' || location.pathname.startsWith('/admin');
 
   return (
