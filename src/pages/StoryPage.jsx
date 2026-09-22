@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo } from 'react';
 import { useNavigate, Link } from 'react-router';
 import { useUser } from '../context/UserContext';
 import MeshVisualization from '../components/MeshVisualization';
-import { ArrowRight, ArrowLeft, FastForward, Sparkles } from 'lucide-react';
+import { ArrowRight, ArrowLeft, FastForward } from 'lucide-react';
 import anime from 'animejs';
 
 const imagePools = [
@@ -88,18 +88,24 @@ export default function StoryPage() {
   }, [userName, userSchool]);
 
   // Client-approved revised manifesto: eliminates "boutique", highlights real student hustle & campuses
+  // Hyphen/dash removed, sentence with REAVO begins on a new line, personalized welcome on separate line
   const rawSentence = useMemo(() => {
-    return `Nigeria's No. 1 student gadget brand. {0} Built for the creator editing between lectures, the gamer grinding {1} after class, and the hustler running a business from a hostel room. Real devices, real prices, real people {2} — from Lagos to Ilorin, to Abia, to Abuja, round Nigeria. {3} REAVO: Your Style. Our Tech. Infinite Possibilities. ${personalizedGreeting}`;
+    return `Nigeria's No. 1 student gadget brand. {0} Built for the creator editing between lectures, the gamer grinding {1} after class, and the hustler running a business from a hostel room. Real devices, real prices, real people, {2} from Lagos to Ilorin, to Abia, to Abuja, round Nigeria. {break} REAVO: {3} Your Style. Our Tech. Infinite Possibilities. {break} ${personalizedGreeting}`;
   }, [personalizedGreeting]);
   
-  // Parse into tokens: words and image placeholders
+  // Parse into tokens: words, image placeholders, and structural line breaks
   const tokens = useMemo(() => {
     const parsed = [];
     const parts = rawSentence.split(/(\{.*?\})/g);
     
     parts.forEach(part => {
       if (part.startsWith('{') && part.endsWith('}')) {
-        parsed.push({ type: 'image', poolIndex: parseInt(part.replace(/[{}]/g, ''), 10) });
+        const key = part.replace(/[{}]/g, '').trim();
+        if (key === 'break') {
+          parsed.push({ type: 'break' });
+        } else {
+          parsed.push({ type: 'image', poolIndex: parseInt(key, 10) });
+        }
       } else {
         const words = part.split(' ').filter(w => w.trim().length > 0);
         words.forEach(word => parsed.push({ type: 'word', text: word }));
@@ -111,9 +117,11 @@ export default function StoryPage() {
   // Typing progression
   useEffect(() => {
     if (visibleCount < tokens.length) {
+      const nextToken = tokens[visibleCount];
+      const stepDelay = nextToken?.type === 'break' ? 80 : 130;
       const timer = setTimeout(() => {
         setVisibleCount(prev => prev + 1);
-      }, 130);
+      }, stepDelay);
       return () => clearTimeout(timer);
     } else {
       anime({
@@ -124,7 +132,7 @@ export default function StoryPage() {
         easing: 'easeOutSine'
       });
     }
-  }, [visibleCount, tokens.length]);
+  }, [visibleCount, tokens]);
 
   const handleSkipAnimation = () => {
     setVisibleCount(tokens.length);
@@ -193,7 +201,7 @@ export default function StoryPage() {
         <div style={{
           display: 'inline-flex',
           alignItems: 'center',
-          gap: 6,
+          gap: 7,
           fontSize: 11,
           fontWeight: 700,
           color: 'var(--accent-primary)',
@@ -204,7 +212,14 @@ export default function StoryPage() {
           border: '1px solid rgba(57, 217, 196, 0.25)',
           background: 'rgba(57, 217, 196, 0.08)'
         }}>
-          <Sparkles size={12} />
+          <span style={{ 
+            width: 6, 
+            height: 6, 
+            borderRadius: '50%', 
+            background: 'var(--accent-primary)', 
+            boxShadow: '0 0 8px rgba(57, 217, 196, 0.7)', 
+            display: 'inline-block' 
+          }} />
           <span>The REAVO Manifesto</span>
         </div>
 
@@ -250,14 +265,28 @@ export default function StoryPage() {
           fontFamily: 'Plus Jakarta Sans, sans-serif',
           fontWeight: 700,
           fontSize: 'clamp(36px, 6.5vw, 92px)',
-          lineHeight: 1.08,
+          lineHeight: 1.15,
           letterSpacing: '-0.04em',
           color: 'var(--text-primary)',
           margin: 0,
-          textWrap: 'balance'
         }}>
           {tokens.map((token, i) => {
             if (i >= visibleCount) return null;
+
+            if (token.type === 'break') {
+              return (
+                <span 
+                  key={i} 
+                  className="story-line-break" 
+                  style={{ 
+                    display: 'block', 
+                    width: '100%', 
+                    height: 'clamp(20px, 3.5vh, 36px)',
+                    pointerEvents: 'none'
+                  }} 
+                />
+              );
+            }
             
             if (token.type === 'image') {
               return (
@@ -267,8 +296,12 @@ export default function StoryPage() {
               );
             }
 
-            const isPersonalizedHighlight = token.text.includes(userName) && userName.length > 0;
-            const isSchoolHighlight = userSchool && token.text.includes(userSchool);
+            const cleanWord = token.text.replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
+            const isNameToken = Boolean(userName && token.text.toLowerCase().includes(userName.toLowerCase())) ||
+                                cleanWord === 'friend' ||
+                                cleanWord === 'stranger' ||
+                                cleanWord === 'guest';
+            const isSchoolHighlight = Boolean(userSchool && token.text.includes(userSchool));
             
             return (
               <span 
@@ -280,26 +313,32 @@ export default function StoryPage() {
                   animation: 'fadeInUp 0.35s ease-out forwards',
                   transition: 'color 0.25s, transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1)',
                   cursor: 'default',
-                  color: isPersonalizedHighlight 
-                    ? 'var(--accent-purple)' 
+                  background: isNameToken 
+                    ? 'linear-gradient(135deg, #C084FC 0%, #F472B6 50%, #38BDF8 100%)' 
+                    : isSchoolHighlight 
+                    ? 'linear-gradient(135deg, #39D9C4 0%, #22D3EE 100%)' 
+                    : 'none',
+                  WebkitBackgroundClip: (isNameToken || isSchoolHighlight) ? 'text' : 'initial',
+                  WebkitTextFillColor: (isNameToken || isSchoolHighlight) ? 'transparent' : 'initial',
+                  color: isNameToken 
+                    ? '#C084FC' 
                     : isSchoolHighlight 
                     ? 'var(--accent-primary)' 
-                    : 'inherit',
-                  textShadow: isPersonalizedHighlight 
-                    ? '0 0 20px rgba(124, 92, 255, 0.4)' 
+                    : 'var(--text-primary)',
+                  filter: isNameToken 
+                    ? 'drop-shadow(0 0 20px rgba(192, 132, 252, 0.55))' 
+                    : isSchoolHighlight 
+                    ? 'drop-shadow(0 0 20px rgba(57, 217, 196, 0.4))' 
                     : 'none',
+                  fontWeight: (isNameToken || isSchoolHighlight) ? 800 : 700,
                 }}
                 onMouseEnter={e => {
                   e.currentTarget.style.transform = 'translateY(-6px) scale(1.04)';
-                  if (!isPersonalizedHighlight) e.currentTarget.style.color = 'var(--accent-primary)';
+                  if (!isNameToken && !isSchoolHighlight) e.currentTarget.style.color = 'var(--accent-primary)';
                 }}
                 onMouseLeave={e => {
                   e.currentTarget.style.transform = 'none';
-                  e.currentTarget.style.color = isPersonalizedHighlight 
-                    ? 'var(--accent-purple)' 
-                    : isSchoolHighlight 
-                    ? 'var(--accent-primary)' 
-                    : 'var(--text-primary)';
+                  if (!isNameToken && !isSchoolHighlight) e.currentTarget.style.color = 'var(--text-primary)';
                 }}
               >
                 {token.text}

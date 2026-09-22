@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useWishlist } from '../context/WishlistContext';
 import { Navigate, useNavigate } from 'react-router';
-import { Package, User, LogOut, Settings, Heart, Loader2, LayoutDashboard, MapPin, MessageSquare, CreditCard, Tag, Search, Mail, HelpCircle, Smartphone, Key, CheckCircle, ArrowUpRight, RefreshCw, Sparkles, Bell, Clock, Trash2 } from 'lucide-react';
+import { Package, User, LogOut, Settings, Heart, Loader2, LayoutDashboard, MapPin, MessageSquare, CreditCard, Tag, Search, Mail, HelpCircle, Smartphone, Key, CheckCircle, ArrowUpRight, RefreshCw, Zap, Bell, Clock, Trash2 } from 'lucide-react';
 import ScrollReveal from '../components/ScrollReveal';
 import { products } from '../data/products';
 import ProductCard from '../components/ProductCard';
@@ -288,7 +288,7 @@ export default function ProfilePage() {
                     </div>
                     <div className="glass-panel" style={{ padding: 24, borderRadius: 16 }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16, color: 'var(--text-secondary)' }}>
-                        <Sparkles size={20} color="#FFB800" />
+                        <Zap size={20} color="#FFB800" />
                         Active Pre-Orders
                       </div>
                       <div style={{ fontSize: 32, fontWeight: 600, color: preorders.length > 0 ? '#FFB800' : 'inherit' }}>{preorders.length}</div>
@@ -440,7 +440,7 @@ export default function ProfilePage() {
                         border: '1px solid rgba(255, 184, 0, 0.3)',
                         color: '#FFB800'
                       }}>
-                        <Sparkles size={14} /> {preorders.length} Active Pre-Order Allocation{preorders.length > 1 ? 's' : ''}
+                        <Zap size={14} /> {preorders.length} Active Pre-Order Allocation{preorders.length > 1 ? 's' : ''}
                       </span>
                     )}
                   </div>

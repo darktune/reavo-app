@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Sparkles, CheckCircle2, Shield, Play, Pause } from 'lucide-react';
+import { CheckCircle2, Shield, Play, Pause } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { toast } from 'sonner';
 import { supabase } from '../lib/supabase';

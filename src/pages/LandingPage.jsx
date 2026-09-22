@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 import { Link, useNavigate } from 'react-router';
-import { ArrowRight, Sparkles } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import ScrollReveal from '../components/ScrollReveal';
 import { products, categories } from '../data/products';
 import DotNav from '../components/DotNav';
@@ -193,7 +193,14 @@ export default function LandingPage() {
                   }}
                   title="Discover Nigeria's No. 1 Student Brand Manifesto"
                 >
-                  <Sparkles size={11} />
+                  <span style={{ 
+                    width: 6, 
+                    height: 6, 
+                    borderRadius: '50%', 
+                    background: 'var(--accent-purple)', 
+                    boxShadow: '0 0 8px rgba(124, 92, 255, 0.7)',
+                    display: 'inline-block'
+                  }} />
                   <span>Our Story</span>
                 </Link>
                 <div style={{
@@ -435,7 +442,14 @@ export default function LandingPage() {
                 marginBottom: 28
               }}>
                 Real devices, real prices, real people. From Lagos to Ilorin, to Abia, to Abuja, round Nigeria. 
-                <strong style={{ color: 'var(--accent-purple)', marginLeft: 6 }}>
+                <strong style={{ 
+                  background: 'linear-gradient(135deg, #C084FC 0%, #F472B6 50%, #38BDF8 100%)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  color: '#C084FC',
+                  marginLeft: 8,
+                  fontWeight: 700
+                }}>
                   {userName ? `Welcome, ${userName}.` : 'Your Style. Our Tech. Infinite Possibilities.'}
                 </strong>
               </p>

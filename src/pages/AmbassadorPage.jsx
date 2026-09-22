@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
-import { ArrowRight, Sparkles } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useUser } from '../context/UserContext';
 import ScrollReveal from '../components/ScrollReveal';
@@ -115,7 +115,16 @@ export default function AmbassadorPage() {
                   padding: '3px 10px', 
                   borderRadius: 100 
                 }}>
-                  <Sparkles size={10} style={{ display: 'inline', marginRight: 4 }} />
+                  <span style={{ 
+                    width: 6, 
+                    height: 6, 
+                    borderRadius: '50%', 
+                    background: 'var(--accent-primary)', 
+                    boxShadow: '0 0 8px rgba(57, 217, 196, 0.7)', 
+                    display: 'inline-block',
+                    marginRight: 6,
+                    verticalAlign: 'middle'
+                  }} />
                   Campus Manifesto
                 </span>
                 <span style={{ fontSize: 12, color: 'var(--text-secondary)' }}>Nigeria's No. 1 Student Brand</span>
@@ -125,7 +134,18 @@ export default function AmbassadorPage() {
               </h3>
               <p style={{ fontSize: 13, color: 'var(--text-secondary)', margin: 0 }}>
                 From Lagos to Ilorin, to Abia, to Abuja. Real devices, real prices, real people.
-                {userName && <span style={{ color: 'var(--accent-purple)', marginLeft: 6 }}>Welcome, {userName}.</span>}
+                {userName && (
+                  <span style={{ 
+                    background: 'linear-gradient(135deg, #C084FC 0%, #F472B6 50%, #38BDF8 100%)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    color: '#C084FC',
+                    fontWeight: 700,
+                    marginLeft: 6 
+                  }}>
+                    Welcome, {userName}.
+                  </span>
+                )}
               </p>
             </div>
 

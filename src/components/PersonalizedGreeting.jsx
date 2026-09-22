@@ -109,6 +109,17 @@ export default function PersonalizedGreeting({ variant = 'inline' }) {
     verticalAlign: 'middle',
   };
 
+  // Unique gradient ranging from electric purple into rose/pink and cyan
+  const nameHighlightStyle = {
+    fontWeight: 700,
+    background: 'linear-gradient(135deg, #C084FC 0%, #F472B6 55%, #38BDF8 100%)',
+    WebkitBackgroundClip: 'text',
+    WebkitTextFillColor: 'transparent',
+    color: '#C084FC',
+    textShadow: '0 0 12px rgba(192, 132, 252, 0.45)',
+    display: 'inline',
+  };
+
   const linkIconStyle = {
     display: 'inline-flex',
     alignItems: 'center',
@@ -116,14 +127,46 @@ export default function PersonalizedGreeting({ variant = 'inline' }) {
     width: 22,
     height: 22,
     borderRadius: '50%',
-    background: 'rgba(124, 92, 255, 0.15)',
-    border: '1px solid rgba(124, 92, 255, 0.3)',
-    color: 'var(--accent-purple, #7C5CFF)',
+    background: 'rgba(192, 132, 252, 0.15)',
+    border: '1px solid rgba(192, 132, 252, 0.35)',
+    color: '#C084FC',
     cursor: 'pointer',
     transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
     opacity: showLink ? 1 : 0,
     transform: showLink ? 'scale(1) rotate(0deg)' : 'scale(0.5) rotate(-90deg)',
     marginLeft: 6,
+  };
+
+  // Helper to highlight userName, stranger, or guest with the unique hue
+  const renderGreetingContent = () => {
+    if (userName) {
+      return (
+        <>
+          {displayedText}
+          <strong style={nameHighlightStyle}>
+            {userName}
+          </strong>
+        </>
+      );
+    }
+
+    // Split by stranger or guest to highlight the keyword with unique color
+    const parts = displayedText.split(/(stranger|guest)/gi);
+    if (parts.length === 1) {
+      return displayedText;
+    }
+
+    return parts.map((part, index) => {
+      const lower = part.toLowerCase();
+      if (lower === 'stranger' || lower === 'guest') {
+        return (
+          <strong key={index} style={nameHighlightStyle}>
+            {part}
+          </strong>
+        );
+      }
+      return part;
+    });
   };
 
   if (!shouldRender) return null;
@@ -132,19 +175,7 @@ export default function PersonalizedGreeting({ variant = 'inline' }) {
     <>
       <span style={containerStyle}>
         <span>
-          {userName ? (
-            <>
-              {displayedText}
-              <strong style={{
-                color: 'var(--accent-purple, #7C5CFF)',
-                textShadow: '0 0 10px rgba(124, 92, 255, 0.5)',
-              }}>
-                {userName}
-              </strong>
-            </>
-          ) : (
-            displayedText
-          )}
+          {renderGreetingContent()}
           <span style={cursorStyle} />
         </span>
 
@@ -158,12 +189,12 @@ export default function PersonalizedGreeting({ variant = 'inline' }) {
             onKeyDown={(e) => { if (e.key === 'Enter') openWelcomePrompt(); }}
             style={linkIconStyle}
             onMouseEnter={(e) => {
-              e.currentTarget.style.background = 'rgba(124, 92, 255, 0.3)';
+              e.currentTarget.style.background = 'rgba(192, 132, 252, 0.3)';
               e.currentTarget.style.transform = 'scale(1.15)';
-              e.currentTarget.style.boxShadow = '0 0 12px rgba(124, 92, 255, 0.3)';
+              e.currentTarget.style.boxShadow = '0 0 12px rgba(192, 132, 252, 0.4)';
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.background = 'rgba(124, 92, 255, 0.15)';
+              e.currentTarget.style.background = 'rgba(192, 132, 252, 0.15)';
               e.currentTarget.style.transform = 'scale(1)';
               e.currentTarget.style.boxShadow = 'none';
             }}
