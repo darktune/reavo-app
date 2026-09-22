@@ -50,7 +50,7 @@ export default function Navbar() {
   }, []);
 
   const navLinks = [
-    { label: 'Home', path: '/home' },
+    { label: 'Home', path: '/' },
     { label: 'Products', path: '/shop' },
     { label: 'About', path: '/about' },
     { label: 'Ambassadors', path: '/ambassadors' },
@@ -77,7 +77,7 @@ export default function Navbar() {
         {/* Left • Logo */}
         <div style={{ flex: 1, display: 'flex', alignItems: 'center' }}>
           <CardHover
-            onClick={() => navigate('/home')}
+            onClick={() => navigate('/')}
             style={{ borderRadius: 14, padding: '6px 14px' }}
             title="Go to Home"
           >

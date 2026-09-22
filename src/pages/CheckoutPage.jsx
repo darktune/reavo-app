@@ -380,7 +380,7 @@ export default function CheckoutPage() {
           border-radius: 12px;
           color: var(--text-primary);
           font-family: inherit;
-          font-size: 16px;
+          font-size: 16px !important;
           outline: none;
           transition: all 0.2s ease;
         }

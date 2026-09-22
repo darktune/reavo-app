@@ -8,19 +8,11 @@
   ],
   "rewrites": [
     {
-      "source": "/api/(.*)",
-      "destination": "/server.js"
-    },
-    {
-      "source": "/robots.txt",
-      "destination": "/server.js"
-    },
-    {
       "source": "/sitemap.xml",
-      "destination": "/server.js"
+      "destination": "/api/sitemap"
     },
     {
-      "source": "/((?!assets/|images/|ambassadors/|founders/|videos/|logos/|.*\\..*).*)",
+      "source": "/((?!assets/|images/|ambassadors/|founders/|videos/|logos/|api/|.*\\..*).*)",
       "destination": "/index.html"
     }
   ]

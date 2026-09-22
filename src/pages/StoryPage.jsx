@@ -170,7 +170,7 @@ export default function StoryPage() {
 
         <button 
           className="story-continue-btn"
-          onClick={() => navigate('/home')}
+          onClick={() => navigate('/')}
           style={{
             marginTop: '80px',
             display: visibleCount === tokens.length ? 'inline-flex' : 'none',

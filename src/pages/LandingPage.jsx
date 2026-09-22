@@ -1,12 +1,12 @@
 import { useState, useRef } from 'react';
 import { Link, useNavigate } from 'react-router';
-import { useUser } from '../context/UserContext';
 import { ArrowRight } from 'lucide-react';
 import ScrollReveal from '../components/ScrollReveal';
 import { products, categories } from '../data/products';
 import DotNav from '../components/DotNav';
 import SEO from '../components/SEO';
 import PreorderHeroBanner from '../components/PreorderHeroBanner';
+import PersonalizedGreeting from '../components/PersonalizedGreeting';
 
 const communityImages = [
   "https://emit-dome-71800164.figma.site/_components/v2/30d1827fe34837c08bb982e13e2d71d7d108eee4/DSC04369.b9a907ea.jpeg",
@@ -107,7 +107,6 @@ function ImageGallery({ images, isAmbassadors = false }) {
 }
 
 export default function LandingPage() {
-  const { userName } = useUser();
   const navigate = useNavigate();
 
   const orgSchema = {
@@ -163,11 +162,7 @@ export default function LandingPage() {
           <div>
             <ScrollReveal>
               <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 24 }}>
-                {userName && (
-                  <span style={{ fontSize: 13, color: 'var(--text-secondary)' }}>
-                    Welcome back, <strong style={{ color: 'var(--accent-purple)', textShadow: '0 0 10px rgba(124, 92, 255, 0.5)' }}>{userName}</strong>
-                  </span>
-                )}
+                <PersonalizedGreeting variant="hero" />
                 <div style={{
                   display: 'inline-flex',
                   alignItems: 'center',

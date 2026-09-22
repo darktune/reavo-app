@@ -247,7 +247,7 @@ export default function AssistantWidget() {
                 borderRadius: '100px',
                 padding: '12px 48px 12px 16px',
                 color: 'var(--text-primary)',
-                fontSize: '14px',
+                fontSize: '16px',
                 outline: 'none'
               }}
             />

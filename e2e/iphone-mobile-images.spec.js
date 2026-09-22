@@ -4,12 +4,13 @@ test.describe('iPhone 15/16/17 Mobile Viewport & Image Scaling Suite', () => {
   test.beforeEach(async ({ page }) => {
     await page.addInitScript(() => {
       window.localStorage.setItem('reavo_skip_loader', 'true');
+      window.localStorage.setItem('reavo_hasSeenIntro', 'true');
       window.localStorage.setItem('reavo-demo-user', 'true');
     });
   });
 
   test('Storefront: Product images are properly framed and not clipped or distorted', async ({ page }) => {
-    await page.goto('/home', { waitUntil: 'domcontentloaded', timeout: 60000 });
+    await page.goto('/', { waitUntil: 'domcontentloaded', timeout: 60000 });
 
     // Wait for storefront content images to mount
     const mainImages = page.locator('main img');

@@ -126,7 +126,7 @@ export default function ProfilePage() {
 
   const handleLogout = () => {
     logout();
-    navigate('/home');
+    navigate('/');
   };
 
   const handleChangePassword = async () => {

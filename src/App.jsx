@@ -1,11 +1,11 @@
 import { Routes, Route, useLocation, Navigate } from 'react-router';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Toaster } from 'sonner';
 import { HelmetProvider } from 'react-helmet-async';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Loader from './components/Loader';
-import IntroPage from './pages/IntroPage';
+import WelcomePrompt from './components/WelcomePrompt';
 import StoryPage from './pages/StoryPage';
 import LandingPage from './pages/LandingPage';
 import ShopPage from './pages/ShopPage';
@@ -45,9 +45,11 @@ import AdminAutomations from './pages/admin/AdminAutomations';
 import StaffOnboarding from './pages/StaffOnboarding';
 
 import { ErrorBoundary } from './components/ErrorBoundary';
+import { useUser } from './context/UserContext';
 
 function App() {
   const location = useLocation();
+  const { trackPageVisit } = useUser();
   const [isLoaded, setIsLoaded] = useState(() => {
     try {
       return typeof window !== 'undefined' && localStorage.getItem('reavo_skip_loader') === 'true';
@@ -55,7 +57,14 @@ function App() {
       return false;
     }
   });
-  const hideNavAndFooter = location.pathname === '/' || location.pathname === '/story' || location.pathname.startsWith('/admin');
+
+  // Track page visits on every route change (for the stranger greeting progression)
+  useEffect(() => {
+    trackPageVisit();
+  }, [location.pathname, trackPageVisit]);
+
+  // Hide nav/footer on /story and admin routes (no longer on /)
+  const hideNavAndFooter = location.pathname === '/story' || location.pathname.startsWith('/admin');
 
   return (
     <HelmetProvider>
@@ -69,9 +78,11 @@ function App() {
           <main style={{ flex: 1 }}>
             <ErrorBoundary>
               <Routes>
-              <Route path="/" element={<IntroPage />} />
+              {/* Store loads immediately at root — no intro friction */}
+              <Route path="/" element={<LandingPage />} />
+              {/* Backward compat: /home redirects to / */}
+              <Route path="/home" element={<Navigate to="/" replace />} />
               <Route path="/story" element={<StoryPage />} />
-              <Route path="/home" element={<LandingPage />} />
               <Route path="/shop" element={<ShopPage />} />
               <Route path="/about" element={<AboutPage />} />
               <Route path="/faq" element={<FaqPage />} />
@@ -115,6 +126,10 @@ function App() {
           {!hideNavAndFooter && <Footer />}
           {!location.pathname.startsWith('/admin') && <CartDrawer />}
           {!location.pathname.startsWith('/admin') && <AssistantWidget />}
+
+          {/* Non-blocking WelcomePrompt overlay */}
+          <WelcomePrompt />
+
           <Toaster theme="dark" position="bottom-right" toastOptions={{
             style: {
               background: 'rgba(5, 5, 5, 0.9)',
