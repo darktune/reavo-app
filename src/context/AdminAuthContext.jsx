@@ -40,15 +40,6 @@ export function AdminAuthProvider({ children }) {
     return () => subscription?.unsubscribe();
   }, []);
 
-  const signInWithGoogle = async () => {
-    await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: {
-        redirectTo: window.location.origin + '/admin'
-      }
-    });
-  };
-
   const signInWithEmail = async (email, password) => {
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
@@ -76,7 +67,7 @@ export function AdminAuthProvider({ children }) {
   };
 
   return (
-    <AdminAuthContext.Provider value={{ adminUser, loading, signInWithGoogle, signInWithEmail, signInAsDemoAdmin, signOut }}>
+    <AdminAuthContext.Provider value={{ adminUser, loading, signInWithEmail, signInAsDemoAdmin, signOut }}>
       {children}
     </AdminAuthContext.Provider>
   );
