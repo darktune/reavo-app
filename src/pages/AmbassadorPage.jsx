@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router';
+import { ArrowRight, Sparkles } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useUser } from '../context/UserContext';
 import ScrollReveal from '../components/ScrollReveal';
@@ -46,6 +48,7 @@ export default function AmbassadorPage() {
   const { isAuthenticated, user } = useAuth();
   const { userName } = useUser();
   
+  const navigate = useNavigate();
   const displayName = (isAuthenticated && user?.name) ? user.name : (userName || 'Stranger');
   const signatureColor = useSignatureColor(displayName);
 
@@ -59,7 +62,7 @@ export default function AmbassadorPage() {
     <div style={{ background: 'var(--bg-void)', paddingTop: 100, minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
       
       {/* Hero */}
-      <section style={{ textAlign: 'center', padding: '60px 24px' }}>
+      <section style={{ textAlign: 'center', padding: '60px 24px 30px' }}>
         <ScrollReveal>
           <h1 style={{ fontSize: 'clamp(42px, 6vw, 76px)', marginBottom: 20 }}>
             The Faces of REAVO
@@ -67,6 +70,82 @@ export default function AmbassadorPage() {
           <p style={{ fontSize: 18, color: 'var(--text-secondary)', maxWidth: 600, margin: '0 auto' }}>
             Meet the students, creators, and community builders shaping the future of technology across Nigerian campuses.
           </p>
+        </ScrollReveal>
+      </section>
+
+      {/* Interactive Student Manifesto Feature Card */}
+      <section className="container" style={{ marginBottom: 48 }}>
+        <ScrollReveal delay={100}>
+          <div 
+            onClick={() => navigate('/story')}
+            className="glass-panel"
+            style={{
+              padding: '32px clamp(20px, 4vw, 44px)',
+              borderRadius: 24,
+              cursor: 'pointer',
+              border: '1px solid rgba(124, 92, 255, 0.28)',
+              background: 'linear-gradient(135deg, rgba(124, 92, 255, 0.08) 0%, rgba(57, 217, 196, 0.05) 100%)',
+              transition: 'all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              gap: 24,
+              flexWrap: 'wrap'
+            }}
+            onMouseEnter={e => {
+              e.currentTarget.style.transform = 'translateY(-3px)';
+              e.currentTarget.style.borderColor = 'rgba(124, 92, 255, 0.55)';
+              e.currentTarget.style.boxShadow = '0 16px 40px rgba(124, 92, 255, 0.16)';
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.transform = 'none';
+              e.currentTarget.style.borderColor = 'rgba(124, 92, 255, 0.28)';
+              e.currentTarget.style.boxShadow = 'none';
+            }}
+          >
+            <div style={{ maxWidth: 740 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12, flexWrap: 'wrap' }}>
+                <span style={{ 
+                  fontSize: 10, 
+                  fontWeight: 700, 
+                  letterSpacing: '0.08em', 
+                  textTransform: 'uppercase', 
+                  color: 'var(--accent-primary)', 
+                  background: 'rgba(57, 217, 196, 0.12)', 
+                  padding: '3px 10px', 
+                  borderRadius: 100 
+                }}>
+                  <Sparkles size={10} style={{ display: 'inline', marginRight: 4 }} />
+                  Campus Manifesto
+                </span>
+                <span style={{ fontSize: 12, color: 'var(--text-secondary)' }}>Nigeria's No. 1 Student Brand</span>
+              </div>
+              <h3 style={{ fontSize: 'clamp(18px, 2.6vw, 26px)', fontWeight: 700, lineHeight: 1.35, marginBottom: 10, color: '#FFFFFF' }}>
+                "Built for the creator editing between lectures, the gamer grinding after class, the hustler running a business from a hostel room."
+              </h3>
+              <p style={{ fontSize: 13, color: 'var(--text-secondary)', margin: 0 }}>
+                From Lagos to Ilorin, to Abia, to Abuja. Real devices, real prices, real people.
+                {userName && <span style={{ color: 'var(--accent-purple)', marginLeft: 6 }}>Welcome, {userName}.</span>}
+              </p>
+            </div>
+
+            <div style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 8,
+              padding: '12px 24px',
+              borderRadius: 100,
+              background: 'rgba(124, 92, 255, 0.18)',
+              border: '1px solid rgba(124, 92, 255, 0.4)',
+              color: '#FFFFFF',
+              fontSize: 13,
+              fontWeight: 600,
+              whiteSpace: 'nowrap'
+            }}>
+              <span>Experience The Story</span>
+              <ArrowRight size={15} />
+            </div>
+          </div>
         </ScrollReveal>
       </section>
 

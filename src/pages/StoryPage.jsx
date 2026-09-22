@@ -1,36 +1,46 @@
-import { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router';
+import { useState, useEffect, useMemo } from 'react';
+import { useNavigate, Link } from 'react-router';
 import { useUser } from '../context/UserContext';
 import MeshVisualization from '../components/MeshVisualization';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, ArrowLeft, FastForward, Sparkles } from 'lucide-react';
 import anime from 'animejs';
 
 const imagePools = [
+  // 0: Creators & lectures
   [
     "https://emit-dome-71800164.figma.site/_components/v2/30d1827fe34837c08bb982e13e2d71d7d108eee4/IMG_0040.76a84aa5.jpeg",
-    "https://emit-dome-71800164.figma.site/_components/v2/30d1827fe34837c08bb982e13e2d71d7d108eee4/DSC04369.b9a907ea.jpeg",
-    "https://emit-dome-71800164.figma.site/_components/v2/30d1827fe34837c08bb982e13e2d71d7d108eee4/21.a3a213b3.jpeg"
+    "/ambassadors/14.jpg",
+    "/ambassadors/18.jpg"
   ],
+  // 1: Gamers & audio
   [
     "https://emit-dome-71800164.figma.site/_components/v2/30d1827fe34837c08bb982e13e2d71d7d108eee4/20.619ea173.jpeg",
-    "https://emit-dome-71800164.figma.site/_components/v2/30d1827fe34837c08bb982e13e2d71d7d108eee4/6.a6921430.jpeg",
-    "https://emit-dome-71800164.figma.site/_components/v2/30d1827fe34837c08bb982e13e2d71d7d108eee4/IMG_0303-1.0dbd5734.jpeg"
+    "/ambassadors/20.jpg",
+    "/ambassadors/21.jpg"
   ],
+  // 2: Hostel hustle & real people
   [
     "https://emit-dome-71800164.figma.site/_components/v2/30d1827fe34837c08bb982e13e2d71d7d108eee4/IMG_0335.ea9bbfbb.jpeg",
-    "https://emit-dome-71800164.figma.site/_components/v2/30d1827fe34837c08bb982e13e2d71d7d108eee4/IMG_0203.318a82ed.jpeg",
-    "https://emit-dome-71800164.figma.site/_components/v2/30d1827fe34837c08bb982e13e2d71d7d108eee4/IMG_0255.fb2308c7.jpeg"
+    "/ambassadors/24.jpg",
+    "/ambassadors/26.jpg"
+  ],
+  // 3: Campus ambassadors round Nigeria
+  [
+    "/ambassadors/29.jpg",
+    "/ambassadors/31.jpg",
+    "/ambassadors/34.jpg",
+    "/ambassadors/photo_2026-08-17_20-56-56.jpg"
   ]
 ];
 
 const InlineImage = ({ poolIndex }) => {
-  const pool = imagePools[poolIndex];
+  const pool = imagePools[poolIndex] || imagePools[0];
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
     const interval = setInterval(() => {
       setIndex(prev => (prev + 1) % pool.length);
-    }, 2500 + Math.random() * 1000); // Random offset for organic feeling
+    }, 2400 + Math.random() * 800);
     return () => clearInterval(interval);
   }, [pool.length]);
 
@@ -43,19 +53,18 @@ const InlineImage = ({ poolIndex }) => {
         height: '0.9em',
         width: '1.6em',
         margin: '0 0.15em',
-        borderRadius: '0.2em',
+        borderRadius: '0.25em',
         overflow: 'hidden',
-        boxShadow: '0 8px 32px rgba(0,0,0,0.4)',
-        border: '1px solid rgba(255,255,255,0.1)',
+        boxShadow: '0 8px 32px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.2)',
         cursor: 'pointer',
         transition: 'transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
       }}
-      onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.1) rotate(-2deg)'}
+      onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.15) rotate(-2deg)'}
       onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1) rotate(0deg)'}
     >
       <img 
         src={pool[index]} 
-        alt="Visual" 
+        alt="REAVO Community" 
         style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} 
       />
     </span>
@@ -63,42 +72,65 @@ const InlineImage = ({ poolIndex }) => {
 };
 
 export default function StoryPage() {
-  const { userName } = useUser();
+  const { userName, userSchool } = useUser();
   const navigate = useNavigate();
   const [visibleCount, setVisibleCount] = useState(0);
 
-  const rawSentence = `REAVO is a {0} boutique technology lifestyle brand, producing limited runs of high-performing {1} gadgets & apparel for the person who knows exactly what they want to become. {2} We know the campus hustle. Built for your grind. Welcome to REAVO, ${userName || 'friend'}.`;
+  // Personalized greeting suffix
+  const personalizedGreeting = useMemo(() => {
+    if (userName && userSchool) {
+      return `Welcome to the movement, ${userName} from ${userSchool}.`;
+    }
+    if (userName) {
+      return `Welcome to the movement, ${userName}.`;
+    }
+    return 'Welcome to the movement, friend.';
+  }, [userName, userSchool]);
+
+  // Client-approved revised manifesto: eliminates "boutique", highlights real student hustle & campuses
+  const rawSentence = useMemo(() => {
+    return `Nigeria's No. 1 student gadget brand. {0} Built for the creator editing between lectures, the gamer grinding {1} after class, and the hustler running a business from a hostel room. Real devices, real prices, real people {2} — from Lagos to Ilorin, to Abia, to Abuja, round Nigeria. {3} REAVO: Your Style. Our Tech. Infinite Possibilities. ${personalizedGreeting}`;
+  }, [personalizedGreeting]);
   
   // Parse into tokens: words and image placeholders
-  const tokens = [];
-  const parts = rawSentence.split(/(\{.*?\})/g);
-  
-  parts.forEach(part => {
-    if (part.startsWith('{') && part.endsWith('}')) {
-      tokens.push({ type: 'image', poolIndex: parseInt(part.replace(/[{}]/g, '')) });
-    } else {
-      const words = part.split(' ').filter(w => w.trim().length > 0);
-      words.forEach(word => tokens.push({ type: 'word', text: word }));
-    }
-  });
+  const tokens = useMemo(() => {
+    const parsed = [];
+    const parts = rawSentence.split(/(\{.*?\})/g);
+    
+    parts.forEach(part => {
+      if (part.startsWith('{') && part.endsWith('}')) {
+        parsed.push({ type: 'image', poolIndex: parseInt(part.replace(/[{}]/g, ''), 10) });
+      } else {
+        const words = part.split(' ').filter(w => w.trim().length > 0);
+        words.forEach(word => parsed.push({ type: 'word', text: word }));
+      }
+    });
+    return parsed;
+  }, [rawSentence]);
 
+  // Typing progression
   useEffect(() => {
     if (visibleCount < tokens.length) {
       const timer = setTimeout(() => {
         setVisibleCount(prev => prev + 1);
-      }, 150); // typing speed (ms per token)
+      }, 130);
       return () => clearTimeout(timer);
     } else {
-      // Once done, animate the continue button
       anime({
         targets: '.story-continue-btn',
         opacity: [0, 1],
         translateY: [20, 0],
-        duration: 800,
+        duration: 700,
         easing: 'easeOutSine'
       });
     }
   }, [visibleCount, tokens.length]);
+
+  const handleSkipAnimation = () => {
+    setVisibleCount(tokens.length);
+  };
+
+  const isCompleted = visibleCount >= tokens.length;
 
   return (
     <div style={{
@@ -109,23 +141,116 @@ export default function StoryPage() {
       position: 'relative',
       overflowX: 'hidden'
     }}>
-      {/* Background MeshLLM Visualization */}
-      <div style={{ position: 'fixed', inset: 0, opacity: 0.4, pointerEvents: 'none' }}>
+      {/* Background Interactive Neural Mesh */}
+      <div style={{ position: 'fixed', inset: 0, opacity: 0.35, pointerEvents: 'none' }}>
         <MeshVisualization activeSequence={3} />
       </div>
 
+      {/* Top Floating Control Bar */}
+      <header style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        zIndex: 50,
+        padding: '16px 28px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        background: 'linear-gradient(to bottom, rgba(10,10,12,0.9) 0%, transparent 100%)',
+        backdropFilter: 'blur(10px)',
+        WebkitBackdropFilter: 'blur(10px)',
+      }}>
+        <button
+          onClick={() => navigate('/')}
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: 8,
+            background: 'rgba(255,255,255,0.06)',
+            border: '1px solid rgba(255,255,255,0.12)',
+            borderRadius: 100,
+            padding: '8px 16px',
+            color: '#FFFFFF',
+            fontSize: 13,
+            fontWeight: 500,
+            cursor: 'pointer',
+            transition: 'all 0.2s',
+          }}
+          onMouseEnter={e => {
+            e.currentTarget.style.background = 'rgba(255,255,255,0.12)';
+            e.currentTarget.style.borderColor = 'rgba(255,255,255,0.25)';
+          }}
+          onMouseLeave={e => {
+            e.currentTarget.style.background = 'rgba(255,255,255,0.06)';
+            e.currentTarget.style.borderColor = 'rgba(255,255,255,0.12)';
+          }}
+        >
+          <ArrowLeft size={16} />
+          <span>Back to Store</span>
+        </button>
+
+        <div style={{
+          display: 'inline-flex',
+          alignItems: 'center',
+          gap: 6,
+          fontSize: 11,
+          fontWeight: 700,
+          color: 'var(--accent-primary)',
+          letterSpacing: '0.1em',
+          textTransform: 'uppercase',
+          padding: '4px 12px',
+          borderRadius: 100,
+          border: '1px solid rgba(57, 217, 196, 0.25)',
+          background: 'rgba(57, 217, 196, 0.08)'
+        }}>
+          <Sparkles size={12} />
+          <span>The REAVO Manifesto</span>
+        </div>
+
+        {!isCompleted && (
+          <button
+            onClick={handleSkipAnimation}
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 6,
+              background: 'transparent',
+              border: 'none',
+              color: 'var(--text-secondary)',
+              fontSize: 12,
+              cursor: 'pointer',
+              padding: '8px',
+              transition: 'color 0.2s'
+            }}
+            onMouseEnter={e => e.currentTarget.style.color = '#FFFFFF'}
+            onMouseLeave={e => e.currentTarget.style.color = 'var(--text-secondary)'}
+            title="Read full manifesto immediately"
+          >
+            <span>Skip reveal</span>
+            <FastForward size={14} />
+          </button>
+        )}
+        {isCompleted && <div style={{ width: 80 }} />}
+      </header>
+
+      {/* Main Kinetic Typography Stage */}
       <div style={{
         position: 'relative',
         zIndex: 10,
-        maxWidth: 1400,
+        maxWidth: 1360,
         margin: '0 auto',
-        padding: 'clamp(80px, 15vh, 160px) clamp(24px, 6vw, 80px)',
+        padding: 'clamp(110px, 18vh, 180px) clamp(24px, 6vw, 80px)',
+        flex: 1,
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
       }}>
         <h1 style={{
-          fontFamily: 'Plus Jakarta Sans',
+          fontFamily: 'Plus Jakarta Sans, sans-serif',
           fontWeight: 700,
-          fontSize: 'clamp(42px, 7vw, 100px)',
-          lineHeight: 1.05,
+          fontSize: 'clamp(36px, 6.5vw, 92px)',
+          lineHeight: 1.08,
           letterSpacing: '-0.04em',
           color: 'var(--text-primary)',
           margin: 0,
@@ -136,11 +261,14 @@ export default function StoryPage() {
             
             if (token.type === 'image') {
               return (
-                <span key={i} className="story-token" style={{ animation: 'popIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)' }}>
+                <span key={i} className="story-token" style={{ animation: 'popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)' }}>
                   <InlineImage poolIndex={token.poolIndex} />
                 </span>
               );
             }
+
+            const isPersonalizedHighlight = token.text.includes(userName) && userName.length > 0;
+            const isSchoolHighlight = userSchool && token.text.includes(userSchool);
             
             return (
               <span 
@@ -148,18 +276,30 @@ export default function StoryPage() {
                 className="story-token"
                 style={{ 
                   display: 'inline-block', 
-                  marginRight: '0.25em',
-                  animation: 'fadeInUp 0.4s ease-out forwards',
-                  transition: 'color 0.3s, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
-                  cursor: 'default'
+                  marginRight: '0.26em',
+                  animation: 'fadeInUp 0.35s ease-out forwards',
+                  transition: 'color 0.25s, transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                  cursor: 'default',
+                  color: isPersonalizedHighlight 
+                    ? 'var(--accent-purple)' 
+                    : isSchoolHighlight 
+                    ? 'var(--accent-primary)' 
+                    : 'inherit',
+                  textShadow: isPersonalizedHighlight 
+                    ? '0 0 20px rgba(124, 92, 255, 0.4)' 
+                    : 'none',
                 }}
                 onMouseEnter={e => {
-                  e.currentTarget.style.transform = 'translateY(-8px) scale(1.05)';
-                  e.currentTarget.style.color = 'var(--accent-purple)';
+                  e.currentTarget.style.transform = 'translateY(-6px) scale(1.04)';
+                  if (!isPersonalizedHighlight) e.currentTarget.style.color = 'var(--accent-primary)';
                 }}
                 onMouseLeave={e => {
                   e.currentTarget.style.transform = 'none';
-                  e.currentTarget.style.color = 'var(--text-primary)';
+                  e.currentTarget.style.color = isPersonalizedHighlight 
+                    ? 'var(--accent-purple)' 
+                    : isSchoolHighlight 
+                    ? 'var(--accent-primary)' 
+                    : 'var(--text-primary)';
                 }}
               >
                 {token.text}
@@ -168,51 +308,77 @@ export default function StoryPage() {
           })}
         </h1>
 
-        <button 
-          className="story-continue-btn"
-          onClick={() => navigate('/')}
-          style={{
-            marginTop: '80px',
-            display: visibleCount === tokens.length ? 'inline-flex' : 'none',
-            alignItems: 'center',
-            gap: '12px',
-            background: 'var(--glass-bg)',
-            backdropFilter: 'blur(var(--glass-blur))',
-            WebkitBackdropFilter: 'blur(var(--glass-blur))',
-            border: '1px solid var(--glass-border)',
-            padding: '16px 32px',
-            borderRadius: '100px',
-            fontFamily: 'Plus Jakarta Sans',
-            fontWeight: 600,
-            fontSize: '18px',
-            color: 'var(--text-primary)',
-            cursor: 'pointer',
-            opacity: 0,
-            transition: 'all 0.3s ease',
-          }}
-          onMouseEnter={e => {
-            e.currentTarget.style.background = 'rgba(255,255,255,0.1)';
-            e.currentTarget.style.transform = 'translateY(-2px)';
-            e.currentTarget.style.boxShadow = '0 10px 40px rgba(124, 92, 255, 0.2)';
-          }}
-          onMouseLeave={e => {
-            e.currentTarget.style.background = 'var(--glass-bg)';
-            e.currentTarget.style.transform = 'none';
-            e.currentTarget.style.boxShadow = 'none';
-          }}
-        >
-          Enter the Store
-          <ArrowRight size={20} />
-        </button>
+        {/* Action Button Deck */}
+        <div style={{
+          marginTop: '64px',
+          display: isCompleted ? 'flex' : 'none',
+          alignItems: 'center',
+          gap: 20,
+          flexWrap: 'wrap'
+        }}>
+          <button 
+            className="story-continue-btn"
+            onClick={() => navigate('/')}
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '12px',
+              background: 'var(--accent-primary)',
+              border: 'none',
+              padding: '16px 36px',
+              borderRadius: '100px',
+              fontFamily: 'Plus Jakarta Sans',
+              fontWeight: 700,
+              fontSize: '17px',
+              color: '#000000',
+              cursor: 'pointer',
+              transition: 'all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+            }}
+            onMouseEnter={e => {
+              e.currentTarget.style.transform = 'translateY(-3px)';
+              e.currentTarget.style.boxShadow = '0 12px 35px rgba(57, 217, 196, 0.35)';
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.transform = 'none';
+              e.currentTarget.style.boxShadow = 'none';
+            }}
+          >
+            Enter the Store
+            <ArrowRight size={20} />
+          </button>
+
+          <Link
+            to="/shop"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 8,
+              background: 'rgba(255,255,255,0.06)',
+              border: '1px solid rgba(255,255,255,0.15)',
+              padding: '16px 28px',
+              borderRadius: '100px',
+              color: '#FFFFFF',
+              fontFamily: 'Plus Jakarta Sans',
+              fontWeight: 600,
+              fontSize: '16px',
+              textDecoration: 'none',
+              transition: 'all 0.2s',
+            }}
+            onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.12)'}
+            onMouseLeave={e => e.currentTarget.style.background = 'rgba(255,255,255,0.06)'}
+          >
+            Explore Student Gadgets
+          </Link>
+        </div>
       </div>
 
       <style>{`
         @keyframes fadeInUp {
-          from { opacity: 0; transform: translateY(20px); }
+          from { opacity: 0; transform: translateY(16px); }
           to { opacity: 1; transform: translateY(0); }
         }
         @keyframes popIn {
-          from { opacity: 0; transform: scale(0.8); }
+          from { opacity: 0; transform: scale(0.7); }
           to { opacity: 1; transform: scale(1); }
         }
       `}</style>
