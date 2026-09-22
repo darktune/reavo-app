@@ -10,7 +10,8 @@ export const products = [
       "M4 Chip",
       "18GB RAM",
       "512GB SSD",
-      "Liquid Retina XDR"
+      "Liquid Retina XDR",
+      "Free Laptop Stand & Bag"
     ],
     "technicalSpecs": {
       "Processor": "Apple M4 Chip (10-core CPU)",
@@ -33,7 +34,8 @@ export const products = [
       "M2 Chip",
       "8GB RAM",
       "256GB SSD",
-      "Liquid Retina"
+      "Liquid Retina",
+      "Free Laptop Stand & Bag"
     ],
     "technicalSpecs": {
       "Processor": "Apple M2 Chip",
@@ -1459,7 +1461,8 @@ export const products = [
       "A17 Pro",
       "256GB",
       "Titanium",
-      "48MP Camera"
+      "48MP Camera",
+      "Free AirPods Pro 2 & Pouch"
     ],
     "technicalSpecs": {
       "Processor": "A17 Pro Bionic chip",
@@ -1551,7 +1554,8 @@ export const products = [
       "Apple A8 Chip",
       "16GB Storage",
       "4.0\" Retina",
-      "Ultralight 88g"
+      "Ultralight 88g",
+      "Free Apple Earpiece"
     ],
     "technicalSpecs": {
       "Processor": "Apple A8 chip with 64-bit architecture",
@@ -1566,7 +1570,7 @@ export const products = [
   {
     "id": "ipod-touch-6th-32gb",
     "name": "iPod Touch 6th Gen 32GB",
-    "price": 85000,
+    "price": 80000,
     "category": "students",
     "image": "https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?auto=format&fit=crop&q=80&w=800",
     "description": "Compact 32GB music and offline media library for distraction-free listening.",
@@ -1574,7 +1578,8 @@ export const products = [
       "Apple A8 Chip",
       "32GB Storage",
       "4.0\" Retina",
-      "Siri & Bluetooth 4.1"
+      "Siri & Bluetooth 4.1",
+      "Free Apple Earpiece"
     ],
     "technicalSpecs": {
       "Processor": "Apple A8 chip",
@@ -1597,7 +1602,8 @@ export const products = [
       "Apple A8 Chip",
       "64GB Storage",
       "1080p HD Video",
-      "AirPlay"
+      "AirPlay",
+      "Free Apple Earpiece"
     ],
     "technicalSpecs": {
       "Processor": "Apple A8 chip",
@@ -1620,7 +1626,8 @@ export const products = [
       "Apple A10 Fusion",
       "32GB Storage",
       "Group FaceTime",
-      "iOS Supported"
+      "iOS Supported",
+      "Free Apple Earpiece"
     ],
     "technicalSpecs": {
       "Processor": "Apple A10 Fusion chip (64-bit quad-core)",
@@ -1643,7 +1650,8 @@ export const products = [
       "Apple A10 Fusion",
       "128GB Storage",
       "Apple Music Lossless",
-      "Ultra Slim 6.1mm"
+      "Ultra Slim 6.1mm",
+      "Free Apple Earpiece"
     ],
     "technicalSpecs": {
       "Processor": "Apple A10 Fusion",
@@ -1666,7 +1674,8 @@ export const products = [
       "Apple A10 Fusion",
       "256GB Max Storage",
       "Audiophile Portable",
-      "Touch Display"
+      "Touch Display",
+      "Free Apple Earpiece"
     ],
     "technicalSpecs": {
       "Processor": "Apple A10 Fusion",
@@ -1802,7 +1811,8 @@ export const products = [
       "10x MacBook Air",
       "Lab Configuration",
       "Locking Cabinet",
-      "Networking"
+      "Networking",
+      "Free Laptop Stand & Bag"
     ],
     "technicalSpecs": {
       "Devices": "10x MacBook Air M2",
@@ -1960,7 +1970,8 @@ export const products = [
       "Apple M1 Chip",
       "8GB RAM",
       "256GB SSD",
-      "Retina Display"
+      "Retina Display",
+      "Free Laptop Stand & Bag"
     ],
     "technicalSpecs": {
       "Processor": "Apple M1 (8-core CPU, 7-core GPU)",
@@ -1983,7 +1994,8 @@ export const products = [
       "Apple M3 Chip",
       "16GB RAM",
       "512GB SSD",
-      "Liquid Retina"
+      "Liquid Retina",
+      "Free Laptop Stand & Bag"
     ],
     "technicalSpecs": {
       "Processor": "Apple M3 (8-core CPU, 10-core GPU)",
@@ -2006,7 +2018,8 @@ export const products = [
       "A13 Bionic",
       "64GB Storage",
       "6.1\" Liquid Retina",
-      "Dual 12MP"
+      "Dual 12MP",
+      "Free AirPods Pro 2 & Pouch"
     ],
     "technicalSpecs": {
       "Processor": "Apple A13 Bionic chip",
@@ -2029,7 +2042,8 @@ export const products = [
       "A14 Bionic",
       "128GB Storage",
       "Super Retina XDR",
-      "5G Capable"
+      "5G Capable",
+      "Free AirPods Pro 2 & Pouch"
     ],
     "technicalSpecs": {
       "Processor": "Apple A14 Bionic chip",
@@ -2052,7 +2066,8 @@ export const products = [
       "A15 Bionic",
       "128GB Storage",
       "Cinematic Video",
-      "Ceramic Shield"
+      "Ceramic Shield",
+      "Free AirPods Pro 2 & Pouch"
     ],
     "technicalSpecs": {
       "Processor": "Apple A15 Bionic chip",
@@ -2075,7 +2090,8 @@ export const products = [
       "A15 Bionic (5-core GPU)",
       "128GB Storage",
       "Photonic Engine",
-      "Action Mode"
+      "Action Mode",
+      "Free AirPods Pro 2 & Pouch"
     ],
     "technicalSpecs": {
       "Processor": "Apple A15 Bionic (5-core GPU)",
@@ -2098,7 +2114,8 @@ export const products = [
       "Dynamic Island",
       "48MP Camera",
       "USB-C",
-      "A16 Bionic"
+      "A16 Bionic",
+      "Free AirPods Pro 2 & Pouch"
     ],
     "technicalSpecs": {
       "Processor": "Apple A16 Bionic chip",
@@ -2121,7 +2138,8 @@ export const products = [
       "A18 Chip",
       "Camera Control Button",
       "Apple Intelligence",
-      "USB-C"
+      "USB-C",
+      "Free AirPods Pro 2 & Pouch"
     ],
     "technicalSpecs": {
       "Processor": "Apple A18 chip",
@@ -2719,6 +2737,29 @@ export const products = [
       "Ports": "USB-C, USB-A, HDMI 2.1"
     },
     "stock_quantity": 6
+  },
+  {
+    "id": "ipad-6th-gen-32gb",
+    "name": "iPad 6th Gen 32GB",
+    "price": 80000,
+    "category": "students",
+    "image": "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&q=80&w=800",
+    "description": "Compact 9.7\" Retina iPad with Apple Pencil support and A10 Fusion chip. Includes Free AirPods Pro bonus.",
+    "specs": [
+      "Apple A10 Fusion",
+      "32GB Storage",
+      "9.7\" Retina Display",
+      "Free AirPods Pro"
+    ],
+    "technicalSpecs": {
+      "Processor": "Apple A10 Fusion chip (64-bit)",
+      "Memory": "2GB RAM",
+      "Storage": "32GB",
+      "Display": "9.7\" Retina Display (2048 x 1536)",
+      "Battery": "Up to 10 hours",
+      "Bonus": "Free AirPods Pro included"
+    },
+    "stock_quantity": 8
   }
 ];
 
