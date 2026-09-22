@@ -376,103 +376,107 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Interactive Student Brand Manifesto Section */}
-      <section style={{ padding: 'clamp(50px, 8vw, 90px) 0', position: 'relative' }}>
-        <div className="container">
-          <ScrollReveal>
-            <div 
-              onClick={() => navigate('/story')}
-              className="glass-panel"
-              style={{
-                position: 'relative',
-                overflow: 'hidden',
-                borderRadius: 28,
-                padding: 'clamp(32px, 5vw, 64px)',
-                background: 'linear-gradient(135deg, rgba(22, 22, 24, 0.95) 0%, rgba(13, 13, 15, 0.98) 100%)',
-                border: '1px solid rgba(124, 92, 255, 0.25)',
-                cursor: 'pointer',
-                transition: 'all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1)'
-              }}
-              onMouseEnter={e => {
-                e.currentTarget.style.transform = 'translateY(-4px)';
-                e.currentTarget.style.borderColor = 'rgba(124, 92, 255, 0.5)';
-                e.currentTarget.style.boxShadow = '0 20px 50px rgba(0,0,0,0.6), 0 0 35px rgba(124, 92, 255, 0.2)';
-              }}
-              onMouseLeave={e => {
-                e.currentTarget.style.transform = 'none';
-                e.currentTarget.style.borderColor = 'rgba(124, 92, 255, 0.25)';
-                e.currentTarget.style.boxShadow = 'none';
-              }}
-            >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 20, flexWrap: 'wrap' }}>
-                <span style={{ 
-                  background: 'rgba(57, 217, 196, 0.12)', 
-                  border: '1px solid rgba(57, 217, 196, 0.3)', 
-                  color: 'var(--accent-primary)', 
-                  fontSize: 11, 
-                  fontWeight: 700, 
-                  padding: '4px 12px', 
-                  borderRadius: 100, 
-                  letterSpacing: '0.08em',
-                  textTransform: 'uppercase'
+      {/* Interactive Student Brand Manifesto Section (reserved to small link & ambassadors for identified users) */}
+      {!userName && (
+        <section style={{ padding: 'clamp(50px, 8vw, 90px) 0', position: 'relative' }}>
+          <div className="container">
+            <ScrollReveal>
+              <div 
+                onClick={() => navigate('/story')}
+                className="glass-panel"
+                style={{
+                  position: 'relative',
+                  overflow: 'hidden',
+                  borderRadius: 28,
+                  padding: 'clamp(32px, 5vw, 64px)',
+                  background: 'var(--glass-bg)',
+                  border: '1px solid var(--border-subtle)',
+                  cursor: 'pointer',
+                  transition: 'all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1)'
+                }}
+                onMouseEnter={e => {
+                  e.currentTarget.style.transform = 'translateY(-4px)';
+                  e.currentTarget.style.borderColor = 'rgba(124, 92, 255, 0.5)';
+                  e.currentTarget.style.boxShadow = '0 20px 50px rgba(0,0,0,0.2), 0 0 35px rgba(124, 92, 255, 0.15)';
+                }}
+                onMouseLeave={e => {
+                  e.currentTarget.style.transform = 'none';
+                  e.currentTarget.style.borderColor = 'var(--border-subtle)';
+                  e.currentTarget.style.boxShadow = 'none';
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 20, flexWrap: 'wrap' }}>
+                  <span style={{ 
+                    background: 'rgba(57, 217, 196, 0.12)', 
+                    border: '1px solid rgba(57, 217, 196, 0.3)', 
+                    color: 'var(--accent-primary)', 
+                    fontSize: 11, 
+                    fontWeight: 700, 
+                    padding: '4px 12px', 
+                    borderRadius: 100, 
+                    letterSpacing: '0.08em',
+                    textTransform: 'uppercase'
+                  }}>
+                    Nigeria's No. 1 Student Gadget Brand
+                  </span>
+                  <span style={{ fontSize: 12, color: 'var(--text-secondary)' }}>• Tap to experience full kinetic story</span>
+                </div>
+
+                <h2 style={{
+                  fontFamily: 'Plus Jakarta Sans, sans-serif',
+                  fontSize: 'clamp(24px, 4vw, 48px)',
+                  fontWeight: 700,
+                  lineHeight: 1.2,
+                  letterSpacing: '-0.03em',
+                  color: 'var(--text-primary)',
+                  marginBottom: 20,
+                  maxWidth: 950
                 }}>
-                  Nigeria's No. 1 Student Gadget Brand
-                </span>
-                <span style={{ fontSize: 12, color: 'var(--text-secondary)' }}>• Tap to experience full kinetic story</span>
-              </div>
+                  Built for the creator editing between lectures, the gamer grinding after class, and the hustler running a business from a hostel room.
+                </h2>
 
-              <h2 style={{
-                fontFamily: 'Plus Jakarta Sans, sans-serif',
-                fontSize: 'clamp(24px, 4vw, 48px)',
-                fontWeight: 700,
-                lineHeight: 1.2,
-                letterSpacing: '-0.03em',
-                color: '#FFFFFF',
-                marginBottom: 20,
-                maxWidth: 950
-              }}>
-                Built for the creator editing between lectures, the gamer grinding after class, and the hustler running a business from a hostel room.
-              </h2>
-
-              <p style={{
-                fontSize: 'clamp(14px, 1.8vw, 18px)',
-                color: 'var(--text-secondary)',
-                lineHeight: 1.6,
-                maxWidth: 750,
-                marginBottom: 28
-              }}>
-                Real devices, real prices, real people. From Lagos to Ilorin, to Abia, to Abuja, round Nigeria. 
-                <strong style={{ 
-                  background: 'linear-gradient(135deg, #C084FC 0%, #F472B6 50%, #38BDF8 100%)',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  color: '#C084FC',
-                  marginLeft: 8,
-                  fontWeight: 700
+                <p style={{
+                  fontSize: 'clamp(14px, 1.8vw, 18px)',
+                  color: 'var(--text-secondary)',
+                  lineHeight: 1.6,
+                  maxWidth: 750,
+                  marginBottom: 28
                 }}>
-                  {userName ? `Welcome, ${userName}.` : 'Your Style. Our Tech. Infinite Possibilities.'}
-                </strong>
-              </p>
+                  Real devices, real prices, real people. From Lagos to Ilorin, to Abia, to Abuja, round Nigeria. 
+                  <strong style={{ 
+                    background: 'linear-gradient(135deg, #C084FC 0%, #F472B6 50%, #38BDF8 100%)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    color: '#C084FC',
+                    marginLeft: 8,
+                    fontWeight: 700
+                  }}>
+                    Your Style. Our Tech. Infinite Possibilities.
+                  </strong>
+                </p>
 
-              <div style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: 10,
-                background: 'rgba(124, 92, 255, 0.18)',
-                border: '1px solid rgba(124, 92, 255, 0.4)',
-                borderRadius: 100,
-                padding: '12px 24px',
-                color: '#FFFFFF',
-                fontWeight: 600,
-                fontSize: 14
-              }}>
-                <span>Experience the Kinetic Story</span>
-                <ArrowRight size={16} />
+                <div style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 10,
+                  background: 'var(--accent-purple)',
+                  border: 'none',
+                  borderRadius: 100,
+                  padding: '12px 24px',
+                  color: '#FFFFFF',
+                  fontWeight: 600,
+                  fontSize: 14,
+                  boxShadow: '0 4px 14px rgba(124, 92, 255, 0.35)',
+                  transition: 'transform 0.2s, box-shadow 0.2s',
+                }}>
+                  <span>Experience the Kinetic Story</span>
+                  <ArrowRight size={16} />
+                </div>
               </div>
-            </div>
-          </ScrollReveal>
-        </div>
-      </section>
+            </ScrollReveal>
+          </div>
+        </section>
+      )}
 
       {/* Community Section */}
       <section style={{ padding: 'clamp(60px, 8vw, 80px) 0', borderTop: '1px solid var(--border-subtle)' }}>

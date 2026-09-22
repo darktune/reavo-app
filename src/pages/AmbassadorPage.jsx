@@ -83,8 +83,8 @@ export default function AmbassadorPage() {
               padding: '32px clamp(20px, 4vw, 44px)',
               borderRadius: 24,
               cursor: 'pointer',
-              border: '1px solid rgba(124, 92, 255, 0.28)',
-              background: 'linear-gradient(135deg, rgba(124, 92, 255, 0.08) 0%, rgba(57, 217, 196, 0.05) 100%)',
+              border: '1px solid var(--border-subtle)',
+              background: 'var(--glass-bg)',
               transition: 'all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1)',
               display: 'flex',
               alignItems: 'center',
@@ -99,7 +99,7 @@ export default function AmbassadorPage() {
             }}
             onMouseLeave={e => {
               e.currentTarget.style.transform = 'none';
-              e.currentTarget.style.borderColor = 'rgba(124, 92, 255, 0.28)';
+              e.currentTarget.style.borderColor = 'var(--border-subtle)';
               e.currentTarget.style.boxShadow = 'none';
             }}
           >
@@ -129,7 +129,7 @@ export default function AmbassadorPage() {
                 </span>
                 <span style={{ fontSize: 12, color: 'var(--text-secondary)' }}>Nigeria's No. 1 Student Brand</span>
               </div>
-              <h3 style={{ fontSize: 'clamp(18px, 2.6vw, 26px)', fontWeight: 700, lineHeight: 1.35, marginBottom: 10, color: '#FFFFFF' }}>
+              <h3 style={{ fontSize: 'clamp(18px, 2.6vw, 26px)', fontWeight: 700, lineHeight: 1.35, marginBottom: 10, color: 'var(--text-primary)' }}>
                 "Built for the creator editing between lectures, the gamer grinding after class, the hustler running a business from a hostel room."
               </h3>
               <p style={{ fontSize: 13, color: 'var(--text-secondary)', margin: 0 }}>
@@ -155,12 +155,14 @@ export default function AmbassadorPage() {
               gap: 8,
               padding: '12px 24px',
               borderRadius: 100,
-              background: 'rgba(124, 92, 255, 0.18)',
-              border: '1px solid rgba(124, 92, 255, 0.4)',
+              background: 'var(--accent-purple)',
+              border: 'none',
               color: '#FFFFFF',
               fontSize: 13,
               fontWeight: 600,
-              whiteSpace: 'nowrap'
+              whiteSpace: 'nowrap',
+              boxShadow: '0 4px 14px rgba(124, 92, 255, 0.35)',
+              transition: 'transform 0.2s, box-shadow 0.2s',
             }}>
               <span>Experience The Story</span>
               <ArrowRight size={15} />

@@ -165,7 +165,7 @@ export default function StoryPage() {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        background: 'linear-gradient(to bottom, rgba(10,10,12,0.9) 0%, transparent 100%)',
+        background: 'linear-gradient(to bottom, var(--bg-void) 0%, transparent 100%)',
         backdropFilter: 'blur(10px)',
         WebkitBackdropFilter: 'blur(10px)',
       }}>
@@ -175,23 +175,21 @@ export default function StoryPage() {
             display: 'inline-flex',
             alignItems: 'center',
             gap: 8,
-            background: 'rgba(255,255,255,0.06)',
-            border: '1px solid rgba(255,255,255,0.12)',
+            background: 'var(--glass-bg)',
+            border: '1px solid var(--border-subtle)',
             borderRadius: 100,
             padding: '8px 16px',
-            color: '#FFFFFF',
+            color: 'var(--text-primary)',
             fontSize: 13,
             fontWeight: 500,
             cursor: 'pointer',
             transition: 'all 0.2s',
           }}
           onMouseEnter={e => {
-            e.currentTarget.style.background = 'rgba(255,255,255,0.12)';
-            e.currentTarget.style.borderColor = 'rgba(255,255,255,0.25)';
+            e.currentTarget.style.borderColor = 'var(--accent-primary)';
           }}
           onMouseLeave={e => {
-            e.currentTarget.style.background = 'rgba(255,255,255,0.06)';
-            e.currentTarget.style.borderColor = 'rgba(255,255,255,0.12)';
+            e.currentTarget.style.borderColor = 'var(--border-subtle)';
           }}
         >
           <ArrowLeft size={16} />
@@ -392,19 +390,19 @@ export default function StoryPage() {
               display: 'inline-flex',
               alignItems: 'center',
               gap: 8,
-              background: 'rgba(255,255,255,0.06)',
-              border: '1px solid rgba(255,255,255,0.15)',
+              background: 'var(--glass-bg)',
+              border: '1px solid var(--border-subtle)',
               padding: '16px 28px',
               borderRadius: '100px',
-              color: '#FFFFFF',
+              color: 'var(--text-primary)',
               fontFamily: 'Plus Jakarta Sans',
               fontWeight: 600,
               fontSize: '16px',
               textDecoration: 'none',
               transition: 'all 0.2s',
             }}
-            onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.12)'}
-            onMouseLeave={e => e.currentTarget.style.background = 'rgba(255,255,255,0.06)'}
+            onMouseEnter={e => e.currentTarget.style.borderColor = 'var(--accent-primary)'}
+            onMouseLeave={e => e.currentTarget.style.borderColor = 'var(--border-subtle)'}
           >
             Explore Student Gadgets
           </Link>
