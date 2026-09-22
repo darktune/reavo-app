@@ -11,8 +11,8 @@ export default function SEO({
 }) {
   const siteTitle = 'REAVO';
   const defaultDescription = 'REAVO • Campus Gadgets, Phones, Laptops & Electronics in Nigeria';
-  const defaultImage = 'https://reavo-app.vercel.app/logos/favicon_black.png';
-  const siteUrl = 'https://reavo-app.vercel.app';
+  const siteUrl = import.meta.env.VITE_SITE_URL || 'https://www.reavoglobal.com';
+  const defaultImage = `${siteUrl}/logos/favicon_black.png`;
 
   const fullTitle = title === siteTitle ? title : `${title} | ${siteTitle}`;
   const metaDescription = description || defaultDescription;

@@ -209,7 +209,7 @@ export const products = [
   {
     "id": "ipad-10th-gen-64gb",
     "name": "iPad 10th Gen 64GB",
-    "price": 490000,
+    "price": 420000,
     "category": "students",
     "image": "https://images.unsplash.com/photo-1585771724684-38269d6639fd?auto=format&fit=crop&q=80&w=800",
     "description": "The colorful, versatile all-screen notebook replacement for campus life.",
@@ -2294,6 +2294,431 @@ export const products = [
       "Closure": "YKK Smooth Zippers"
     },
     "stock_quantity": 110
+  },
+  {
+    "id": "ipad-9th-gen-64gb",
+    "name": "iPad 9th Gen 64GB",
+    "price": 280000,
+    "category": "students",
+    "image": "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&q=80&w=800",
+    "description": "The ultimate budget campus powerhouse with A13 Bionic, Center Stage, and Apple Pencil 1st Gen support.",
+    "specs": [
+      "A13 Bionic",
+      "64GB Storage",
+      "10.2\" Retina",
+      "Center Stage Camera"
+    ],
+    "technicalSpecs": {
+      "Processor": "Apple A13 Bionic chip with Neural Engine",
+      "Memory": "3GB RAM",
+      "Storage": "64GB",
+      "Display": "10.2\" Retina Display (2160 x 1620)",
+      "Battery": "Up to 10 hours",
+      "Ports": "Lightning, 3.5mm Headphone Jack"
+    },
+    "stock_quantity": 10
+  },
+  {
+    "id": "ipad-pro-11-m5-256gb",
+    "name": "iPad Pro 11” M5 256GB",
+    "price": 1750000,
+    "category": "creators",
+    "image": "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&q=80&w=800",
+    "description": "Next-gen flagship M5 architecture with Tandem OLED display and extreme ray tracing.",
+    "specs": [
+      "Apple M5 Chip",
+      "256GB NVMe",
+      "Tandem OLED Display",
+      "Apple Intelligence"
+    ],
+    "technicalSpecs": {
+      "Processor": "Apple M5 Chip",
+      "Memory": "12GB Unified Memory",
+      "Storage": "256GB",
+      "Display": "11.0\" Ultra Retina XDR OLED",
+      "Battery": "Up to 10 hours",
+      "Ports": "Thunderbolt 4 / USB-C"
+    },
+    "stock_quantity": 10
+  },
+  {
+    "id": "ipad-pro-11-m5-512gb",
+    "name": "iPad Pro 11” M5 512GB",
+    "price": 1970000,
+    "category": "biz",
+    "image": "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&q=80&w=800",
+    "description": "Pro workstation speed with 512GB high-speed storage and Apple Pencil Pro support.",
+    "specs": [
+      "Apple M5 Chip",
+      "512GB Storage",
+      "ProMotion 120Hz",
+      "Face ID"
+    ],
+    "technicalSpecs": {
+      "Processor": "Apple M5 Chip",
+      "Memory": "12GB Unified Memory",
+      "Storage": "512GB",
+      "Display": "11.0\" Ultra Retina XDR",
+      "Battery": "Up to 10 hours",
+      "Ports": "Thunderbolt 4"
+    },
+    "stock_quantity": 9
+  },
+  {
+    "id": "ipad-pro-11-m5-1tb",
+    "name": "iPad Pro 11” M5 1TB",
+    "price": 2220000,
+    "category": "biz",
+    "image": "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&q=80&w=800",
+    "description": "Massive 1TB capacity for studio creators, 4K ProRes video rendering, and heavy AI multitasking.",
+    "specs": [
+      "Apple M5 Chip",
+      "1TB NVMe",
+      "16GB RAM",
+      "Nano-texture Glass Opt"
+    ],
+    "technicalSpecs": {
+      "Processor": "Apple M5 Chip (10-core CPU)",
+      "Memory": "16GB Unified Memory",
+      "Storage": "1TB NVMe",
+      "Display": "11.0\" Ultra Retina XDR",
+      "Battery": "Up to 10 hours",
+      "Ports": "Thunderbolt 4"
+    },
+    "stock_quantity": 5
+  },
+  {
+    "id": "ipad-pro-13-m5-256gb",
+    "name": "iPad Pro 13” M5 256GB",
+    "price": 1800000,
+    "category": "biz",
+    "image": "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&q=80&w=800",
+    "description": "Expansive 13-inch Tandem OLED canvas powered by Apple M5 for designers and developers.",
+    "specs": [
+      "Apple M5 Chip",
+      "256GB Storage",
+      "13\" Tandem OLED",
+      "Ultrathin 5.1mm"
+    ],
+    "technicalSpecs": {
+      "Processor": "Apple M5 Chip",
+      "Memory": "12GB RAM",
+      "Storage": "256GB",
+      "Display": "13.0\" Ultra Retina XDR OLED",
+      "Battery": "Up to 10 hours",
+      "Ports": "Thunderbolt 4"
+    },
+    "stock_quantity": 8
+  },
+  {
+    "id": "ipad-pro-13-m5-512gb",
+    "name": "iPad Pro 13” M5 512GB",
+    "price": 2000000,
+    "category": "biz",
+    "image": "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&q=80&w=800",
+    "description": "Large format 512GB studio slate. Replaces your laptop with the Magic Keyboard.",
+    "specs": [
+      "Apple M5 Chip",
+      "512GB Storage",
+      "13\" Display",
+      "Pencil Pro Haptics"
+    ],
+    "technicalSpecs": {
+      "Processor": "Apple M5 Chip",
+      "Memory": "12GB Unified Memory",
+      "Storage": "512GB",
+      "Display": "13.0\" Ultra Retina XDR",
+      "Battery": "Up to 10 hours",
+      "Ports": "Thunderbolt 4"
+    },
+    "stock_quantity": 7
+  },
+  {
+    "id": "ipad-pro-13-m5-2tb",
+    "name": "iPad Pro 13” M5 2TB",
+    "price": 2450000,
+    "category": "biz",
+    "image": "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&q=80&w=800",
+    "description": "The pinnacle 2TB tier. Ultimate storage and 16GB RAM for top-tier creators and entrepreneurs.",
+    "specs": [
+      "Apple M5 Chip",
+      "2TB Max Storage",
+      "16GB RAM",
+      "Cinema-Grade Audio"
+    ],
+    "technicalSpecs": {
+      "Processor": "Apple M5 Chip",
+      "Memory": "16GB Unified Memory",
+      "Storage": "2TB NVMe",
+      "Display": "13.0\" Ultra Retina XDR OLED",
+      "Battery": "Up to 10 hours",
+      "Ports": "Thunderbolt 4"
+    },
+    "stock_quantity": 6
+  },
+  {
+    "id": "hp-victus-15-i7-1tb",
+    "name": "HP Victus 15 Gaming Laptop Core i7",
+    "price": 1650000,
+    "category": "gamers",
+    "image": "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?auto=format&fit=crop&q=80&w=800",
+    "description": "13th Gen Intel Core i7, 1TB SSD, and NVIDIA RTX 3050 6GB. Brand new with backlit keyboard.",
+    "specs": [
+      "Core i7 13th Gen",
+      "1TB SSD",
+      "16GB RAM",
+      "RTX 3050 6GB"
+    ],
+    "technicalSpecs": {
+      "Processor": "Intel Core i7-13700H (13th Gen)",
+      "Memory": "16GB DDR4",
+      "Storage": "1TB NVMe PCIe SSD",
+      "Display": "15.6\" FHD 144Hz IPS Anti-Glare",
+      "Graphics": "NVIDIA GeForce RTX 3050 6GB GDDR6",
+      "OS": "Windows 11 Home",
+      "Ports": "USB-C, 2x USB-A, HDMI 2.1, RJ-45, Audio"
+    },
+    "stock_quantity": 6
+  },
+  {
+    "id": "asus-tuf-gaming-a15",
+    "name": "ASUS TUF Gaming A15 Ryzen 7",
+    "price": 1470000,
+    "category": "gamers",
+    "image": "https://images.unsplash.com/photo-1603302576837-37561b2e2302?auto=format&fit=crop&q=80&w=800",
+    "description": "Military-grade durable gaming laptop powered by AMD Ryzen 7 and RTX 3050 graphics. Brand new.",
+    "specs": [
+      "AMD Ryzen 7",
+      "512GB SSD",
+      "16GB RAM",
+      "RTX 3050 4GB"
+    ],
+    "technicalSpecs": {
+      "Processor": "AMD Ryzen 7 7735HS (8 cores / 16 threads)",
+      "Memory": "16GB DDR5-4800MHz",
+      "Storage": "512GB PCIe 4.0 NVMe SSD",
+      "Display": "15.6\" FHD 144Hz Adaptive-Sync",
+      "Graphics": "NVIDIA GeForce RTX 3050 4GB",
+      "OS": "Windows 11 Home",
+      "Ports": "USB-C, USB-A, HDMI 2.1, Gigabit LAN"
+    },
+    "stock_quantity": 5
+  },
+  {
+    "id": "asus-tuf-gaming-a16-rtx5060",
+    "name": "ASUS TUF Gaming A16 Ryzen 7 RTX 5060",
+    "price": 2580000,
+    "category": "gamers",
+    "image": "https://images.unsplash.com/photo-1603302576837-37561b2e2302?auto=format&fit=crop&q=80&w=800",
+    "description": "High-power 16-inch WUXGA anti-glare gaming rig with 32GB RAM and next-gen RTX 5060 8GB. Brand new.",
+    "specs": [
+      "AMD Ryzen 7",
+      "1TB SSD",
+      "32GB RAM",
+      "RTX 5060 8GB"
+    ],
+    "technicalSpecs": {
+      "Processor": "AMD Ryzen 7 High-Performance Processor",
+      "Memory": "32GB DDR5 Dual-Channel",
+      "Storage": "1TB PCIe 4.0 SSD",
+      "Display": "16.0\" WUXGA 165Hz Anti-Glare (16:10)",
+      "Graphics": "NVIDIA GeForce RTX 5060 8GB GDDR6",
+      "OS": "Windows 11",
+      "Ports": "Type-C USB4, USB 3.2, HDMI 2.1, LAN"
+    },
+    "stock_quantity": 8
+  },
+  {
+    "id": "asus-tuf-gaming-f16-512gb",
+    "name": "ASUS TUF Gaming F16 Core i7 512GB",
+    "price": 2560000,
+    "category": "gamers",
+    "image": "https://images.unsplash.com/photo-1603302576837-37561b2e2302?auto=format&fit=crop&q=80&w=800",
+    "description": "Intel Core i7 16\" gaming beast with RTX 5050 8GB graphics and WUXGA anti-glare screen. Brand new.",
+    "specs": [
+      "Core i7",
+      "512GB SSD",
+      "16GB RAM",
+      "RTX 5050 8GB"
+    ],
+    "technicalSpecs": {
+      "Processor": "Intel Core i7 13th/14th Gen",
+      "Memory": "16GB DDR5 RAM",
+      "Storage": "512GB PCIe Gen 4 SSD",
+      "Display": "16.0\" WUXGA 165Hz Display",
+      "Graphics": "NVIDIA GeForce RTX 5050 8GB",
+      "OS": "Windows 11",
+      "Ports": "Thunderbolt 4, USB-A, HDMI 2.1"
+    },
+    "stock_quantity": 7
+  },
+  {
+    "id": "asus-tuf-gaming-f16-1tb",
+    "name": "ASUS TUF Gaming F16 Core i7 1TB",
+    "price": 2700000,
+    "category": "gamers",
+    "image": "https://images.unsplash.com/photo-1603302576837-37561b2e2302?auto=format&fit=crop&q=80&w=800",
+    "description": "1TB high-capacity version of the ASUS TUF F16 with Core i7 and RTX 5050 8GB. Brand new.",
+    "specs": [
+      "Core i7",
+      "1TB SSD",
+      "16GB RAM",
+      "RTX 5050 8GB"
+    ],
+    "technicalSpecs": {
+      "Processor": "Intel Core i7 Processor",
+      "Memory": "16GB DDR5 High-Speed",
+      "Storage": "1TB NVMe PCIe 4.0 SSD",
+      "Display": "16.0\" WUXGA Anti-Glare 165Hz",
+      "Graphics": "NVIDIA GeForce RTX 5050 8GB",
+      "OS": "Windows 11",
+      "Ports": "Thunderbolt 4, USB-A, HDMI 2.1"
+    },
+    "stock_quantity": 9
+  },
+  {
+    "id": "dell-pro-max-16-ultra-7",
+    "name": "Dell Pro Max 16 Premium Core Ultra 7",
+    "price": 3600000,
+    "category": "biz",
+    "image": "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?auto=format&fit=crop&q=80&w=800",
+    "description": "Intel Core Ultra 7 265H vPro with 32GB RAM and professional NVIDIA RTX Pro 2000 8GB GPU. Brand new workstation.",
+    "specs": [
+      "Core Ultra 7 vPro",
+      "512GB SSD",
+      "32GB RAM",
+      "RTX Pro 2000 8GB"
+    ],
+    "technicalSpecs": {
+      "Processor": "Intel Core Ultra 7 265H vPro with AI Boost NPU",
+      "Memory": "32GB LPDDR5x",
+      "Storage": "512GB NVMe PCIe Gen 4 SSD",
+      "Display": "16.0\" QHD+ IPS PremierColor Display",
+      "Graphics": "NVIDIA RTX Pro 2000 8GB ISV Certified",
+      "OS": "Windows 11 Pro",
+      "Ports": "Thunderbolt 4, HDMI, SD Card Reader"
+    },
+    "stock_quantity": 8
+  },
+  {
+    "id": "dell-alienware-16-rtx5050",
+    "name": "Dell Alienware 16 Aurora Core i7 RTX 5050",
+    "price": 2670000,
+    "category": "gamers",
+    "image": "https://images.unsplash.com/photo-1593642702821-c8da6771f0c6?auto=format&fit=crop&q=80&w=800",
+    "description": "Iconic Alienware thermal engineering with 13th Gen Core i7, 1TB SSD, 16GB DDR5, and RTX 5050 8GB. Brand new.",
+    "specs": [
+      "Core i7 13th Gen",
+      "1TB SSD",
+      "16GB DDR5",
+      "RTX 5050 8GB"
+    ],
+    "technicalSpecs": {
+      "Processor": "Intel Core i7-13700HX (16 Cores)",
+      "Memory": "16GB DDR5-5600MHz",
+      "Storage": "1TB PCIe NVMe SSD",
+      "Display": "16.0\" QHD+ 240Hz 3ms ComfortView Plus",
+      "Graphics": "NVIDIA GeForce RTX 5050 8GB",
+      "OS": "Windows 11 Home",
+      "Ports": "Alienware Cryo-Tech cooling, TB4, HDMI 2.1"
+    },
+    "stock_quantity": 10
+  },
+  {
+    "id": "dell-alienware-16-rtx5060",
+    "name": "Dell Alienware 16 Aurora Core i7 RTX 5060",
+    "price": 2800000,
+    "category": "gamers",
+    "image": "https://images.unsplash.com/photo-1593642702821-c8da6771f0c6?auto=format&fit=crop&q=80&w=800",
+    "description": "Upgraded 32GB DDR5 Alienware 16 Aurora with RTX 5060 8GB graphics for max esports FPS. Brand new.",
+    "specs": [
+      "Core i7 13th Gen",
+      "1TB SSD",
+      "32GB DDR5",
+      "RTX 5060 8GB"
+    ],
+    "technicalSpecs": {
+      "Processor": "Intel Core i7-13700HX",
+      "Memory": "32GB DDR5-5600MHz Dual-Channel",
+      "Storage": "1TB PCIe NVMe SSD",
+      "Display": "16.0\" QHD+ 240Hz G-SYNC Display",
+      "Graphics": "NVIDIA GeForce RTX 5060 8GB GDDR6",
+      "OS": "Windows 11 Home",
+      "Ports": "Thunderbolt 4, USB 3.2, HDMI 2.1, 2.5G Killer Ethernet"
+    },
+    "stock_quantity": 9
+  },
+  {
+    "id": "dell-pro-max-16-ultra-9-openbox",
+    "name": "Dell Pro Max 16 Core Ultra 9 (Open Box)",
+    "price": 3300000,
+    "category": "biz",
+    "image": "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?auto=format&fit=crop&q=80&w=800",
+    "description": "Flagship Core Ultra 9 285H vPro with 1TB SSD, 32GB RAM, Facial Recognition, and RTX Pro 1000 8GB. Open box deal.",
+    "specs": [
+      "Core Ultra 9 vPro",
+      "1TB SSD",
+      "32GB RAM",
+      "RTX Pro 1000 8GB"
+    ],
+    "technicalSpecs": {
+      "Processor": "Intel Core Ultra 9 285H vPro",
+      "Memory": "32GB LPDDR5x RAM",
+      "Storage": "1TB NVMe PCIe SSD",
+      "Display": "16.0\" QHD+ 100% sRGB Display",
+      "Graphics": "NVIDIA RTX Pro 1000 8GB",
+      "OS": "Windows 11 Pro",
+      "Features": "Facial Recognition IR Camera, Backlit Keyboard"
+    },
+    "stock_quantity": 6
+  },
+  {
+    "id": "hp-victus-15-i5-512gb",
+    "name": "HP Victus 15 Gaming Laptop Core i5",
+    "price": 1400000,
+    "category": "gamers",
+    "image": "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?auto=format&fit=crop&q=80&w=800",
+    "description": "Affordable student gaming laptop featuring 13th Gen Core i5, 512GB SSD, 16GB RAM, and RTX 3050 6GB. Brand new.",
+    "specs": [
+      "Core i5 13th Gen",
+      "512GB SSD",
+      "16GB RAM",
+      "RTX 3050 6GB"
+    ],
+    "technicalSpecs": {
+      "Processor": "Intel Core i5-13420H (8 Cores)",
+      "Memory": "16GB DDR4 RAM",
+      "Storage": "512GB PCIe NVMe SSD",
+      "Display": "15.6\" FHD 144Hz Anti-Glare",
+      "Graphics": "NVIDIA GeForce RTX 3050 6GB GDDR6",
+      "OS": "Windows 11 Home",
+      "Ports": "USB-C, USB-A, HDMI 2.1, Audio"
+    },
+    "stock_quantity": 10
+  },
+  {
+    "id": "hp-victus-15-i7-openbox",
+    "name": "HP Victus 15 Gaming Laptop Core i7 (Open Box)",
+    "price": 1750000,
+    "category": "gamers",
+    "image": "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?auto=format&fit=crop&q=80&w=800",
+    "description": "13th Gen Core i7 with 1TB SSD, 16GB RAM, and RTX 3050 6GB graphics. Open box verified deal.",
+    "specs": [
+      "Core i7 13th Gen",
+      "1TB SSD",
+      "16GB RAM",
+      "RTX 3050 6GB"
+    ],
+    "technicalSpecs": {
+      "Processor": "Intel Core i7-13700H",
+      "Memory": "16GB DDR4",
+      "Storage": "1TB NVMe SSD",
+      "Display": "15.6\" FHD 144Hz IPS",
+      "Graphics": "NVIDIA GeForce RTX 3050 6GB",
+      "OS": "Windows 11 Home",
+      "Ports": "USB-C, USB-A, HDMI 2.1"
+    },
+    "stock_quantity": 6
   }
 ];
 
