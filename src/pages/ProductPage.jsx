@@ -9,23 +9,54 @@ import { supabase } from '../lib/supabase';
 import ScrollReveal from '../components/ScrollReveal';
 import { products as fallbackProducts, categories as fallbackCategories } from '../data/products';
 
+// Helper to distinguish accessories (AirPods, chargers, cables, etc.) from gadgets
+function isAccessoryItem(p) {
+  if (!p) return false;
+  const name = (p.name || '').toLowerCase();
+  const id = (p.id || '').toLowerCase();
+
+  // Primary gadget hardware devices are never accessories
+  if (name.includes('ipad') || id.includes('ipad')) return false;
+  if (name.includes('iphone') || id.includes('iphone')) return false;
+  if (name.includes('macbook') || id.includes('macbook')) return false;
+  if (name.includes('laptop') && !name.includes('stand')) return false;
+  if (name.includes('tablet') || id.includes('tablet')) return false;
+  if (name.includes('galaxy') || id.includes('galaxy')) return false;
+
+  return (
+    name.includes('airpod') || id.includes('airpod') ||
+    name.includes('charger') || name.includes('charging') || id.includes('charging') ||
+    name.includes('power bank') || name.includes('powerbank') || id.includes('powerbank') ||
+    name.includes('cable') || name.includes('adapter') ||
+    name.includes('earpiece') || name.includes('earpod') || name.includes('headphone') ||
+    name.includes('keyboard') || id.includes('keyboard') ||
+    name.includes('mouse') || name.includes('deathadder') || id.includes('deathadder') ||
+    name.includes('stand') || name.includes('sleeve') || name.includes('pouch') || name.includes('case')
+  );
+}
+
 // Calculate deterministic, stable stock quantity
 function getStockCount(p) {
   if (!p) return 0;
-  if (typeof p.stock_quantity === 'number') return p.stock_quantity;
-  if (typeof p.stock === 'number') return p.stock;
-  if (p.stock_quantity !== undefined && p.stock_quantity !== null && !isNaN(Number(p.stock_quantity))) {
+  if (typeof p.stock_quantity === 'number' && p.stock_quantity > 0) return p.stock_quantity;
+  if (typeof p.stock === 'number' && p.stock > 0) return p.stock;
+  if (p.stock_quantity !== undefined && p.stock_quantity !== null && !isNaN(Number(p.stock_quantity)) && Number(p.stock_quantity) > 0) {
     return Number(p.stock_quantity);
   }
-  // Deterministic stable inventory for fallback catalog items based on id
-  if (p.id) {
-    let hash = 0;
-    for (let i = 0; i < p.id.length; i++) {
-      hash = p.id.charCodeAt(i) + ((hash << 5) - hash);
-    }
-    return Math.abs(hash % 20) + 4; // Stable stock between 4 and 23 units
+  // Deterministic stable inventory according to client specifications:
+  // Accessories (AirPods, chargers, etc.): 100+
+  // Gadgets (phones, tablets, laptops, cameras): 5-10 range
+  const id = p.id || p.name || 'default';
+  let hash = 0;
+  for (let i = 0; i < id.length; i++) {
+    hash = id.charCodeAt(i) + ((hash << 5) - hash);
   }
-  return 12;
+  const abs = Math.abs(hash);
+
+  if (isAccessoryItem(p)) {
+    return 100 + (abs % 90) + 5; // 105 to 194
+  }
+  return 5 + (abs % 6); // 5 to 10
 }
 
 export default function ProductPage() {

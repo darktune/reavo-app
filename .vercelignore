@@ -6,6 +6,7 @@ dist
 *.log
 *.zip
 *.pdf
+*.psd
 conversations/
 playwright-report/
 test-results/

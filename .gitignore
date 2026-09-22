@@ -34,5 +34,6 @@ test-results/
 conversations/readable_chats/
 conversations/*.jsonl
 *.pdf
+*.psd
 public/videos/preorders/
 
