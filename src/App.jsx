@@ -129,8 +129,8 @@ function App() {
           {!location.pathname.startsWith('/admin') && <CartDrawer />}
           {!location.pathname.startsWith('/admin') && <AssistantWidget />}
 
-          {/* Non-blocking WelcomePrompt overlay */}
-          <WelcomePrompt />
+          {/* Non-blocking WelcomePrompt overlay — store only, never on /admin */}
+          {!location.pathname.startsWith('/admin') && <WelcomePrompt />}
 
           <Toaster theme="dark" position="bottom-right" toastOptions={{
             style: {

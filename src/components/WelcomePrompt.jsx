@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
+import { useLocation } from 'react-router';
 import { useUser } from '../context/UserContext';
 import { ArrowRight, X } from 'lucide-react';
 import anime from 'animejs';
@@ -15,6 +16,9 @@ const universities = [
 ];
 
 export default function WelcomePrompt() {
+  const routeLocation = useLocation();
+  const isAdmin = routeLocation.pathname.startsWith('/admin');
+
   const { hasSeenIntro, showWelcomePrompt, completeIntro, skipIntro, setShowWelcomePrompt } = useUser();
   const [name, setName] = useState('');
   const [school, setSchool] = useState('');
@@ -25,8 +29,9 @@ export default function WelcomePrompt() {
   const cardRef = useRef(null);
   const inputRef = useRef(null);
 
-  // Auto-show after 8 seconds on first visit (only if never seen intro)
+  // Auto-show after 8 seconds on first visit (only if never seen intro and NOT on admin)
   useEffect(() => {
+    if (isAdmin) return;
     if (hasSeenIntro && !showWelcomePrompt) return;
 
     if (showWelcomePrompt) {
@@ -41,7 +46,7 @@ export default function WelcomePrompt() {
     }, 8000);
 
     return () => clearTimeout(timer);
-  }, [hasSeenIntro, showWelcomePrompt]);
+  }, [hasSeenIntro, showWelcomePrompt, isAdmin]);
 
   // Animate in when visible
   useEffect(() => {
@@ -141,6 +146,8 @@ export default function WelcomePrompt() {
       e.target.style.boxShadow = 'none';
     },
   };
+
+  if (isAdmin || !visible) return null;
 
   return (
     <div
