@@ -45,66 +45,7 @@ export default function AdminOrders() {
       .select('*, order_items(*, products(name, images, sku))')
       .order('created_at', { ascending: false });
     
-    if (data && data.length > 0) {
-      setOrders(data);
-    } else {
-      // Fallback enterprise mock data
-      setOrders([
-        {
-          id: 'ord-8f92a10c',
-          customer_name: 'Babajide Adeleke',
-          customer_email: 'adeleke.b@creatorshub.ng',
-          customer_phone: '+2348035550192',
-          total_amount: 850000,
-          subtotal: 800000,
-          discount_amount: 0,
-          delivery_fee: 50000,
-          status: 'Paid',
-          payment_method: 'Kora Pay',
-          shipping_address: { street: '14 Admiralty Way, Lekki Phase 1', city: 'Lagos', state: 'Lagos State', country: 'Nigeria' },
-          courier_info: { courier: 'GIG Logistics', trackingNumber: 'GIG-992014-LG', riderPhone: '+2348123456789' },
-          created_at: new Date(Date.now() - 3600000 * 2).toISOString(),
-          order_items: [
-            { id: 'oi-1', product_id: 'p1', quantity: 1, price: 800000, products: { name: 'REAVO Pro X1 Creator Rig', sku: 'RV-PX1-001', images: ['https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=400'] } }
-          ]
-        },
-        {
-          id: 'ord-3c41b89d',
-          customer_name: 'Chidinma Okoro',
-          customer_email: 'chidi.okoro@techstudio.africa',
-          customer_phone: '+2348149998210',
-          total_amount: 420000,
-          subtotal: 420000,
-          discount_amount: 0,
-          delivery_fee: 0,
-          status: 'Shipped',
-          payment_method: 'Card Payment',
-          shipping_address: { street: 'Block 4, Flat 2, Maryland Estate', city: 'Ikeja', state: 'Lagos State', country: 'Nigeria' },
-          courier_info: { courier: 'DHL Express', trackingNumber: 'DHL-NG-883921', riderPhone: '+2348098765432' },
-          created_at: new Date(Date.now() - 3600000 * 18).toISOString(),
-          order_items: [
-            { id: 'oi-2', product_id: 'p2', quantity: 1, price: 420000, products: { name: 'REAVO Air Tablet Ultra', sku: 'RV-ATU-002', images: ['https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=400'] } }
-          ]
-        },
-        {
-          id: 'ord-7a19e5f2',
-          customer_name: 'Faruk Bello',
-          customer_email: 'faruk.bello@abuja.biz',
-          customer_phone: '+2348021114455',
-          total_amount: 1250000,
-          subtotal: 1250000,
-          discount_amount: 0,
-          delivery_fee: 0,
-          status: 'Pending',
-          payment_method: 'Bank Transfer',
-          shipping_address: { street: '24 Crescent, Maitama', city: 'Abuja', state: 'FCT', country: 'Nigeria' },
-          created_at: new Date(Date.now() - 3600000 * 36).toISOString(),
-          order_items: [
-            { id: 'oi-3', product_id: 'p4', quantity: 1, price: 1250000, products: { name: 'REAVO CyberBlade Gamer Pro', sku: 'RV-CBG-004', images: ['https://images.unsplash.com/photo-1587202372775-e229f172b9d7?w=400'] } }
-          ]
-        }
-      ]);
-    }
+    setOrders(data || []);
     if (!isBackground) setLoading(false);
   }
 

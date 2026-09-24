@@ -22,12 +22,6 @@ export default function AdminContent() {
     return () => window.removeEventListener('reavo-scale-mode-changed', handleScaleMode);
   }, []);
 
-  const mockContent = [
-    { id: 1, type: 'banner', title: 'Summer Sale', subtitle: 'Up to 50% off all sneakers', cta_text: 'Shop Now', cta_link: '/category/sneakers', image_url: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff', status: 'live', position: 1, created_at: new Date().toISOString() },
-    { id: 2, type: 'announcement', message: 'Free shipping on orders over ₦50,000!', announcement_type: 'promo', display_location: 'banner_bar', status: 'live', created_at: new Date().toISOString() },
-    { id: 3, type: 'page', title: 'About Us', slug: '/about', status: 'live', body: 'Welcome to Reavo...', updated_at: new Date().toISOString() }
-  ];
-
   useEffect(() => {
     fetchData();
     const channel = supabase.channel('content_changes')
@@ -42,12 +36,12 @@ export default function AdminContent() {
     try {
       const { data, error } = await supabase.from('content_blocks').select('*').order('created_at', { ascending: false });
       if (error) {
-        setContent(mockContent);
+        setContent([]);
       } else {
-        setContent(data && data.length > 0 ? data : mockContent);
+        setContent(data || []);
       }
     } catch (e) {
-      setContent(mockContent);
+      setContent([]);
     } finally {
       if (!isBackground) setLoading(false);
     }

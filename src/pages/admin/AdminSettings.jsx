@@ -10,7 +10,7 @@ import AdminSkeleton from '../../components/admin/AdminSkeleton';
 const DEFAULT_SETTINGS = {
   storeName: 'REAVO Store',
   storeDescription: 'Premium electronics retail store',
-  contactEmail: 'admin@reavo.com',
+  contactEmail: 'abrahamtoluwani999@gmail.com',
   contactPhone: '+234 800 000 0000',
   defaultTaxRate: 7.5,
   lowStockThreshold: 5,
@@ -23,7 +23,7 @@ const DEFAULT_SETTINGS = {
     weeklyAnalyticsReport: true,
     aiActionAlerts: true,
   },
-  notificationEmails: 'admin@reavo.com, manager@reavo.com',
+  notificationEmails: 'abrahamtoluwani999@gmail.com',
   twoFactorEnabled: false,
   sessionTimeout: '24 hours',
   ipAllowlist: ''

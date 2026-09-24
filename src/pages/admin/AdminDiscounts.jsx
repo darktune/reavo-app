@@ -28,11 +28,6 @@ export default function AdminDiscounts() {
     };
   }
 
-  const mockDiscounts = [
-    { id: 1, code: 'SUMMER25', type: 'percentage', value: 25, min_order_amount: 5000, max_uses: 100, times_used: 45, valid_from: '2026-06-01T00:00:00Z', valid_until: '2026-08-31T23:59:59Z', applies_to: 'all', is_active: true, created_at: new Date().toISOString() },
-    { id: 2, code: 'WELCOME10', type: 'fixed', value: 1000, min_order_amount: 0, max_uses: null, times_used: 120, valid_from: '2026-01-01T00:00:00Z', valid_until: null, applies_to: 'all', is_active: true, created_at: new Date().toISOString() },
-  ];
-
   useEffect(() => {
     fetchData();
     const channel = supabase.channel('discounts_changes')
@@ -47,12 +42,12 @@ export default function AdminDiscounts() {
     try {
       const { data, error } = await supabase.from('discounts').select('*').order('created_at', { ascending: false });
       if (error) {
-        setDiscounts(mockDiscounts);
+        setDiscounts([]);
       } else {
-        setDiscounts(data && data.length > 0 ? data : mockDiscounts);
+        setDiscounts(data || []);
       }
     } catch (e) {
-      setDiscounts(mockDiscounts);
+      setDiscounts([]);
     } finally {
       if (!isBackground) setLoading(false);
     }

@@ -10,90 +10,6 @@ import ScrollReveal from '../../components/ScrollReveal';
 import AdminSkeleton from '../../components/admin/AdminSkeleton';
 import StaffTutorialHint from '../../components/admin/StaffTutorialHint';
 
-// --- Mock Data Fallback ---
-const MOCK_TRADE_INS = [
-  {
-    id: 'trd_001',
-    device_name: 'iPhone 13 Pro',
-    device_brand: 'Apple',
-    device_model: 'A2638',
-    device_storage: '256GB',
-    condition: 'Good',
-    condition_notes: 'Small scratch on the back, screen is perfect.',
-    images: ['https://via.placeholder.com/150'],
-    customer_name: 'John Doe',
-    customer_email: 'john@example.com',
-    customer_phone: '08012345678',
-    estimated_value: 350000,
-    payout_amount: null,
-    admin_grade: null,
-    admin_notes: '',
-    status: 'pending',
-    created_at: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
-    updated_at: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
-  },
-  {
-    id: 'trd_002',
-    device_name: 'Samsung Galaxy S22',
-    device_brand: 'Samsung',
-    device_model: 'SM-S901B',
-    device_storage: '128GB',
-    condition: 'Excellent',
-    condition_notes: 'Barely used, comes with original box.',
-    images: ['https://via.placeholder.com/150'],
-    customer_name: 'Jane Smith',
-    customer_email: 'jane@example.com',
-    customer_phone: '08123456789',
-    estimated_value: 420000,
-    payout_amount: 400000,
-    admin_grade: 'Excellent',
-    admin_notes: 'Confirmed excellent condition.',
-    status: 'approved',
-    created_at: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(),
-    updated_at: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
-  },
-  {
-    id: 'trd_003',
-    device_name: 'Google Pixel 6',
-    device_brand: 'Google',
-    device_model: 'GB7N6',
-    device_storage: '128GB',
-    condition: 'Poor',
-    condition_notes: 'Cracked screen and battery drains fast.',
-    images: ['https://via.placeholder.com/150'],
-    customer_name: 'Mike Johnson',
-    customer_email: 'mike@example.com',
-    customer_phone: '09011223344',
-    estimated_value: 150000,
-    payout_amount: 0,
-    admin_grade: 'Rejected',
-    admin_notes: 'Screen crack too severe, uneconomical to repair.',
-    status: 'rejected',
-    created_at: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000).toISOString(),
-    updated_at: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString(),
-  },
-  {
-    id: 'trd_004',
-    device_name: 'iPhone 12',
-    device_brand: 'Apple',
-    device_model: 'A2403',
-    device_storage: '64GB',
-    condition: 'Fair',
-    condition_notes: 'Dents on corners.',
-    images: ['https://via.placeholder.com/150'],
-    customer_name: 'Sarah Lee',
-    customer_email: 'sarah@example.com',
-    customer_phone: '08099887766',
-    estimated_value: 200000,
-    payout_amount: 190000,
-    admin_grade: 'Fair',
-    admin_notes: 'Dents match description, fully functional.',
-    status: 'completed',
-    created_at: new Date(Date.now() - 20 * 24 * 60 * 60 * 1000).toISOString(),
-    updated_at: new Date(Date.now() - 18 * 24 * 60 * 60 * 1000).toISOString(),
-  }
-];
-
 export default function AdminTradeIns() {
   const [loading, setLoading] = useState(true);
   const [tradeIns, setTradeIns] = useState([]);
@@ -146,18 +62,16 @@ export default function AdminTradeIns() {
 
       if (error) {
         if (error.code === '42P01') {
-          // Table doesn't exist yet, use mock
-          setTradeIns(MOCK_TRADE_INS);
+          setTradeIns([]);
         } else {
           throw error;
         }
       } else {
-        setTradeIns(data && data.length > 0 ? data : MOCK_TRADE_INS);
+        setTradeIns(data || []);
       }
     } catch (err) {
       console.error('Error fetching trade-ins:', err);
-      toast.error('Failed to load trade-ins');
-      setTradeIns(MOCK_TRADE_INS);
+      setTradeIns([]);
     } finally {
       setLoading(false);
     }

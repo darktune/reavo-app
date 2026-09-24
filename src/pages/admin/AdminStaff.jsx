@@ -81,21 +81,19 @@ export default function AdminStaff() {
       if (data && data.length > 0) {
         setStaff(data);
       } else {
-        setStaff(generateMockStaff());
+        setStaff(getDefaultStaff());
       }
     } catch (err) {
       console.error(err);
       toast.error('Failed to load staff members');
-      if (staff.length === 0) setStaff(generateMockStaff());
+      if (staff.length === 0) setStaff(getDefaultStaff());
     } finally {
       setLoading(false);
     }
   };
 
-  const generateMockStaff = () => [
-    { id: '1', name: 'Admin User', email: 'admin@reavo.com', role: 'OWNER', is_active: true, last_active_at: new Date().toISOString(), created_at: new Date().toISOString() },
-    { id: '2', name: 'John Doe', email: 'john@reavo.com', role: 'INVENTORY', is_active: true, last_active_at: new Date(Date.now() - 3600000).toISOString(), created_at: new Date().toISOString() },
-    { id: '3', name: 'Jane Smith', email: 'jane@reavo.com', role: 'SUPPORT', is_active: false, last_active_at: new Date(Date.now() - 86400000).toISOString(), created_at: new Date().toISOString() },
+  const getDefaultStaff = () => [
+    { id: 'fc09b1e8-fc6f-4206-ab96-508756faf3c3', name: 'Abraham Toluwani', email: 'abrahamtoluwani999@gmail.com', role: 'OWNER', is_active: true, last_active_at: new Date().toISOString(), created_at: new Date().toISOString() },
   ];
 
   const handleInvite = async (e) => {

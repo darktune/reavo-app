@@ -5,6 +5,7 @@ import ScrollReveal from '../../components/ScrollReveal';
 import AdminSkeleton from '../../components/admin/AdminSkeleton';
 import StaffTutorialHint from '../../components/admin/StaffTutorialHint';
 import { toast } from 'sonner';
+import { products as catalogProducts } from '../../data/products';
 
 export default function AdminProducts() {
   const [products, setProducts] = useState([]);
@@ -78,14 +79,18 @@ export default function AdminProducts() {
     if (data && data.length > 0) {
       setProducts(data);
     } else {
-      // Fallback mock data
-      setProducts([
-        { id: 'p1', name: 'REAVO Pro X1 Creator Rig', price: 850000, category: 'creators', stock_quantity: 42, sku: 'RV-PX1-001', quality_score: 95, images: ['https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=400'], description: 'Flagship creator workstation with dual OLED monitors and GPU acceleration.' },
-        { id: 'p2', name: 'REAVO Air Tablet Ultra', price: 420000, category: 'students', stock_quantity: 3, sku: 'RV-ATU-002', quality_score: 88, images: ['https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=400'], description: 'Lightweight slate for note taking, digital illustration and multi-tasking.' },
-        { id: 'p3', name: 'REAVO Studio ANC Pods', price: 120000, category: 'creators', stock_quantity: 0, sku: 'RV-SAP-003', quality_score: 72, images: ['https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=400'], description: 'Reference audio earbuds with active ambient noise cancellation.' },
-        { id: 'p4', name: 'REAVO CyberBlade Gamer Pro', price: 1250000, category: 'gamers', stock_quantity: 15, sku: 'RV-CBG-004', quality_score: 92, images: ['https://images.unsplash.com/photo-1587202372775-e229f172b9d7?w=400'], description: 'High-refresh esports desktop with custom liquid cooling loop.' },
-        { id: 'p5', name: 'REAVO Cinema Lens 50mm f/1.2', price: 680000, category: 'photographers', stock_quantity: 8, sku: 'RV-CL5-005', quality_score: 90, images: ['https://images.unsplash.com/photo-1617005082133-548c4dd27f35?w=400'], description: 'Ultra-fast prime glass with buttery bokeh for cinematic portraiture.' }
-      ]);
+      const formatted = catalogProducts.map(p => ({
+        id: p.id,
+        name: p.name,
+        price: p.price,
+        category: p.category || 'general',
+        stock_quantity: p.stock_quantity ?? 10,
+        sku: 'RV-' + p.id.toUpperCase().substring(0, 8),
+        quality_score: 95,
+        images: [p.image],
+        description: p.description || ''
+      }));
+      setProducts(formatted);
     }
     if (!isBackground) setLoading(false);
   }

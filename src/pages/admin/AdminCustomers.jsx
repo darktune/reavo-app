@@ -66,8 +66,8 @@ export default function AdminCustomers() {
 
       let safeData = data || [];
 
-      // Fake filters for demo if DB doesn't have exact status fields
-      if (filter === 'Active') safeData = safeData.filter(c => Math.random() > 0.3); // mock logic
+      // Filter logic
+      if (filter === 'Active') safeData = safeData.filter(c => (c.order_count || 0) > 0 || c.status === 'active');
       if (filter === 'VIP') safeData = safeData.filter(c => (c.total_spent || 0) > 1000000);
       
       setCustomers(safeData);
@@ -97,13 +97,9 @@ export default function AdminCustomers() {
       console.error(err);
       toast.error('Failed to load customers');
       
-      // Fallback data
-      setCustomers([
-        { id: '1', full_name: 'John Doe', email: 'john@example.com', phone: '+234 800 000 0000', created_at: new Date().toISOString(), total_spent: 1250000, order_count: 5, last_order_date: new Date().toISOString(), status: 'active' },
-        { id: '2', full_name: 'Jane Smith', email: 'jane@example.com', phone: '+234 811 111 1111', created_at: '2023-01-15T10:00:00Z', total_spent: 45000, order_count: 1, last_order_date: '2023-01-16T10:00:00Z', status: 'inactive' },
-        { id: '3', full_name: 'Ahmed Musa', email: 'ahmed@example.com', phone: '+234 902 222 2222', created_at: new Date().toISOString(), total_spent: 350000, order_count: 3, last_order_date: new Date().toISOString(), status: 'active' }
-      ]);
-      setStats({ total: 3, newThisMonth: 2, avgLtv: 548333, returningPct: 66 });
+      // Clean fallback: empty state
+      setCustomers([]);
+      setStats({ total: 0, newThisMonth: 0, avgLtv: 0, returningPct: 0 });
     } finally {
       if (!isBackground) setLoading(false);
     }
@@ -127,11 +123,8 @@ export default function AdminCustomers() {
       setOrderHistory(data || []);
     } catch (err) {
       console.error(err);
-      // Fallback order history
-      setOrderHistory([
-        { id: 'ORD-123', created_at: new Date().toISOString(), total_amount: 150000, status: 'delivered' },
-        { id: 'ORD-122', created_at: '2023-05-10T10:00:00Z', total_amount: 45000, status: 'delivered' }
-      ]);
+      // Clean fallback
+      setOrderHistory([]);
     }
   };
 

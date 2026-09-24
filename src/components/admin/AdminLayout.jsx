@@ -1,11 +1,14 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense, lazy } from 'react';
 import { Outlet, Link, useLocation, Navigate } from 'react-router';
 import { useAdminAuth } from '../../context/AdminAuthContext';
-import { LayoutDashboard, Package, MessageSquare, LogOut, Loader2, KeyRound, Menu, X, Building2, Search, Sun, Moon, Monitor, ShoppingCart, Boxes, Users, ArrowLeftRight, CreditCard, Tag, FileText, BarChart3, Shield, ScrollText, Settings, Zap, WifiOff, Lock } from 'lucide-react';
+import { supabase } from '../../lib/supabase';
+import { LayoutDashboard, Package, MessageSquare, LogOut, Loader2, KeyRound, Menu, X, Building2, Search, Sun, Moon, Monitor, ShoppingCart, Boxes, Users, ArrowLeftRight, CreditCard, Tag, FileText, BarChart3, Shield, ScrollText, Settings, Zap, WifiOff, Lock, CheckCircle2, ArrowLeft } from 'lucide-react';
 import { toast } from 'sonner';
 import AdminCommandPalette from './AdminCommandPalette';
-import AdminAICopilotWidget from './AdminAICopilotWidget';
+import AdminSkeleton from './AdminSkeleton';
 import SEO from '../SEO';
+
+const AdminAICopilotWidget = lazy(() => import('./AdminAICopilotWidget'));
 
 export default function AdminLayout() {
   const { adminUser, loading, signInWithEmail, signInAsDemoAdmin, signOut } = useAdminAuth();
@@ -13,6 +16,11 @@ export default function AdminLayout() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loginError, setLoginError] = useState('');
+  const [showForgot, setShowForgot] = useState(false);
+  const [recoveryEmail, setRecoveryEmail] = useState('');
+  const [recoverySent, setRecoverySent] = useState(false);
+  const [recoveryLoading, setRecoveryLoading] = useState(false);
+  const [recoveryError, setRecoveryError] = useState('');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
   const [isShortcutsModalOpen, setIsShortcutsModalOpen] = useState(false);
@@ -44,40 +52,15 @@ export default function AdminLayout() {
 
   useEffect(() => {
     const updateOnline = () => {
-      const start = Date.now();
-      fetch('/robots.txt?t=' + start, { method: 'HEAD', cache: 'no-store' })
-        .then(() => {
-          const latency = Date.now() - start;
-          if (latency > 3000) {
-            setNetworkStatus('poor');
-          } else {
-            setNetworkStatus('online');
-          }
-        })
-        .catch(() => {
-          setNetworkStatus('offline');
-        });
-    };
-
-    const updateOffline = () => {
-      setNetworkStatus('offline');
+      setNetworkStatus(navigator.onLine ? 'online' : 'offline');
     };
 
     window.addEventListener('online', updateOnline);
-    window.addEventListener('offline', updateOffline);
-
-    const interval = setInterval(() => {
-      if (typeof navigator !== 'undefined' && navigator.onLine) {
-        updateOnline();
-      } else {
-        setNetworkStatus('offline');
-      }
-    }, 20000);
+    window.addEventListener('offline', updateOnline);
 
     return () => {
       window.removeEventListener('online', updateOnline);
-      window.removeEventListener('offline', updateOffline);
-      clearInterval(interval);
+      window.removeEventListener('offline', updateOnline);
     };
   }, []);
 
@@ -165,6 +148,25 @@ export default function AdminLayout() {
       }
     };
 
+    const handleRecovery = async (e) => {
+      e.preventDefault();
+      if (!recoveryEmail) return;
+      setRecoveryLoading(true);
+      setRecoveryError('');
+      try {
+        const { error } = await supabase.auth.resetPasswordForEmail(recoveryEmail.trim(), {
+          redirectTo: window.location.origin + '/admin'
+        });
+        if (error) throw error;
+        setRecoverySent(true);
+        toast.success('Password recovery email dispatched!');
+      } catch (err) {
+        setRecoveryError(err.message || 'Failed to send recovery email');
+      } finally {
+        setRecoveryLoading(false);
+      }
+    };
+
     return (
       <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--bg-void)' }}>
         <SEO title="Admin Login | REAVO" noindex={true} />
@@ -172,48 +174,116 @@ export default function AdminLayout() {
           <div style={{ width: 64, height: 64, borderRadius: 16, background: 'var(--bg-inner)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 24px' }}>
             <KeyRound size={28} color="var(--text-primary)" />
           </div>
-          <h1 style={{ fontSize: 24, marginBottom: 8, color: 'var(--text-primary)' }}>REAVO Admin OS</h1>
-          <p style={{ color: 'var(--text-secondary)', marginBottom: 32 }}>Secure access required for business operations.</p>
-          
-          <form onSubmit={handleEmailLogin} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-            <input 
-              type="email" 
-              placeholder="Admin Email" 
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              style={{ width: '100%', padding: 12, borderRadius: 8, border: '1px solid var(--border-subtle)', background: 'var(--bg-inner)', color: 'var(--text-primary)' }}
-            />
-            <input 
-              type="password" 
-              placeholder="Password" 
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              style={{ width: '100%', padding: 12, borderRadius: 8, border: '1px solid var(--border-subtle)', background: 'var(--bg-inner)', color: 'var(--text-primary)' }}
-            />
-            {loginError && <div style={{ color: 'var(--accent-coral)', fontSize: 14 }}>{loginError}</div>}
-            <button 
-              type="submit"
-              className="btn-primary" 
-              style={{ width: '100%', padding: '14px', borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12, marginTop: 8 }}
-            >
-              Sign In
-            </button>
-          </form>
 
-          <button 
-            type="button"
-            onClick={signInAsDemoAdmin}
-            style={{ 
-              width: '100%', padding: '12px', borderRadius: 12, marginTop: 12,
-              background: 'var(--glass-bg)', border: '1px solid var(--border-active)',
-              color: 'var(--accent-teal)', fontWeight: 600, fontSize: 13, cursor: 'pointer',
-              display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8
-            }}
-          >
-            ⚡ 1-Click Instant Demo Access
-          </button>
+          {!showForgot ? (
+            <>
+              <h1 style={{ fontSize: 24, marginBottom: 8, color: 'var(--text-primary)' }}>REAVO Admin OS</h1>
+              <p style={{ color: 'var(--text-secondary)', marginBottom: 32 }}>Secure access required for business operations.</p>
+              
+              <form onSubmit={handleEmailLogin} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+                <input 
+                  type="email" 
+                  placeholder="Admin Email" 
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  style={{ width: '100%', padding: 12, borderRadius: 8, border: '1px solid var(--border-subtle)', background: 'var(--bg-inner)', color: 'var(--text-primary)' }}
+                />
+                <div>
+                  <input 
+                    type="password" 
+                    placeholder="Password" 
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                    style={{ width: '100%', padding: 12, borderRadius: 8, border: '1px solid var(--border-subtle)', background: 'var(--bg-inner)', color: 'var(--text-primary)' }}
+                  />
+                  <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 8 }}>
+                    <button 
+                      type="button" 
+                      onClick={() => { setShowForgot(true); setLoginError(''); setRecoverySent(false); setRecoveryEmail(email); }}
+                      style={{ background: 'transparent', border: 'none', color: 'var(--accent-teal)', fontSize: 12, cursor: 'pointer', padding: 0, fontWeight: 500 }}
+                    >
+                      Forgot password?
+                    </button>
+                  </div>
+                </div>
+
+                {loginError && <div style={{ color: 'var(--accent-coral)', fontSize: 13, background: 'rgba(255, 107, 74, 0.1)', padding: '8px 12px', borderRadius: 8 }}>{loginError}</div>}
+                
+                <button 
+                  type="submit"
+                  className="btn-primary" 
+                  style={{ width: '100%', padding: '14px', borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12, marginTop: 4 }}
+                >
+                  Sign In
+                </button>
+              </form>
+
+              <button 
+                type="button"
+                onClick={signInAsDemoAdmin}
+                style={{ 
+                  width: '100%', padding: '12px', borderRadius: 12, marginTop: 12,
+                  background: 'var(--glass-bg)', border: '1px solid var(--border-active)',
+                  color: 'var(--accent-teal)', fontWeight: 600, fontSize: 13, cursor: 'pointer',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8
+                }}
+              >
+                ⚡ 1-Click Instant Demo Access
+              </button>
+            </>
+          ) : (
+            <>
+              <h1 style={{ fontSize: 22, marginBottom: 8, color: 'var(--text-primary)' }}>Password Recovery</h1>
+              <p style={{ color: 'var(--text-secondary)', marginBottom: 24, fontSize: 13 }}>
+                Enter your registered staff email and we will send you a recovery link to reset your password.
+              </p>
+
+              {recoverySent ? (
+                <div style={{ background: 'rgba(57, 217, 196, 0.1)', border: '1px solid rgba(57, 217, 196, 0.3)', padding: 20, borderRadius: 12, marginBottom: 20, textAlign: 'left' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, color: 'var(--accent-teal)', fontWeight: 600, fontSize: 14, marginBottom: 6 }}>
+                    <CheckCircle2 size={18} /> Recovery Email Sent
+                  </div>
+                  <p style={{ color: 'var(--text-secondary)', fontSize: 13, margin: 0, lineHeight: 1.5 }}>
+                    We dispatched a password reset link to <strong style={{ color: 'var(--text-primary)' }}>{recoveryEmail}</strong>. Please check your inbox and follow the link to set your new password.
+                  </p>
+                </div>
+              ) : (
+                <form onSubmit={handleRecovery} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+                  <input 
+                    type="email" 
+                    placeholder="Staff Email Address" 
+                    value={recoveryEmail}
+                    onChange={(e) => setRecoveryEmail(e.target.value)}
+                    required
+                    style={{ width: '100%', padding: 12, borderRadius: 8, border: '1px solid var(--border-subtle)', background: 'var(--bg-inner)', color: 'var(--text-primary)' }}
+                  />
+                  {recoveryError && <div style={{ color: 'var(--accent-coral)', fontSize: 13, background: 'rgba(255, 107, 74, 0.1)', padding: '8px 12px', borderRadius: 8 }}>{recoveryError}</div>}
+                  <button 
+                    type="submit"
+                    disabled={recoveryLoading}
+                    className="btn-primary" 
+                    style={{ width: '100%', padding: '14px', borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12, opacity: recoveryLoading ? 0.7 : 1 }}
+                  >
+                    {recoveryLoading ? 'Sending link...' : 'Send Recovery Link'}
+                  </button>
+                </form>
+              )}
+
+              <button 
+                type="button"
+                onClick={() => { setShowForgot(false); setRecoveryError(''); setLoginError(''); }}
+                style={{ 
+                  marginTop: 16, background: 'transparent', border: 'none', 
+                  color: 'var(--text-secondary)', fontSize: 13, cursor: 'pointer',
+                  display: 'inline-flex', alignItems: 'center', gap: 6
+                }}
+              >
+                <ArrowLeft size={14} /> Back to Sign In
+              </button>
+            </>
+          )}
 
           <Link to="/" style={{ display: 'block', marginTop: 20, color: 'var(--text-secondary)', fontSize: 14, textDecoration: 'none' }}>
             Return to Store
@@ -597,7 +667,9 @@ export default function AdminLayout() {
         
         {/* Page Content */}
         <main className="admin-main-content" style={{ flex: 1, padding: 32, overflowY: 'auto' }}>
-          <Outlet />
+          <Suspense fallback={<AdminSkeleton />}>
+            <Outlet />
+          </Suspense>
         </main>
       </div>
 
@@ -606,7 +678,11 @@ export default function AdminLayout() {
         onClose={() => setIsCommandPaletteOpen(false)} 
       />
       {/* Floating Copilot Widget (suppressed on dedicated AI Operations Command page) */}
-      {location.pathname !== '/admin/ai' && <AdminAICopilotWidget />}
+      {location.pathname !== '/admin/ai' && (
+        <Suspense fallback={null}>
+          <AdminAICopilotWidget />
+        </Suspense>
+      )}
 
       {/* Keyboard Shortcuts Modal */}
       {isShortcutsModalOpen && (

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
+import { products as catalogProducts } from '../../data/products';
 import { Link } from 'react-router';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { TrendingUp, Package, AlertCircle, ShoppingCart, AlertTriangle, ArrowRight, Plus, Tag, BarChart3, Zap, Clock, LayoutDashboard, MessageSquare } from 'lucide-react';
@@ -50,41 +51,32 @@ export default function AdminDashboard() {
     }
       
     if (data && data.length > 0) {
-      // Add mock stock quantity if not present in db
-      const productsWithStock = data.map(p => ({
-        ...p,
-        stock_quantity: p.stock_quantity !== undefined && p.stock_quantity !== null ? p.stock_quantity : Math.floor(Math.random() * 40) + 10
-      }));
-      setProducts(productsWithStock);
+      setProducts(data);
     } else {
-      // Fallback presentation mock data if DB is empty
-      setProducts([
-        { id: 'm1', name: 'REAVO Pro X1', price: 850000, stock_quantity: 42 },
-        { id: 'm2', name: 'REAVO Air Tablet', price: 420000, stock_quantity: 3 },
-        { id: 'm3', name: 'REAVO Studio Pods', price: 120000, stock_quantity: 0 },
-        { id: 'm4', name: 'REAVO PowerBank', price: 35000, stock_quantity: 15 },
-        { id: 'm5', name: 'REAVO SmartWatch', price: 180000, stock_quantity: 4 }
-      ]);
+      // Fallback directly to real verified catalog products
+      setProducts(catalogProducts);
     }
 
-    // Fetch Kora Pay Balance via our secure backend
-    try {
-      // Mocking the Kora API to return realistic data since the real backend route may fail in frontend-only environments
-      setBalance({
-        available: 12450000,
-        pending: 450000
-      });
-    } catch (err) {
-      console.error('Failed to fetch Kora Pay balance', err);
-    }
-
-    // Fetch Orders for Revenue
+    // Fetch Orders for Revenue and Balance
     const { data: orders, error: ordersError } = await supabase.from('orders').select('*');
     
     if (ordersError) {
       console.error('Orders fetch error:', ordersError);
     }
     
+    const realOrders = orders || [];
+    const confirmedRevenue = realOrders
+      .filter(o => o.status === 'Paid' || o.status === 'Delivered')
+      .reduce((sum, o) => sum + (Number(o.total_amount) || 0), 0);
+    const pendingRevenue = realOrders
+      .filter(o => o.status === 'Pending')
+      .reduce((sum, o) => sum + (Number(o.total_amount) || 0), 0);
+
+    setBalance({
+      available: confirmedRevenue,
+      pending: pendingRevenue
+    });
+
     const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     const last7Days = Array.from({length: 7}).map((_, i) => {
       const d = new Date();
@@ -96,19 +88,13 @@ export default function AdminDashboard() {
       const dayStart = new Date(date.setHours(0,0,0,0));
       const dayEnd = new Date(date.setHours(23,59,59,999));
       
-      const dayOrders = orders?.filter(o => {
+      const dayOrders = realOrders.filter(o => {
         const d = new Date(o.created_at);
         return d >= dayStart && d <= dayEnd;
-      }) || [];
+      });
       
-      let dayRevenue = dayOrders.reduce((sum, o) => sum + Number(o.total_amount), 0);
+      const dayRevenue = dayOrders.reduce((sum, o) => sum + Number(o.total_amount || 0), 0);
 
-      // Inject realistic mock data for handover presentation if there are no real orders yet
-      if (!orders || orders.length === 0) {
-        // Base revenue randomly between 400k and 1.5m per day
-        dayRevenue = Math.floor(Math.random() * 1100000) + 400000;
-      }
-      
       return {
         name: days[date.getDay()],
         revenue: dayRevenue

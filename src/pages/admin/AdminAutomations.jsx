@@ -38,8 +38,8 @@ export default function AdminAutomations() {
       icon: <Boxes size={20} color="var(--accent-teal)" />,
       category: 'Inventory',
       is_active: true,
-      last_run_at: new Date(Date.now() - 3600000 * 2).toISOString(),
-      run_count: 14,
+      last_run_at: null,
+      run_count: 0,
       status: 'Active'
     },
     {
@@ -52,8 +52,8 @@ export default function AdminAutomations() {
       icon: <ShoppingCart size={20} color="#FFB800" />,
       category: 'Sales',
       is_active: true,
-      last_run_at: new Date(Date.now() - 3600000 * 5).toISOString(),
-      run_count: 28,
+      last_run_at: null,
+      run_count: 0,
       status: 'Active'
     },
     {
@@ -66,8 +66,8 @@ export default function AdminAutomations() {
       icon: <Users size={20} color="#7C5CFF" />,
       category: 'CRM',
       is_active: true,
-      last_run_at: new Date(Date.now() - 3600000 * 12).toISOString(),
-      run_count: 9,
+      last_run_at: null,
+      run_count: 0,
       status: 'Active'
     },
     {
@@ -80,8 +80,8 @@ export default function AdminAutomations() {
       icon: <Clock size={20} color="#4A9EFF" />,
       category: 'Executive',
       is_active: true,
-      last_run_at: new Date(Date.now() - 3600000 * 18).toISOString(),
-      run_count: 45,
+      last_run_at: null,
+      run_count: 0,
       status: 'Active'
     },
     {
@@ -94,18 +94,13 @@ export default function AdminAutomations() {
       icon: <AlertTriangle size={20} color="#FF6B4A" />,
       category: 'Finance',
       is_active: true,
-      last_run_at: new Date(Date.now() - 3600000 * 24).toISOString(),
-      run_count: 6,
+      last_run_at: null,
+      run_count: 0,
       status: 'Active'
     }
   ];
 
-  const defaultLogs = [
-    { id: 'log-1', automation_id: 'auto-1', title: 'Low Stock Auto-Restock Sentinel', triggered_at: new Date(Date.now() - 3600000 * 2).toISOString(), result: 'Generated restock draft for REAVO Studio ANC Pods (0 units)', status: 'Success' },
-    { id: 'log-2', automation_id: 'auto-2', title: 'Abandoned Checkout WhatsApp Recovery', triggered_at: new Date(Date.now() - 3600000 * 5).toISOString(), result: 'Prepared WhatsApp recovery link for Faruk Bello (Order #ORD-7A19E5F2)', status: 'Success' },
-    { id: 'log-3', automation_id: 'auto-3', title: 'Spending Milestone Celebration', triggered_at: new Date(Date.now() - 3600000 * 12).toISOString(), result: 'Milestone greeting queued for Babajide Adeleke (Crossed ₦850,000 spend threshold)', status: 'Success' },
-    { id: 'log-4', automation_id: 'auto-4', title: 'Daily Morning Business Briefing', triggered_at: new Date(Date.now() - 3600000 * 18).toISOString(), result: 'Synthesized ₦2,520,000 revenue telemetry for executive review', status: 'Success' }
-  ];
+  const defaultLogs = [];
 
   useEffect(() => {
     fetchAutomations();
@@ -120,10 +115,10 @@ export default function AdminAutomations() {
       } else {
         setAutomations(defaultAutomations);
       }
-      setLogs(defaultLogs);
+      setLogs([]);
     } catch {
       setAutomations(defaultAutomations);
-      setLogs(defaultLogs);
+      setLogs([]);
     } finally {
       setLoading(false);
     }

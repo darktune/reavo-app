@@ -7,16 +7,6 @@ import { toast } from 'sonner';
 import ScrollReveal from '../../components/ScrollReveal';
 import AdminSkeleton from '../../components/admin/AdminSkeleton';
 
-const MOCK_LOGS = [
-  { id: '1', actor_name: 'Admin Sarah', actor_type: 'admin', role: 'ADMIN', action: 'Updated product price', entity_type: 'Products', entity_name: 'iPhone 15 Pro', old_value: { price: 1000000 }, new_value: { price: 1200000 }, severity: 'warning', created_at: new Date(Date.now() - 1000 * 60 * 2).toISOString() },
-  { id: '2', actor_name: 'Reavo AI', actor_type: 'ai', role: 'AI COPILOT', action: 'Applied dynamic discount', entity_type: 'Discounts', entity_name: 'Summer Sale', old_value: null, new_value: { discount: '15%' }, severity: 'info', approved_by: 'Admin John', created_at: new Date(Date.now() - 1000 * 60 * 45).toISOString() },
-  { id: '3', actor_name: 'System', actor_type: 'system', role: 'SYSTEM', action: 'Database Backup Completed', entity_type: 'Settings', entity_name: 'Database', old_value: null, new_value: null, severity: 'info', created_at: new Date(Date.now() - 1000 * 60 * 60 * 3).toISOString() },
-  { id: '4', actor_name: 'Inventory Bot', actor_type: 'automation', role: 'AUTOMATION', action: 'Marked out of stock', entity_type: 'Inventory', entity_name: 'Samsung S24 Ultra', old_value: { stock: 5 }, new_value: { stock: 0 }, severity: 'warning', created_at: new Date(Date.now() - 1000 * 60 * 60 * 12).toISOString() },
-  { id: '5', actor_name: 'Admin John', actor_type: 'admin', role: 'OWNER', action: 'Deleted user account', entity_type: 'Customers', entity_name: 'jane.doe@example.com', old_value: { status: 'active' }, new_value: { status: 'deleted' }, severity: 'critical', created_at: new Date(Date.now() - 1000 * 60 * 60 * 24).toISOString() },
-  { id: '6', actor_name: 'Reavo AI', actor_type: 'ai', role: 'AI COPILOT', action: 'Fraud detected on order', entity_type: 'Orders', entity_name: 'ORD-5839', old_value: { status: 'processing' }, new_value: { status: 'flagged' }, severity: 'critical', approved_by: 'System', created_at: new Date(Date.now() - 1000 * 60 * 60 * 48).toISOString() },
-  { id: '7', actor_name: 'Admin Sarah', actor_type: 'admin', role: 'ADMIN', action: 'Updated tax rate', entity_type: 'Settings', entity_name: 'Tax Configuration', old_value: { rate: '7.5%' }, new_value: { rate: '8%' }, severity: 'warning', created_at: new Date(Date.now() - 1000 * 60 * 60 * 72).toISOString() }
-];
-
 const ROLES_LIST = ['Owner', 'Admin', 'Manager', 'Developer', 'Support', 'Inventory', 'Analyst'];
 
 export default function AdminAuditLogs() {
@@ -67,7 +57,7 @@ export default function AdminAuditLogs() {
     try {
       // 1. Fetch unified logs from Supabase + localStorage
       const unified = await getUnifiedAuditLogs();
-      const combined = unified.length > 0 ? unified : MOCK_LOGS;
+      const combined = unified || [];
       setAllRawLogs(combined);
 
       // 2. Apply multi-dimensional categorization & filter

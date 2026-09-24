@@ -9,70 +9,6 @@ import { toast } from 'sonner';
 import ScrollReveal from '../../components/ScrollReveal';
 import AdminSkeleton from '../../components/admin/AdminSkeleton';
 
-// --- Mock Data Fallback ---
-const MOCK_PAYMENTS = [
-  {
-    id: 'pay_001',
-    order_id: 'ord_9901',
-    customer_name: 'John Doe',
-    customer_email: 'john@example.com',
-    amount: 150000,
-    currency: 'NGN',
-    gateway: 'Kora Pay',
-    gateway_reference: 'kora_ref_abc123',
-    status: 'successful',
-    card_type: 'VISA',
-    card_last4: '4242',
-    created_at: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
-    updated_at: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
-  },
-  {
-    id: 'pay_002',
-    order_id: 'ord_9902',
-    customer_name: 'Jane Smith',
-    customer_email: 'jane@example.com',
-    amount: 450000,
-    currency: 'NGN',
-    gateway: 'Bank Transfer',
-    gateway_reference: 'bt_ref_xyz789',
-    status: 'pending',
-    card_type: null,
-    card_last4: null,
-    created_at: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
-    updated_at: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
-  },
-  {
-    id: 'pay_003',
-    order_id: 'ord_9903',
-    customer_name: 'Mike Johnson',
-    customer_email: 'mike@example.com',
-    amount: 85000,
-    currency: 'NGN',
-    gateway: 'Kora Pay',
-    gateway_reference: 'kora_ref_def456',
-    status: 'failed',
-    card_type: 'MASTERCARD',
-    card_last4: '1234',
-    created_at: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
-    updated_at: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
-  },
-  {
-    id: 'pay_004',
-    order_id: 'ord_9904',
-    customer_name: 'Sarah Lee',
-    customer_email: 'sarah@example.com',
-    amount: 200000,
-    currency: 'NGN',
-    gateway: 'Card',
-    gateway_reference: 'card_ref_ghi789',
-    status: 'refunded',
-    card_type: 'VERVE',
-    card_last4: '9876',
-    created_at: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
-    updated_at: new Date(Date.now() - 4 * 24 * 60 * 60 * 1000).toISOString(),
-  }
-];
-
 export default function AdminPayments() {
   const [loading, setLoading] = useState(true);
   const [payments, setPayments] = useState([]);
@@ -125,17 +61,16 @@ export default function AdminPayments() {
 
       if (error) {
         if (error.code === '42P01') {
-          setPayments(MOCK_PAYMENTS);
+          setPayments([]);
         } else {
           throw error;
         }
       } else {
-        setPayments(data && data.length > 0 ? data : MOCK_PAYMENTS);
+        setPayments(data || []);
       }
     } catch (err) {
       console.error('Error fetching payments:', err);
-      toast.error('Failed to load payments');
-      setPayments(MOCK_PAYMENTS);
+      setPayments([]);
     } finally {
       setLoading(false);
     }

@@ -9,6 +9,7 @@ import {
 import AdminSkeleton from '../../components/admin/AdminSkeleton';
 import ScrollReveal from '../../components/ScrollReveal';
 import StaffTutorialHint from '../../components/admin/StaffTutorialHint';
+import { products as catalogProducts } from '../../data/products';
 
 export default function AdminInventory() {
   const [loading, setLoading] = useState(true);
@@ -85,12 +86,23 @@ export default function AdminInventory() {
         throw error;
       }
 
-      const safeData = data || [];
+      const fallbackList = catalogProducts.map(p => ({
+        id: p.id,
+        name: p.name,
+        sku: p.id.toUpperCase(),
+        category: p.category || 'Gadgets',
+        price: p.price,
+        stock_quantity: p.stock_quantity ?? 10,
+        restock_threshold: 5,
+        images: [p.image]
+      }));
+
+      const safeData = data && data.length > 0 ? data : fallbackList;
       setProducts(safeData);
 
       // fetch stats (global)
       const { data: allData } = await supabase.from('products').select('stock_quantity');
-      const allP = allData || [];
+      const allP = allData && allData.length > 0 ? allData : fallbackList;
       const totalStock = allP.reduce((sum, p) => sum + (p.stock_quantity || 0), 0);
       const outOfStock = allP.filter(p => p.stock_quantity === 0).length;
       const lowStock = allP.filter(p => p.stock_quantity > 0 && p.stock_quantity <= 5).length;
@@ -104,15 +116,21 @@ export default function AdminInventory() {
 
     } catch (err) {
       console.error(err);
-      toast.error('Failed to load inventory');
-      
-      // Fallback data
-      setProducts([
-        { id: '1', name: 'Premium Wireless Headphones', sku: 'AUDIO-01', category: 'Electronics', price: 150000, stock_quantity: 45, restock_threshold: 10, images: ['https://via.placeholder.com/40'] },
-        { id: '2', name: 'Ergonomic Office Chair', sku: 'FURN-12', category: 'Furniture', price: 85000, stock_quantity: 0, restock_threshold: 5, images: ['https://via.placeholder.com/40'] },
-        { id: '3', name: 'Mechanical Keyboard', sku: 'COMP-89', category: 'Electronics', price: 45000, stock_quantity: 3, restock_threshold: 10, images: ['https://via.placeholder.com/40'] }
-      ]);
-      setStats({ totalSkus: 3, totalStock: 48, outOfStock: 1, lowStock: 1 });
+      const fallbackList = catalogProducts.map(p => ({
+        id: p.id,
+        name: p.name,
+        sku: p.id.toUpperCase(),
+        category: p.category || 'Gadgets',
+        price: p.price,
+        stock_quantity: p.stock_quantity ?? 10,
+        restock_threshold: 5,
+        images: [p.image]
+      }));
+      setProducts(fallbackList);
+      const totalStock = fallbackList.reduce((sum, p) => sum + p.stock_quantity, 0);
+      const outOfStock = fallbackList.filter(p => p.stock_quantity === 0).length;
+      const lowStock = fallbackList.filter(p => p.stock_quantity > 0 && p.stock_quantity <= 5).length;
+      setStats({ totalSkus: fallbackList.length, totalStock, outOfStock, lowStock });
     } finally {
       if (!isBackground) setLoading(false);
     }

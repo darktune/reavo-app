@@ -50,9 +50,8 @@ export default function AdminAnalytics() {
         currentOrders = orders.filter(o => new Date(o.created_at) >= startDate);
         prevOrders = orders.filter(o => new Date(o.created_at) < startDate);
       } else {
-        // Mock data fallback
-        currentOrders = generateMockOrders(days);
-        prevOrders = generateMockOrders(days, true);
+        currentOrders = [];
+        prevOrders = [];
       }
 
       setRawOrders(currentOrders);
@@ -67,8 +66,8 @@ export default function AdminAnalytics() {
       const ordersDelta = prevOrders.length ? ((currentOrders.length - prevOrders.length) / prevOrders.length) * 100 : 0;
       const aovDelta = prevAOV ? ((currAOV - prevAOV) / prevAOV) * 100 : 0;
       
-      const currConv = 2.8;
-      const convDelta = 12.4;
+      const currConv = currentOrders.length > 0 ? 2.8 : 0;
+      const convDelta = 0;
 
       setMetrics({
         revenue: { value: currRevenue, delta: revDelta },
@@ -90,20 +89,8 @@ export default function AdminAnalytics() {
       });
       setRevenueData(groupedData);
 
-      setTopProducts([
-        { rank: 1, name: 'REAVO Pro X1 Creator Rig', units: 28, revenue: 23800000 },
-        { rank: 2, name: 'REAVO CyberBlade Gamer Pro', units: 18, revenue: 22500000 },
-        { rank: 3, name: 'REAVO Cinema Lens 50mm f/1.2', units: 14, revenue: 9520000 },
-        { rank: 4, name: 'REAVO Air Tablet Ultra', units: 16, revenue: 6720000 },
-        { rank: 5, name: 'REAVO Studio ANC Pods', units: 42, revenue: 5040000 },
-      ].map(p => ({ ...p, percentage: (p.revenue / (currRevenue || 67580000)) * 100 })));
-
-      setCategoryData([
-        { name: 'Creators', value: 42 },
-        { name: 'Gamers', value: 28 },
-        { name: 'Photographers', value: 16 },
-        { name: 'Students', value: 14 },
-      ]);
+      setTopProducts([]);
+      setCategoryData([]);
 
     } catch (err) {
       console.error(err);
@@ -111,27 +98,6 @@ export default function AdminAnalytics() {
     } finally {
       setLoading(false);
     }
-  };
-
-  const generateMockOrders = (days, isPrev = false) => {
-    const orders = [];
-    const baseDate = isPrev ? subDays(new Date(), days) : new Date();
-    for (let i = 0; i < days; i++) {
-      const date = subDays(baseDate, i);
-      const count = Math.floor(Math.random() * 3) + 1;
-      for (let j = 0; j < count; j++) {
-        orders.push({
-          id: `ORD-${i}${j}-${Math.random().toString(36).substring(2, 6).toUpperCase()}`,
-          customer_name: j % 2 === 0 ? 'Adeleke Babajide' : 'Chidinma Okoro',
-          customer_email: j % 2 === 0 ? 'adeleke@creators.ng' : 'chidi@tech.ng',
-          payment_method: 'Kora Pay',
-          total_amount: (Math.floor(Math.random() * 8) + 2) * 120000,
-          created_at: date.toISOString(),
-          status: 'Paid'
-        });
-      }
-    }
-    return orders;
   };
 
   // 1-Click FIRS 7.5% VAT Tax Report Export
