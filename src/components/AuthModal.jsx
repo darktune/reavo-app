@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
+import { useUser } from '../context/UserContext';
 import { X, Mail, Lock, User, ArrowLeft, CheckCircle2 } from 'lucide-react';
 
 export default function AuthModal({ isOpen, onClose }) {
@@ -9,6 +10,7 @@ export default function AuthModal({ isOpen, onClose }) {
   const [name, setName] = useState('');
   const [forgotSent, setForgotSent] = useState(false);
   const { login, register, resetPassword } = useAuth();
+  const { setUserName } = useUser();
 
   const [loading, setLoading] = useState(false);
 
@@ -23,13 +25,17 @@ export default function AuthModal({ isOpen, onClose }) {
         onClose();
       } else if (tab === 'register') {
         await register(name, email, password);
+        if (name && setUserName) setUserName(name.trim());
         onClose();
       } else if (tab === 'forgot') {
         await resetPassword(email);
         setForgotSent(true);
       }
     } catch (err) {
-      // Error handled in context with toast
+      if (err?.emailExists) {
+        // Automatically switch to Sign In tab so the user can enter their password or reset it
+        setTab('login');
+      }
     } finally {
       setLoading(false);
     }

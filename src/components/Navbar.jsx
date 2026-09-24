@@ -35,7 +35,7 @@ function CardHover({ children, onClick, style = {}, className = '' }) {
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const { cartCount, toggleCart } = useCart();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -139,11 +139,23 @@ export default function Navbar() {
 
           <CardHover
             onClick={() => isAuthenticated ? navigate('/profile') : setIsAuthModalOpen(true)}
-            style={{ borderRadius: 12, padding: 8 }}
+            style={{ borderRadius: 12, padding: 8, position: 'relative' }}
             aria-label="User Profile"
-            title="My Profile"
+            title={isAuthenticated ? (user?.user_metadata?.full_name ? `${user.user_metadata.full_name} (My Profile)` : 'My Profile') : 'Sign In / Register'}
           >
-            <User size={20} style={{ color: 'var(--text-secondary)' }} />
+            <User size={20} style={{ color: isAuthenticated ? 'var(--accent-teal, #39D9C4)' : 'var(--text-secondary)' }} />
+            {isAuthenticated && (
+              <span style={{
+                position: 'absolute',
+                top: 7,
+                right: 7,
+                width: 7,
+                height: 7,
+                borderRadius: '50%',
+                background: 'var(--accent-teal, #39D9C4)',
+                border: '1.5px solid var(--bg-primary)'
+              }} />
+            )}
           </CardHover>
 
           <CardHover

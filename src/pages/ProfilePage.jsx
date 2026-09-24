@@ -6,6 +6,7 @@ import { Package, User, LogOut, Settings, Heart, Loader2, LayoutDashboard, MapPi
 import ScrollReveal from '../components/ScrollReveal';
 import { products } from '../data/products';
 import ProductCard from '../components/ProductCard';
+import AuthModal from '../components/AuthModal';
 import { supabase } from '../lib/supabase';
 
 export default function ProfilePage() {
@@ -13,6 +14,7 @@ export default function ProfilePage() {
   const { wishlist } = useWishlist();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('overview');
+  const [showAuthModal, setShowAuthModal] = useState(false);
   
   const [orders, setOrders] = useState([]);
   const [loadingOrders, setLoadingOrders] = useState(false);
@@ -121,7 +123,35 @@ export default function ProfilePage() {
   }
 
   if (!isAuthenticated) {
-    return <Navigate to="/home" />;
+    return (
+      <div style={{ paddingTop: 140, paddingBottom: 120, minHeight: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 24px' }}>
+        <div className="glass-panel" style={{ maxWidth: 440, width: '100%', padding: '48px 36px', textAlign: 'center', borderRadius: 28, border: '1px solid var(--border-subtle)', boxShadow: '0 24px 60px rgba(0,0,0,0.4)' }}>
+          <div style={{ width: 68, height: 68, borderRadius: '50%', background: 'rgba(124, 92, 255, 0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 24px', border: '1px solid rgba(124, 92, 255, 0.3)' }}>
+            <User size={30} color="#7C5CFF" />
+          </div>
+          <h2 style={{ fontSize: 24, fontWeight: 700, margin: '0 0 10px 0', color: 'var(--text-primary)' }}>Account Access</h2>
+          <p style={{ color: 'var(--text-secondary)', fontSize: 14, lineHeight: 1.6, margin: '0 0 32px 0' }}>
+            Sign in or create an account to view your live orders, saved addresses, device trade-in quotes, and VIP perks.
+          </p>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+            <button 
+              onClick={() => setShowAuthModal(true)} 
+              className="btn-primary" 
+              style={{ width: '100%', padding: '14px', fontSize: 14, fontWeight: 600, background: '#F7F7F5', color: '#0A0A0C' }}
+            >
+              Sign In / Register
+            </button>
+            <button 
+              onClick={() => navigate('/')} 
+              style={{ background: 'transparent', border: 'none', color: 'var(--text-secondary)', fontSize: 13, cursor: 'pointer', padding: '8px' }}
+            >
+              Back to Home
+            </button>
+          </div>
+        </div>
+        <AuthModal isOpen={showAuthModal} onClose={() => setShowAuthModal(false)} />
+      </div>
+    );
   }
 
   const handleLogout = () => {

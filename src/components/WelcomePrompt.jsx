@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useLocation } from 'react-router';
 import { useUser } from '../context/UserContext';
+import { useAuth } from '../context/AuthContext';
 import { ArrowRight, X } from 'lucide-react';
 import anime from 'animejs';
 
@@ -18,6 +19,7 @@ const universities = [
 export default function WelcomePrompt() {
   const routeLocation = useLocation();
   const isAdmin = routeLocation.pathname.startsWith('/admin');
+  const { isAuthenticated } = useAuth();
 
   const { hasSeenIntro, showWelcomePrompt, completeIntro, skipIntro, setShowWelcomePrompt } = useUser();
   const [name, setName] = useState('');
@@ -29,9 +31,9 @@ export default function WelcomePrompt() {
   const cardRef = useRef(null);
   const inputRef = useRef(null);
 
-  // Auto-show after 8 seconds on first visit (only if never seen intro and NOT on admin)
+  // Auto-show after 8 seconds on first visit (only if never seen intro, not on admin, and not already logged in)
   useEffect(() => {
-    if (isAdmin) return;
+    if (isAdmin || isAuthenticated) return;
     if (hasSeenIntro && !showWelcomePrompt) return;
 
     if (showWelcomePrompt) {
@@ -147,7 +149,7 @@ export default function WelcomePrompt() {
     },
   };
 
-  if (isAdmin || !visible) return null;
+  if (isAdmin || isAuthenticated || !visible) return null;
 
   return (
     <div
