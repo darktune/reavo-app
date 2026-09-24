@@ -75,6 +75,18 @@ export function AuthProvider({ children }) {
     toast.success('Account created successfully. Please check your email to verify if required.');
   };
 
+  const resetPassword = async (email) => {
+    const siteUrl = window.location.origin;
+    const { error } = await supabase.auth.resetPasswordForEmail(email.trim().toLowerCase(), {
+      redirectTo: `${siteUrl}/reset-password`
+    });
+    if (error) {
+      toast.error('Password reset failed', { description: error.message });
+      throw error;
+    }
+    toast.success('Password recovery link sent! Check your email.');
+  };
+
   const logout = async () => {
     const { error } = await supabase.auth.signOut();
     if (error) {
@@ -85,7 +97,7 @@ export function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, user, loading, login, register, logout }}>
+    <AuthContext.Provider value={{ isAuthenticated, user, loading, login, register, logout, resetPassword }}>
       {!loading && children}
     </AuthContext.Provider>
   );

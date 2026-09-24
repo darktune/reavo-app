@@ -26,6 +26,7 @@ import { WishlistProvider } from './context/WishlistContext';
 import { AdminAuthProvider } from './context/AdminAuthContext';
 import AdminLayout from './components/admin/AdminLayout';
 import StaffOnboarding from './pages/StaffOnboarding';
+import ResetPassword from './pages/ResetPassword';
 
 // Code-split Admin OS desks for ultra-fast load speed
 const AdminDashboard = lazy(() => import('./pages/admin/AdminDashboard'));
@@ -96,6 +97,7 @@ function App() {
               <Route path="/checkout" element={<CheckoutPage />} />
               <Route path="/success" element={<SuccessPage />} />
               <Route path="/staff-onboarding" element={<StaffOnboarding />} />
+              <Route path="/reset-password" element={<ResetPassword />} />
 
               {/* Admin Routes */}
               <Route path="/admin" element={<AdminLayout />}>
