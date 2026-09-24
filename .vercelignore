@@ -10,8 +10,10 @@ dist
 conversations/
 playwright-report/
 test-results/
-"founders pics"
+founders pics
 REAVO shoots
 REAVO logos
 *.md
 *.skill
+public/videos/
+scratch/
