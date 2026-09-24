@@ -112,35 +112,34 @@ export default function AdminStaff() {
     let inviteToken = null;
 
     try {
-      const { data, error } = await supabase.from('staff_invites').insert({
-        email, name, role, permissions, status: 'pending'
-      }).select('id').single();
-      
-      if (!error && data?.id) {
-        inviteToken = data.id;
+      const res = await fetch('/api/admin/invite-staff', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, name, role, permissions })
+      });
+      const resData = await res.json();
+      if (res.ok && resData.success && resData.inviteId) {
+        inviteToken = resData.inviteId;
+      } else {
+        throw new Error(resData.error || 'Server invite error');
       }
     } catch (err) {
-      console.warn('Supabase staff_invites cloud write failed, switching to local store:', err.message);
+      console.warn('API invite creation failed, attempting direct DB fallback:', err.message);
+      try {
+        const { data, error } = await supabase.from('staff_invites').insert({
+          email, name, role, permissions, status: 'pending'
+        }).select('id').single();
+        if (!error && data?.id) {
+          inviteToken = data.id;
+        }
+      } catch (dbErr) {
+        console.warn('Direct DB insert failed:', dbErr.message);
+      }
     }
 
-    // Resilient fallback: If Supabase table missing, offline, or errored
     if (!inviteToken) {
-      inviteToken = 'inv_' + Date.now() + '_' + Math.random().toString(36).substring(2, 8);
-      try {
-        const stored = JSON.parse(localStorage.getItem('reavo_staff_invites') || '[]');
-        stored.push({
-          id: inviteToken,
-          email,
-          name,
-          role,
-          permissions,
-          status: 'pending',
-          created_at: new Date().toISOString()
-        });
-        localStorage.setItem('reavo_staff_invites', JSON.stringify(stored));
-      } catch (storageErr) {
-        console.warn('Local storage write warning:', storageErr);
-      }
+      toast.error('Failed to create shareable invite. Please check server connection.');
+      return;
     }
 
     // Always record universal audit log
