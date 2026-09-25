@@ -496,7 +496,15 @@ CREATE POLICY "Admin Full Partnership Inquiries Access" ON public.partnership_in
 CREATE POLICY "System Insert Partnership Inquiries" ON public.partnership_inquiries FOR INSERT WITH CHECK (TRUE);
 
 -- Admin Full Staff Invites Access
+DROP POLICY IF EXISTS "Admin Full Staff Invites Access" ON public.staff_invites;
 CREATE POLICY "Admin Full Staff Invites Access" ON public.staff_invites FOR ALL USING (public.is_admin_user());
+
+-- Public Read Pending Staff Invites (allows token lookup during onboarding)
+DROP POLICY IF EXISTS "Public Read Pending Staff Invites" ON public.staff_invites;
+CREATE POLICY "Public Read Pending Staff Invites" ON public.staff_invites
+FOR SELECT
+TO anon, authenticated
+USING (status = 'pending');
 
 -- ==============================================================================
 -- 15. SECURE STAFF ONBOARDING RPCS (ZERO-TRUST PRIVILEGE ENFORCEMENT)
@@ -573,3 +581,8 @@ BEGIN
     RETURN jsonb_build_object('success', TRUE, 'staff_id', v_staff_id, 'role', v_invite.role);
 END;
 $$;
+
+-- Grant execution privileges on onboarding RPCs
+GRANT EXECUTE ON FUNCTION public.get_staff_invite(UUID) TO anon, authenticated;
+GRANT EXECUTE ON FUNCTION public.accept_staff_invite(UUID, UUID, TEXT) TO anon, authenticated;
+

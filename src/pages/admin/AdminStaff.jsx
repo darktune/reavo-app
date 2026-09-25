@@ -142,17 +142,34 @@ export default function AdminStaff() {
       return;
     }
 
+    const cleanToken = String(inviteToken).trim();
+
+    // Cache in local storage for fallback resiliency
+    try {
+      const stored = JSON.parse(localStorage.getItem('reavo_staff_invites') || '[]');
+      stored.unshift({
+        id: cleanToken,
+        email,
+        name,
+        role,
+        permissions,
+        status: 'pending',
+        created_at: new Date().toISOString()
+      });
+      localStorage.setItem('reavo_staff_invites', JSON.stringify(stored));
+    } catch (e) {}
+
     // Always record universal audit log
     await recordAuditLog({
       action: 'CREATED_STAFF_INVITE',
       entityType: 'Staff',
-      entityId: inviteToken,
+      entityId: cleanToken,
       entityName: `${name} (${email})`,
       newValue: { role, permissions },
       severity: 'info'
     });
 
-    const link = `${window.location.origin}/staff-onboarding?token=${inviteToken}`;
+    const link = `${window.location.origin}/staff-onboarding?token=${encodeURIComponent(cleanToken)}`;
     setGeneratedLink(link);
     toast.success('Staff invitation link generated successfully!');
   };

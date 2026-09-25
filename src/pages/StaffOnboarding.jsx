@@ -23,46 +23,72 @@ export default function StaffOnboarding() {
         return;
       }
 
-      try {
-        // First try the secure RPC to prevent broad table data leakage
-        const { data: rpcData, error: rpcError } = await supabase.rpc('get_staff_invite', { p_token: token });
-        const inviteRecord = Array.isArray(rpcData) ? rpcData[0] : rpcData;
+      const cleanToken = token.trim();
 
-        if (!rpcError && inviteRecord) {
-          if (inviteRecord.status !== 'pending') {
-            throw new Error('This invitation has already been accepted or expired.');
+      try {
+        // 1. Primary: Serverless API with service_role (bypasses RLS across all devices)
+        try {
+          const apiRes = await fetch(`/api/admin/invite-staff?token=${encodeURIComponent(cleanToken)}`);
+          const apiData = await apiRes.json();
+          if (apiRes.ok && apiData.success && apiData.invite) {
+            setInvite(apiData.invite);
+            setLoading(false);
+            return;
+          } else if (apiRes.status === 410 || apiRes.status === 404) {
+            throw new Error(apiData.error || 'Invalid or expired invitation link.');
           }
-          setInvite(inviteRecord);
-          return;
+        } catch (apiErr) {
+          if (apiErr.message?.includes('already been accepted') || apiErr.message?.includes('Invalid invitation')) {
+            throw apiErr;
+          }
+          console.warn('[StaffOnboarding] API check unavailable, attempting client fallback:', apiErr.message);
         }
 
-        // Direct table query fallback for development
-        const { data, error } = await supabase
+        // 2. Secondary: Secure RPC fallback
+        try {
+          const { data: rpcData, error: rpcError } = await supabase.rpc('get_staff_invite', { p_token: cleanToken });
+          const inviteRecord = Array.isArray(rpcData) ? rpcData[0] : rpcData;
+          if (!rpcError && inviteRecord) {
+            if (inviteRecord.status !== 'pending') {
+              throw new Error('This invitation has already been accepted or expired.');
+            }
+            setInvite(inviteRecord);
+            setLoading(false);
+            return;
+          }
+        } catch (rpcErr) {
+          if (rpcErr.message?.includes('already been accepted')) throw rpcErr;
+        }
+
+        // 3. Tertiary: Direct table query fallback
+        const { data, error: tableErr } = await supabase
           .from('staff_invites')
           .select('*')
-          .eq('id', token)
-          .single();
+          .eq('id', cleanToken)
+          .maybeSingle();
 
-        if (!error && data) {
+        if (!tableErr && data) {
           if (data.status !== 'pending') {
             throw new Error('This invitation has already been accepted or expired.');
           }
           setInvite(data);
+          setLoading(false);
           return;
         }
 
-        // Resilient fallback: check client-side stored invites
+        // 4. Quaternary: Resilient fallback from localStorage
         const localInvites = JSON.parse(localStorage.getItem('reavo_staff_invites') || '[]');
-        const localMatch = localInvites.find(inv => inv.id === token);
+        const localMatch = localInvites.find(inv => inv.id === cleanToken);
         if (localMatch) {
           if (localMatch.status !== 'pending') {
             throw new Error('This invitation has already been accepted or expired.');
           }
           setInvite(localMatch);
+          setLoading(false);
           return;
         }
 
-        throw new Error('Invalid or expired invitation link.');
+        throw new Error('Invalid or expired invitation link. Please request a new invite from your workspace admin.');
       } catch (err) {
         setError(err.message);
       } finally {
@@ -81,61 +107,89 @@ export default function StaffOnboarding() {
     }
     
     setSubmitting(true);
-    
+    const cleanToken = token.trim();
+
     try {
-      // 1. Create the user in Supabase Auth
-      const { data: authData, error: authError } = await supabase.auth.signUp({
-        email: invite.email,
-        password: password,
-        options: {
-          data: {
-            full_name: invite.name,
-            role: invite.role
+      let acceptedViaApi = false;
+
+      // 1. Primary: Serverless handler with service_role privilege
+      try {
+        const res = await fetch('/api/admin/invite-staff', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: 'accept',
+            token: cleanToken,
+            password
+          })
+        });
+        const resData = await res.json();
+        if (res.ok && resData.success) {
+          acceptedViaApi = true;
+        } else {
+          console.warn('[StaffOnboarding] API accept failed, trying client auth:', resData.error);
+        }
+      } catch (apiErr) {
+        console.warn('[StaffOnboarding] API network error, falling back to client auth:', apiErr.message);
+      }
+
+      // 2. Fallback: Client-side auth if API was unavailable
+      if (!acceptedViaApi) {
+        const { data: authData, error: authError } = await supabase.auth.signUp({
+          email: invite.email,
+          password: password,
+          options: {
+            data: {
+              full_name: invite.name,
+              role: invite.role
+            }
+          }
+        });
+        if (authError) throw authError;
+
+        const userId = authData.user?.id;
+        if (userId) {
+          const { error: rpcErr } = await supabase.rpc('accept_staff_invite', {
+            p_token: cleanToken,
+            p_user_id: userId,
+            p_email: invite.email
+          });
+          if (rpcErr) {
+            await supabase.from('staff').insert({
+              id: userId,
+              user_id: userId,
+              name: invite.name,
+              email: invite.email,
+              role: invite.role,
+              is_active: true
+            });
+            await supabase.from('staff_invites').update({ status: 'accepted' }).eq('id', cleanToken);
           }
         }
+      }
+
+      // 3. Log in to establish client session
+      const { error: loginErr } = await supabase.auth.signInWithPassword({
+        email: invite.email,
+        password: password
       });
 
-      if (authError) throw authError;
-
-      const userId = authData.user?.id;
-      if (!userId) throw new Error('Failed to obtain user identity from authentication provider.');
-
-      // 2. Execute secure atomic RPC to prevent client-side privilege escalation
-      const { data: rpcRes, error: rpcErr } = await supabase.rpc('accept_staff_invite', {
-        p_token: token,
-        p_user_id: userId,
-        p_email: invite.email
-      });
-
-      if (rpcErr) {
-        console.warn('RPC unavailable, using fallback insert:', rpcErr);
-        // Fallback for development environments before SQL schema sync
-        const { error: staffError } = await supabase.from('staff').insert({
-          id: userId,
-          user_id: userId,
-          name: invite.name,
-          email: invite.email,
-          role: invite.role,
-          is_active: true
-        });
-        if (staffError && staffError.code !== '23505') throw staffError;
-
-        await supabase.from('staff_invites').update({ status: 'accepted' }).eq('id', token);
+      if (loginErr) {
+        console.warn('[StaffOnboarding] Auto login note:', loginErr.message);
       }
 
       // Mark status accepted in local fallback storage
       try {
         const stored = JSON.parse(localStorage.getItem('reavo_staff_invites') || '[]');
-        const updated = stored.map(inv => inv.id === token ? { ...inv, status: 'accepted' } : inv);
+        const updated = stored.map(inv => inv.id === cleanToken ? { ...inv, status: 'accepted' } : inv);
         localStorage.setItem('reavo_staff_invites', JSON.stringify(updated));
       } catch (e) {}
 
       toast.success('Account verified! Welcome to REAVO OS.');
       
-      // Give session time to persist then redirect
       setTimeout(() => {
         navigate('/admin');
-      }, 1500);
+      }, 1200);
 
     } catch (err) {
       console.error(err);

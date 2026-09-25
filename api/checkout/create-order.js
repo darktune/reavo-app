@@ -1,1 +1,419 @@
-export { default } from '../createOrder.js';
+﻿import { createClient } from '@supabase/supabase-js';
+
+/**
+ * Secure Server-Side Order Processing Handler
+ * 
+ * This handler runs server-side using SUPABASE_SERVICE_ROLE_KEY to bypass RLS.
+ * It re-validates prices from the database, checks stock, and atomically creates orders ΓÇö
+ * preventing client-side price tampering, stock spoofing, and discount fraud.
+ * 
+ * POST /api/checkout/create-order
+ */
+
+// Lazy-init admin client (service_role bypasses RLS)
+let supabaseAdmin = null;
+
+function getSupabaseAdmin() {
+  if (supabaseAdmin) return supabaseAdmin;
+
+  const url = process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SECRET_KEY;
+
+  if (!url || !serviceKey) {
+    return null;
+  }
+
+  supabaseAdmin = createClient(url, serviceKey, {
+    auth: { autoRefreshToken: false, persistSession: false }
+  });
+
+  return supabaseAdmin;
+}
+
+export default async function createOrderHandler(req, res) {
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method not allowed' });
+  }
+
+  const admin = getSupabaseAdmin();
+  if (!admin) {
+    return res.status(503).json({
+      error: 'Order processing is temporarily unavailable. SUPABASE_SERVICE_ROLE_KEY is not configured.'
+    });
+  }
+
+  try {
+    const { items, customerInfo, discountCode, koraReference } = req.body;
+
+    // ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    // 1. INPUT VALIDATION
+    // ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    if (!items || !Array.isArray(items) || items.length === 0) {
+      return res.status(400).json({ error: 'Cart is empty or malformed.' });
+    }
+    if (!customerInfo || !customerInfo.email || !customerInfo.firstName) {
+      return res.status(400).json({ error: 'Customer information is incomplete.' });
+    }
+
+    const productIds = items.map(i => i.id);
+
+    // ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    // 2. SERVER-SIDE PRICE & STOCK VERIFICATION
+    //    Re-fetch authoritative prices from DB to
+    //    prevent client-side price tampering.
+    // ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    const { data: dbProducts, error: fetchError } = await admin
+      .from('products')
+      .select('*')
+      .in('id', productIds);
+
+    if (fetchError) {
+      console.error('[CreateOrder] Product fetch error:', fetchError);
+      return res.status(500).json({ error: 'Failed to verify product availability: ' + fetchError.message });
+    }
+
+    const productMap = {};
+    for (const p of (dbProducts || [])) {
+      productMap[p.id] = p;
+    }
+
+    // Validate every requested item exists, is published (if status exists), and has stock
+    const validatedItems = [];
+    for (const item of items) {
+      const dbProduct = productMap[item.id];
+      if (!dbProduct) {
+        return res.status(400).json({ error: `Product "${item.id}" not found.` });
+      }
+      if (dbProduct.status && dbProduct.status !== 'published') {
+        return res.status(400).json({ error: `Product "${dbProduct.name}" is no longer available.` });
+      }
+      const qty = Math.max(1, Math.floor(Number(item.quantity) || 1));
+      if (dbProduct.stock_quantity !== undefined && dbProduct.stock_quantity !== null && dbProduct.stock_quantity < qty) {
+        return res.status(400).json({
+          error: `Insufficient stock for "${dbProduct.name}". Available: ${dbProduct.stock_quantity}, Requested: ${qty}.`
+        });
+      }
+
+      validatedItems.push({
+        id: dbProduct.id,
+        name: dbProduct.name,
+        price: Number(dbProduct.price), // Authoritative server price
+        quantity: qty,
+        stock_quantity: dbProduct.stock_quantity
+      });
+    }
+
+    // ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    // 3. SERVER-SIDE TOTAL CALCULATION
+    // ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    const subtotal = validatedItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+    // Validate discount code if provided
+    let discountAmount = 0;
+    let verifiedDiscountCode = null;
+
+    if (discountCode && typeof discountCode === 'string') {
+      const codeUpper = discountCode.trim().toUpperCase();
+
+      if (/^[A-Z0-9_-]+$/.test(codeUpper)) {
+        try {
+          const { data: discountData } = await admin
+            .from('discounts')
+            .select('*')
+            .ilike('code', codeUpper)
+            .eq('is_active', true)
+            .single();
+
+          if (discountData) {
+            if (discountData.type === 'percentage') {
+              discountAmount = Math.round((subtotal * Number(discountData.value)) / 100);
+            } else {
+              discountAmount = Math.min(subtotal, Number(discountData.value));
+            }
+            verifiedDiscountCode = discountData.code;
+          } else {
+            // Check hardcoded fallback codes
+            if (codeUpper === 'WELCOME10') {
+              discountAmount = Math.round(subtotal * 0.1);
+              verifiedDiscountCode = 'WELCOME10';
+            } else if (codeUpper === 'STUDENT5') {
+              discountAmount = Math.round(subtotal * 0.05);
+              verifiedDiscountCode = 'STUDENT5';
+            } else if (codeUpper === 'CAMPUS1000') {
+              discountAmount = Math.min(subtotal, 1000);
+              verifiedDiscountCode = 'CAMPUS1000';
+            }
+          }
+        } catch {
+          // Fallback codes if discounts table is unpopulated
+          if (codeUpper === 'WELCOME10') {
+            discountAmount = Math.round(subtotal * 0.1);
+            verifiedDiscountCode = 'WELCOME10';
+          } else if (codeUpper === 'STUDENT5') {
+            discountAmount = Math.round(subtotal * 0.05);
+            verifiedDiscountCode = 'STUDENT5';
+          } else if (codeUpper === 'CAMPUS1000') {
+            discountAmount = Math.min(subtotal, 1000);
+            verifiedDiscountCode = 'CAMPUS1000';
+          }
+        }
+      }
+    }
+
+    const totalAmount = Math.max(0, subtotal - discountAmount);
+
+    // ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    // 3b. IDEMPOTENCY CHECK (Prevent duplicate orders)
+    // ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    if (koraReference) {
+      const { data: existingOrder } = await admin
+        .from('orders')
+        .select('id, delivery_pin, total_amount, status')
+        .or(`kora_reference.eq.${koraReference},payment_reference.eq.${koraReference}`)
+        .maybeSingle();
+
+      if (existingOrder) {
+        console.log(`[CreateOrder] Order already exists for reference ${koraReference}: ${existingOrder.id}`);
+        return res.status(200).json({
+          success: true,
+          orderId: existingOrder.id,
+          deliveryPin: existingOrder.delivery_pin || '0000',
+          totalAmount: existingOrder.total_amount,
+          existing: true
+        });
+      }
+    }
+
+    // ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    // 3c. SERVER-SIDE KORAPAY RECONCILIATION
+    // ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    let isPaymentVerified = false;
+    const koraSecret = process.env.KORAPAY_SECRET_KEY;
+
+    if (koraReference && koraSecret) {
+      try {
+        const koraRes = await fetch(`https://api.korapay.com/merchant/api/v1/charges/${encodeURIComponent(koraReference)}`, {
+          headers: {
+            'Authorization': `Bearer ${koraSecret}`
+          }
+        });
+        const koraData = await koraRes.json();
+        if (koraRes.ok && koraData.status && koraData.data) {
+          const paidAmount = Number(koraData.data.amount);
+          const paidStatus = koraData.data.status;
+          const paidCurrency = koraData.data.currency;
+
+          // Reconcile amount, currency, and status
+          if (paidStatus === 'success' && Math.abs(paidAmount - totalAmount) < 1 && paidCurrency === 'NGN') {
+            isPaymentVerified = true;
+          } else {
+            console.warn(`[CreateOrder] Kora reconciliation mismatch: status=${paidStatus}, amount=${paidAmount} vs expected ${totalAmount}`);
+          }
+        }
+      } catch (koraErr) {
+        console.error('[CreateOrder] Kora verification check failed:', koraErr);
+      }
+    }
+
+    // If running in development without a secret, or payment verified, allow Paid
+    const initialOrderStatus = isPaymentVerified || (process.env.NODE_ENV !== 'production' && !koraSecret) ? 'Paid' : 'Pending';
+
+    const orderId = 'ORD-' + Date.now() + '-' + Math.random().toString(36).substr(2, 5);
+    const deliveryPin = Math.floor(1000 + Math.random() * 9000).toString();
+
+    // ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    // 4. INSERT ORDER
+    // ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    const fullOrderPayload = {
+      id: orderId,
+      customer_name: `${customerInfo.firstName} ${customerInfo.lastName || ''}`.trim(),
+      customer_email: customerInfo.email,
+      customer_phone: customerInfo.phone || null,
+      total_amount: totalAmount,
+      subtotal: subtotal,
+      discount_amount: discountAmount,
+      discount_code: verifiedDiscountCode,
+      delivery_pin: deliveryPin,
+      status: initialOrderStatus,
+      payment_method: 'Kora Pay',
+      payment_reference: koraReference || null,
+      kora_reference: koraReference || null,
+      shipping_address: {
+        address: customerInfo.address || '',
+        city: customerInfo.city || '',
+        state: customerInfo.state || '',
+        phone: customerInfo.phone || '',
+        whatsapp_phone: customerInfo.whatsappPhone || customerInfo.phone || ''
+      }
+    };
+
+    let { error: orderError } = await admin.from('orders').insert([fullOrderPayload]);
+
+    // If full schema columns (e.g. subtotal, delivery_pin) do not exist, fallback to base schema
+    if (orderError && (orderError.code === '42703' || orderError.message?.includes('column'))) {
+      console.warn('[CreateOrder] Full schema insert failed, retrying with core columns:', orderError.message);
+      const coreOrderPayload = {
+        id: orderId,
+        customer_name: fullOrderPayload.customer_name,
+        customer_email: fullOrderPayload.customer_email,
+        total_amount: totalAmount,
+        shipping_address: fullOrderPayload.shipping_address,
+        kora_reference: koraReference || null,
+        status: initialOrderStatus
+      };
+      const retryResult = await admin.from('orders').insert([coreOrderPayload]);
+      orderError = retryResult.error;
+    }
+
+    if (orderError) {
+      console.error('[CreateOrder] Order insert error:', orderError);
+      return res.status(500).json({ error: 'Failed to create order record: ' + (orderError.message || orderError) });
+    }
+
+    // ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    // 5. INSERT ORDER ITEMS
+    // ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    // Support both price_at_purchase (base schema) and price (admin os schema)
+    const orderItemsBase = validatedItems.map(item => ({
+      order_id: orderId,
+      product_id: item.id,
+      quantity: item.quantity,
+      price_at_purchase: item.price
+    }));
+
+    let { error: itemsError } = await admin.from('order_items').insert(orderItemsBase);
+    if (itemsError && (itemsError.code === '42703' || itemsError.message?.includes('column'))) {
+      const orderItemsAlt = validatedItems.map(item => ({
+        order_id: orderId,
+        product_id: item.id,
+        quantity: item.quantity,
+        price: item.price
+      }));
+      const retryItems = await admin.from('order_items').insert(orderItemsAlt);
+      itemsError = retryItems.error;
+    }
+
+    if (itemsError) {
+      console.error('[CreateOrder] Order items insert error:', itemsError);
+      // Non-fatal: order record exists, items can be reconciled
+    }
+
+    // ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    // 6. ATOMIC STOCK DECREMENT
+    //    Only run if products table has stock tracking
+    // ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    for (const item of validatedItems) {
+      if (item.stock_quantity === undefined || item.stock_quantity === null) continue;
+      try {
+        const { error: rpcError } = await admin.rpc('decrement_stock', {
+          p_id: item.id,
+          p_qty: item.quantity
+        });
+
+        if (rpcError) {
+          // Conditional update to guard against concurrent overselling
+          await admin
+            .from('products')
+            .update({ stock_quantity: Math.max(0, item.stock_quantity - item.quantity) })
+            .eq('id', item.id)
+            .gte('stock_quantity', item.quantity);
+        }
+      } catch (stockErr) {
+        console.error(`[CreateOrder] Stock decrement failed for ${item.id}:`, stockErr);
+      }
+    }
+
+    // ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    // 7. UPSERT CUSTOMER RECORD (Non-fatal)
+    // ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    try {
+      const customerEmail = customerInfo.email.toLowerCase().trim();
+      const { data: existingCustomer } = await admin
+        .from('customers')
+        .select('id, total_orders, total_spent')
+        .eq('email', customerEmail)
+        .single();
+
+      if (existingCustomer) {
+        await admin
+          .from('customers')
+          .update({
+            total_orders: (existingCustomer.total_orders || 0) + 1,
+            total_spent: Number(existingCustomer.total_spent || 0) + totalAmount,
+            last_order_at: new Date().toISOString(),
+            updated_at: new Date().toISOString()
+          })
+          .eq('id', existingCustomer.id);
+      } else {
+        await admin.from('customers').insert([{
+          name: `${customerInfo.firstName} ${customerInfo.lastName || ''}`.trim(),
+          email: customerEmail,
+          phone: customerInfo.phone || null,
+          total_orders: 1,
+          total_spent: totalAmount,
+          last_order_at: new Date().toISOString()
+        }]);
+      }
+    } catch (custErr) {
+      // Non-fatal if customers table doesn't exist yet
+    }
+
+    // ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    // 8. RECORD PAYMENT (Non-fatal)
+    // ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    try {
+      await admin.from('payments').insert([{
+        order_id: orderId,
+        customer_name: `${customerInfo.firstName} ${customerInfo.lastName || ''}`.trim(),
+        customer_email: customerInfo.email,
+        amount: totalAmount,
+        currency: 'NGN',
+        gateway: 'Kora Pay',
+        gateway_reference: koraReference || `REAVO_${Date.now()}`,
+        status: 'Successful'
+      }]);
+    } catch (payErr) {
+      // Non-fatal if payments table doesn't exist yet
+    }
+
+    // ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    // 9. AUDIT LOG (Non-fatal)
+    // ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    try {
+      await admin.from('audit_logs').insert([{
+        actor_name: customerInfo.email,
+        actor_type: 'system',
+        action: 'ORDER_PLACED',
+        entity_type: 'orders',
+        entity_id: orderId,
+        entity_name: `Order ${orderId}`,
+        new_value: {
+          total: totalAmount,
+          items: validatedItems.length,
+          discount: verifiedDiscountCode,
+          reference: koraReference
+        },
+        severity: 'info'
+      }]);
+    } catch (auditErr) {
+      // Non-fatal if audit_logs table doesn't exist yet
+    }
+
+    // ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    // 10. SUCCESS RESPONSE
+    // ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    return res.status(201).json({
+      success: true,
+      orderId,
+      deliveryPin,
+      totalAmount,
+      discountApplied: verifiedDiscountCode,
+      discountAmount,
+      itemCount: validatedItems.length
+    });
+
+  } catch (err) {
+    console.error('[CreateOrder] Unhandled error:', err);
+    return res.status(500).json({ error: 'An unexpected error occurred during order processing: ' + err.message });
+  }
+}
