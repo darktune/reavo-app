@@ -256,7 +256,7 @@ export const products = [
     "name": "iPad 10th Gen 64GB",
     "price": 420000,
     "category": "students",
-    "image": "https://www.apple.com/newsroom/images/product/ipad/standard/Apple-iPad-10th-gen-blue-2up-221018_big.jpg.large_2x.jpg",
+    "image": "https://cdsassets.apple.com/live/SZLF0YNV/images/sp/111896_ipad-10th-gen.png",
     "description": "The colorful, versatile all-screen notebook replacement for campus life.",
     "specs": [
       "A14 Bionic",
@@ -279,7 +279,7 @@ export const products = [
     "name": "iPad 10th Gen 256GB",
     "price": 620000,
     "category": "students",
-    "image": "https://www.apple.com/newsroom/images/product/ipad/standard/Apple-iPad-10th-gen-blue-2up-221018_big.jpg.large_2x.jpg",
+    "image": "https://cdsassets.apple.com/live/SZLF0YNV/images/sp/111896_ipad-10th-gen.png",
     "description": "High-storage campus classic. Download full course notes, videos, and sketches.",
     "specs": [
       "A14 Bionic",
@@ -1825,7 +1825,7 @@ export const products = [
     "price": 4200000,
     "priceDisplay": "From ₦4,200,000",
     "category": "schools",
-    "image": "https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&q=85&w=1200",
+    "image": "https://cdsassets.apple.com/live/SZLF0YNV/images/sp/111896_ipad-10th-gen.png",
     "description": "Complete digital learning deployment for 20 students.",
     "specs": [
       "20x iPads",
@@ -1872,7 +1872,7 @@ export const products = [
     "price": 2500000,
     "priceDisplay": "From ₦2,500,000",
     "category": "schools",
-    "image": "https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=85&w=1200",
+    "image": "https://images.samsung.com/is/image/samsung/p6pim/global/sm-x210nzaaxfe/gallery/global-galaxy-tab-a9-plus-wifi-sm-x210-sm-x210nzaaxfe-thumb-538292019?$650_519_PNG$",
     "description": "Cost-effective digital learning solution.",
     "specs": [
       "30x Tablets",
@@ -1940,7 +1940,7 @@ export const products = [
     "price": 2000000,
     "priceDisplay": "Quoted on request",
     "category": "streamers",
-    "image": "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?auto=format&fit=crop&q=85&w=1200",
+    "image": "https://images.unsplash.com/photo-1635350736475-c8cef4b21906?auto=format&fit=crop&q=85&w=1200",
     "description": "Broadcast your convocation or summit globally.",
     "specs": [
       "3x 4K Cameras",
@@ -1963,7 +1963,7 @@ export const products = [
     "price": 1000000,
     "priceDisplay": "Quoted on request",
     "category": "events",
-    "image": "https://images.unsplash.com/photo-1501386761578-eac5c94b800a?auto=format&fit=crop&q=85&w=1200",
+    "image": "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?auto=format&fit=crop&q=85&w=1200",
     "description": "Transform any hall into a spectacular venue.",
     "specs": [
       "Moving Heads",
@@ -1986,7 +1986,7 @@ export const products = [
     "price": 3500000,
     "priceDisplay": "Quoted on request",
     "category": "events",
-    "image": "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&q=85&w=1200",
+    "image": "https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&q=85&w=1200",
     "description": "A complete brand activation setup.",
     "specs": [
       "Custom Build",
@@ -2321,7 +2321,7 @@ export const products = [
     "name": "REAVO Aluminum Laptop Stand",
     "price": 32000,
     "category": "students",
-    "image": "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&q=85&w=1200",
+    "image": "https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?auto=format&fit=crop&q=85&w=1200",
     "description": "Ergonomic brushed aluminum riser for better hostel desk posture and optimal cooling airflow.",
     "specs": [
       "Solid Aluminum",
