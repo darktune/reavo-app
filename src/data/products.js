@@ -1,10 +1,53 @@
+export const categories = [
+  {
+    "id": "creators",
+    "label": "Creators",
+    "color": "#7C5CFF"
+  },
+  {
+    "id": "gamers",
+    "label": "Gamers",
+    "color": "#B4FF39"
+  },
+  {
+    "id": "students",
+    "label": "Students",
+    "color": "#3D8BFF"
+  },
+  {
+    "id": "biz",
+    "label": "Entrepreneurs",
+    "color": "#FFB800"
+  },
+  {
+    "id": "schools",
+    "label": "Schools",
+    "color": "#FF6B4A"
+  },
+  {
+    "id": "photographers",
+    "label": "Photographers",
+    "color": "#E84393"
+  },
+  {
+    "id": "streamers",
+    "label": "Streamers",
+    "color": "#00CEC9"
+  },
+  {
+    "id": "events",
+    "label": "Events",
+    "color": "#39D9C4"
+  }
+];
+
 export const products = [
   {
     "id": "macbook-pro-m4",
     "name": "MacBook Pro M4",
     "price": 1950000,
     "category": "biz",
-    "image": "https://m.media-amazon.com/images/I/61aUBxqc5PL._AC_SL1500_.jpg",
+    "image": "https://cdsassets.apple.com/live/7WUAS350/images/tech-specs/mbp14-m4-2024.png",
     "description": "Pro-grade tools for founders, freelancers, and people who mean business.",
     "specs": [
       "M4 Chip",
@@ -28,7 +71,7 @@ export const products = [
     "name": "MacBook Air M2",
     "price": 850000,
     "category": "students",
-    "image": "https://m.media-amazon.com/images/I/71f5Eu5lJSL._AC_SL1500_.jpg",
+    "image": "https://cdsassets.apple.com/live/7WUAS350/images/macbook-air/2022-macbook-air-m2-colors.png",
     "description": "Lightweight power for the modern student.",
     "specs": [
       "M2 Chip",
@@ -52,7 +95,7 @@ export const products = [
     "name": "ASUS ROG Strix G16",
     "price": 1650000,
     "category": "gamers",
-    "image": "https://m.media-amazon.com/images/I/71njN1mc0XL._AC_SL1500_.jpg",
+    "image": "https://dlcdnwebimgs.asus.com/gain/14730014-9B03-4369-83EE-B668F348B5AA",
     "description": "Play harder. Win louder. Built for serious players.",
     "specs": [
       "Core i9",
@@ -75,7 +118,7 @@ export const products = [
     "name": "iPad Mini 4 128GB",
     "price": 160000,
     "category": "students",
-    "image": "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&q=85&w=1200",
+    "image": "https://cdsassets.apple.com/live/7WUAS350/images/ipad/ipad/identify-ipad-mini4.png",
     "description": "Ultra-portable, compact Apple performance for studying on the go.",
     "specs": [
       "128GB Storage",
@@ -98,7 +141,7 @@ export const products = [
     "name": "iPad Mini 5 64GB",
     "price": 270000,
     "category": "students",
-    "image": "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&q=85&w=1200",
+    "image": "https://www.apple.com/newsroom/images/product/ipad/standard/New-iPad-Mini-iMovie-03192019_big.jpg.large_2x.jpg",
     "description": "Pocketable power with Apple Pencil support and True Tone Retina display.",
     "specs": [
       "64GB Storage",
@@ -121,7 +164,7 @@ export const products = [
     "name": "iPad Mini 5 256GB",
     "price": 350000,
     "category": "students",
-    "image": "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&q=85&w=1200",
+    "image": "https://www.apple.com/newsroom/images/product/ipad/standard/New-iPad-Mini-iMovie-03192019_big.jpg.large_2x.jpg",
     "description": "High capacity compact powerhouse for students and creators.",
     "specs": [
       "256GB Storage",
@@ -144,7 +187,7 @@ export const products = [
     "name": "iPad Mini 6 64GB",
     "price": 430000,
     "category": "creators",
-    "image": "https://images.unsplash.com/photo-1561154464-82e9adf32764?auto=format&fit=crop&q=85&w=1200",
+    "image": "https://www.apple.com/newsroom/images/product/ipad/standard/Apple_iPad-mini_colors_09142021_big_carousel.jpg.large_2x.jpg",
     "description": "All-screen modern design with A15 Bionic, USB-C, and 2nd Gen Pencil support.",
     "specs": [
       "A15 Bionic",
@@ -167,7 +210,7 @@ export const products = [
     "name": "iPad Mini 7 128GB",
     "price": 650000,
     "category": "creators",
-    "image": "https://images.unsplash.com/photo-1561154464-82e9adf32764?auto=format&fit=crop&q=85&w=1200",
+    "image": "https://cdsassets.apple.com/live/7WUAS350/images/ipad/ipad-mini/ipad-mini-2024-colors.png",
     "description": "Built for Apple Intelligence with A17 Pro performance and Apple Pencil Pro support.",
     "specs": [
       "A17 Pro Chip",
@@ -190,7 +233,7 @@ export const products = [
     "name": "iPad Mini 7 256GB",
     "price": 700000,
     "category": "creators",
-    "image": "https://images.unsplash.com/photo-1561154464-82e9adf32764?auto=format&fit=crop&q=85&w=1200",
+    "image": "https://cdsassets.apple.com/live/7WUAS350/images/ipad/ipad-mini/ipad-mini-2024-colors.png",
     "description": "The ultimate pro-grade miniature canvas with massive 256GB storage.",
     "specs": [
       "A17 Pro Chip",
@@ -213,7 +256,7 @@ export const products = [
     "name": "iPad 10th Gen 64GB",
     "price": 420000,
     "category": "students",
-    "image": "https://m.media-amazon.com/images/I/61uA2UVnYWL._AC_SL1500_.jpg",
+    "image": "https://www.apple.com/newsroom/images/product/ipad/standard/Apple-iPad-10th-gen-blue-2up-221018_big.jpg.large_2x.jpg",
     "description": "The colorful, versatile all-screen notebook replacement for campus life.",
     "specs": [
       "A14 Bionic",
@@ -236,7 +279,7 @@ export const products = [
     "name": "iPad 10th Gen 256GB",
     "price": 620000,
     "category": "students",
-    "image": "https://m.media-amazon.com/images/I/61uA2UVnYWL._AC_SL1500_.jpg",
+    "image": "https://www.apple.com/newsroom/images/product/ipad/standard/Apple-iPad-10th-gen-blue-2up-221018_big.jpg.large_2x.jpg",
     "description": "High-storage campus classic. Download full course notes, videos, and sketches.",
     "specs": [
       "A14 Bionic",
@@ -259,7 +302,7 @@ export const products = [
     "name": "iPad 11th Gen WiFi 128GB",
     "price": 630000,
     "category": "students",
-    "image": "https://m.media-amazon.com/images/I/61uA2UVnYWL._AC_SL1500_.jpg",
+    "image": "https://cdsassets.apple.com/live/7WUAS350/images/tech-specs/122240-ipad-a16.png",
     "description": "Next-gen student workhorse featuring upgraded silicon and base 128GB storage.",
     "specs": [
       "Upgraded Silicon",
@@ -282,7 +325,7 @@ export const products = [
     "name": "iPad 11th Gen WiFi 256GB",
     "price": 790000,
     "category": "students",
-    "image": "https://m.media-amazon.com/images/I/61uA2UVnYWL._AC_SL1500_.jpg",
+    "image": "https://cdsassets.apple.com/live/7WUAS350/images/tech-specs/122240-ipad-a16.png",
     "description": "Massive storage capacity for demanding university courses, design, and media.",
     "specs": [
       "Upgraded Silicon",
@@ -305,7 +348,7 @@ export const products = [
     "name": "iPad 11th Gen WiFi + Cellular 128GB",
     "price": 720000,
     "category": "students",
-    "image": "https://m.media-amazon.com/images/I/61uA2UVnYWL._AC_SL1500_.jpg",
+    "image": "https://cdsassets.apple.com/live/7WUAS350/images/tech-specs/122240-ipad-a16.png",
     "description": "Stay connected anywhere on campus with high-speed 5G Cellular + WiFi.",
     "specs": [
       "WiFi + Cellular (5G)",
@@ -328,7 +371,7 @@ export const products = [
     "name": "iPad 11th Gen WiFi + Cellular 256GB",
     "price": 950000,
     "category": "biz",
-    "image": "https://m.media-amazon.com/images/I/61uA2UVnYWL._AC_SL1500_.jpg",
+    "image": "https://cdsassets.apple.com/live/7WUAS350/images/tech-specs/122240-ipad-a16.png",
     "description": "Top-tier connectivity and storage for field founders, executives, and students.",
     "specs": [
       "WiFi + Cellular (5G)",
@@ -351,7 +394,7 @@ export const products = [
     "name": "iPad Air 2 32GB",
     "price": 130000,
     "category": "students",
-    "image": "https://m.media-amazon.com/images/I/61NGnpjoRDL._AC_SL1500_.jpg",
+    "image": "https://cdsassets.apple.com/live/7WUAS350/images/ipad/ipad/identify-ipad-air2.png",
     "description": "Budget-friendly, ultra-thin Apple tablet for reading, browsing, and entertainment.",
     "specs": [
       "32GB Storage",
@@ -374,7 +417,7 @@ export const products = [
     "name": "iPad Air 2 64GB",
     "price": 150000,
     "category": "students",
-    "image": "https://m.media-amazon.com/images/I/61NGnpjoRDL._AC_SL1500_.jpg",
+    "image": "https://cdsassets.apple.com/live/7WUAS350/images/ipad/ipad/identify-ipad-air2.png",
     "description": "Slim, responsive Apple iPad Air with comfortable 64GB storage.",
     "specs": [
       "64GB Storage",
@@ -397,7 +440,7 @@ export const products = [
     "name": "iPad Air 2 128GB",
     "price": 200000,
     "category": "students",
-    "image": "https://m.media-amazon.com/images/I/61NGnpjoRDL._AC_SL1500_.jpg",
+    "image": "https://cdsassets.apple.com/live/7WUAS350/images/ipad/ipad/identify-ipad-air2.png",
     "description": "High storage Air 2 variant perfect for downloading series and study materials.",
     "specs": [
       "128GB Storage",
@@ -420,7 +463,7 @@ export const products = [
     "name": "iPad Air 3 64GB",
     "price": 230000,
     "category": "students",
-    "image": "https://m.media-amazon.com/images/I/61NGnpjoRDL._AC_SL1500_.jpg",
+    "image": "https://www.apple.com/newsroom/images/product/ipad/standard/New-iPad-Air-nba2k-03192019_big.jpg.large_2x.jpg",
     "description": "10.5\" Retina display with A12 Bionic and Smart Keyboard connector.",
     "specs": [
       "A12 Bionic",
@@ -443,7 +486,7 @@ export const products = [
     "name": "iPad Air 3 256GB",
     "price": 320000,
     "category": "students",
-    "image": "https://m.media-amazon.com/images/I/61NGnpjoRDL._AC_SL1500_.jpg",
+    "image": "https://www.apple.com/newsroom/images/product/ipad/standard/New-iPad-Air-nba2k-03192019_big.jpg.large_2x.jpg",
     "description": "256GB capacity with A12 Bionic speed and lightweight portability.",
     "specs": [
       "A12 Bionic",
@@ -466,7 +509,7 @@ export const products = [
     "name": "iPad Air 4 64GB",
     "price": 470000,
     "category": "creators",
-    "image": "https://m.media-amazon.com/images/I/61XZQXFQeVL._AC_SL1500_.jpg",
+    "image": "https://cdsassets.apple.com/live/7WUAS350/images/ipad/ipad/ipad-air-4th-gen-colors.png",
     "description": "Modern squared design with A14 Bionic, USB-C, and Magic Keyboard compatibility.",
     "specs": [
       "A14 Bionic",
@@ -489,7 +532,7 @@ export const products = [
     "name": "iPad Air 4 256GB",
     "price": 530000,
     "category": "creators",
-    "image": "https://m.media-amazon.com/images/I/61XZQXFQeVL._AC_SL1500_.jpg",
+    "image": "https://cdsassets.apple.com/live/7WUAS350/images/ipad/ipad/ipad-air-4th-gen-colors.png",
     "description": "Pro performance in an Air body with 256GB storage for video and art creation.",
     "specs": [
       "A14 Bionic",
@@ -512,7 +555,7 @@ export const products = [
     "name": "iPad Air 5 M1 64GB",
     "price": 570000,
     "category": "creators",
-    "image": "https://m.media-amazon.com/images/I/61XZQXFQeVL._AC_SL1500_.jpg",
+    "image": "https://www.apple.com/newsroom/images/product/ipad/standard/Apple-iPad-Air-hero-color-lineup-220308_big.jpg.large_2x.jpg",
     "description": "Supercharged by the Apple M1 silicon chip with Stage Manager and Center Stage camera.",
     "specs": [
       "Apple M1 Chip",
@@ -535,7 +578,7 @@ export const products = [
     "name": "iPad Air 5 M1 256GB",
     "price": 700000,
     "category": "creators",
-    "image": "https://m.media-amazon.com/images/I/61XZQXFQeVL._AC_SL1500_.jpg",
+    "image": "https://www.apple.com/newsroom/images/product/ipad/standard/Apple-iPad-Air-hero-color-lineup-220308_big.jpg.large_2x.jpg",
     "description": "M1 power with 256GB storage. Edit 4K streams and design with zero lag.",
     "specs": [
       "Apple M1 Chip",
@@ -558,7 +601,7 @@ export const products = [
     "name": "iPad Air 6 M2 11” 128GB",
     "price": 680000,
     "category": "creators",
-    "image": "https://m.media-amazon.com/images/I/61XZQXFQeVL._AC_SL1500_.jpg",
+    "image": "https://cdsassets.apple.com/live/7WUAS350/images/tech-specs/ipad-air-11-inch-m2.png",
     "description": "Blazing fast Apple M2 silicon with landscape front camera and Pencil Pro hover.",
     "specs": [
       "Apple M2 Chip",
@@ -581,7 +624,7 @@ export const products = [
     "name": "iPad Air 6 M2 11” 256GB",
     "price": 770000,
     "category": "creators",
-    "image": "https://m.media-amazon.com/images/I/61XZQXFQeVL._AC_SL1500_.jpg",
+    "image": "https://cdsassets.apple.com/live/7WUAS350/images/tech-specs/ipad-air-11-inch-m2.png",
     "description": "M2 performance with double the base storage for intense workflows.",
     "specs": [
       "Apple M2 Chip",
@@ -604,7 +647,7 @@ export const products = [
     "name": "iPad Air M2 13” 128GB",
     "price": 850000,
     "category": "biz",
-    "image": "https://m.media-amazon.com/images/I/61aUBxqc5PL._AC_SL1500_.jpg",
+    "image": "https://cdsassets.apple.com/live/7WUAS350/images/ipad/spring-2024-3.png",
     "description": "First ever 13-inch iPad Air. Massive canvas at a much more accessible price point.",
     "specs": [
       "13\" Liquid Retina",
@@ -627,7 +670,7 @@ export const products = [
     "name": "iPad Air M2 13” 256GB",
     "price": 900000,
     "category": "biz",
-    "image": "https://m.media-amazon.com/images/I/61aUBxqc5PL._AC_SL1500_.jpg",
+    "image": "https://cdsassets.apple.com/live/7WUAS350/images/ipad/spring-2024-3.png",
     "description": "13-inch expansive display with 256GB storage for serious multitasking.",
     "specs": [
       "13\" Display",
@@ -650,7 +693,7 @@ export const products = [
     "name": "iPad Air M3 13” 128GB",
     "price": 920000,
     "category": "creators",
-    "image": "https://m.media-amazon.com/images/I/61aUBxqc5PL._AC_SL1500_.jpg",
+    "image": "https://cdsassets.apple.com/live/7WUAS350/images/tech-specs/122241-122242-ipad-air-11inch-13inch-m3.png",
     "description": "Enhanced 3nm silicon architecture with ray-tracing graphics support.",
     "specs": [
       "Apple M3 Chip",
@@ -673,7 +716,7 @@ export const products = [
     "name": "iPad Air M3 13” 256GB",
     "price": 990000,
     "category": "creators",
-    "image": "https://m.media-amazon.com/images/I/61aUBxqc5PL._AC_SL1500_.jpg",
+    "image": "https://cdsassets.apple.com/live/7WUAS350/images/tech-specs/122241-122242-ipad-air-11inch-13inch-m3.png",
     "description": "High capacity 13-inch M3 powerhouse built for heavy architectural and audio projects.",
     "specs": [
       "Apple M3 Chip",
@@ -696,7 +739,7 @@ export const products = [
     "name": "iPad Air M4 11” 128GB",
     "price": 980000,
     "category": "creators",
-    "image": "https://m.media-amazon.com/images/I/61aUBxqc5PL._AC_SL1500_.jpg",
+    "image": "https://cdsassets.apple.com/live/7WUAS350/images/tech-specs/ipad-air-11-inch-m4.png",
     "description": "Next-gen M4 architecture with cutting-edge AI neural engine acceleration.",
     "specs": [
       "Apple M4 Chip",
@@ -719,7 +762,7 @@ export const products = [
     "name": "iPad Air M4 13” 128GB",
     "price": 1150000,
     "category": "biz",
-    "image": "https://m.media-amazon.com/images/I/61aUBxqc5PL._AC_SL1500_.jpg",
+    "image": "https://cdsassets.apple.com/live/7WUAS350/images/tech-specs/ipad-air-13-inch-m4.png",
     "description": "The pinnacle of the Air series: massive 13-inch form factor driven by M4.",
     "specs": [
       "Apple M4 Chip",
@@ -742,7 +785,7 @@ export const products = [
     "name": "iPad Pro 10.5” 64GB",
     "price": 240000,
     "category": "students",
-    "image": "https://images.unsplash.com/photo-1589739900243-4b52cd9b104e?auto=format&fit=crop&q=85&w=1200",
+    "image": "https://cdsassets.apple.com/live/7WUAS350/images/ipad/ipad/ios11-ipad-pro-10-in.png",
     "description": "Classic Pro performance featuring a buttery smooth 120Hz ProMotion display.",
     "specs": [
       "120Hz ProMotion",
@@ -765,7 +808,7 @@ export const products = [
     "name": "iPad Pro 10.5” 256GB",
     "price": 270000,
     "category": "students",
-    "image": "https://images.unsplash.com/photo-1589739900243-4b52cd9b104e?auto=format&fit=crop&q=85&w=1200",
+    "image": "https://cdsassets.apple.com/live/7WUAS350/images/ipad/ipad/ios11-ipad-pro-10-in.png",
     "description": "High capacity 120Hz Pro tablet at an unbeatable student entry price.",
     "specs": [
       "120Hz ProMotion",
@@ -788,7 +831,7 @@ export const products = [
     "name": "iPad Pro 11” (2020) 128GB",
     "price": 700000,
     "category": "creators",
-    "image": "https://images.unsplash.com/photo-1589739900243-4b52cd9b104e?auto=format&fit=crop&q=85&w=1200",
+    "image": "https://www.apple.com/newsroom/images/product/ipad/standard/Apple_new-iPad-Pro_03182020_big.jpg.large_2x.jpg",
     "description": "Dual cameras, LiDAR scanner, Face ID, and A12Z Bionic graphics power.",
     "specs": [
       "A12Z Bionic",
@@ -811,7 +854,7 @@ export const products = [
     "name": "iPad Pro 11” (2020) 256GB",
     "price": 780000,
     "category": "creators",
-    "image": "https://images.unsplash.com/photo-1589739900243-4b52cd9b104e?auto=format&fit=crop&q=85&w=1200",
+    "image": "https://www.apple.com/newsroom/images/product/ipad/standard/Apple_new-iPad-Pro_03182020_big.jpg.large_2x.jpg",
     "description": "256GB 2020 Pro with dual ultra-wide camera and Face ID authentication.",
     "specs": [
       "A12Z Bionic",
@@ -834,7 +877,7 @@ export const products = [
     "name": "iPad Pro 11” M1 128GB",
     "price": 850000,
     "category": "creators",
-    "image": "https://images.unsplash.com/photo-1589739900243-4b52cd9b104e?auto=format&fit=crop&q=85&w=1200",
+    "image": "https://cdsassets.apple.com/live/7WUAS350/images/ipad/ipad/2021-ipad-pro-11-colors.png",
     "description": "Mac-grade Apple M1 silicon with Thunderbolt 4, 8GB RAM, and 120Hz ProMotion.",
     "specs": [
       "Apple M1 Chip",
@@ -857,7 +900,7 @@ export const products = [
     "name": "iPad Pro 11” M1 256GB",
     "price": 900000,
     "category": "creators",
-    "image": "https://images.unsplash.com/photo-1589739900243-4b52cd9b104e?auto=format&fit=crop&q=85&w=1200",
+    "image": "https://cdsassets.apple.com/live/7WUAS350/images/ipad/ipad/2021-ipad-pro-11-colors.png",
     "description": "M1 Pro workstation with double storage capacity for creative applications.",
     "specs": [
       "Apple M1 Chip",
@@ -880,7 +923,7 @@ export const products = [
     "name": "iPad Pro 11” M2 128GB",
     "price": 950000,
     "category": "creators",
-    "image": "https://images.unsplash.com/photo-1589739900243-4b52cd9b104e?auto=format&fit=crop&q=85&w=1200",
+    "image": "https://cdsassets.apple.com/live/SZLF0YNV/images/sp/111841_ipad-pro-4gen-mainimage.png",
     "description": "Apple M2 silicon with Apple Pencil hover, ProRes video recording, and WiFi 6E.",
     "specs": [
       "Apple M2 Chip",
@@ -903,7 +946,7 @@ export const products = [
     "name": "iPad Pro 11” M2 256GB",
     "price": 980000,
     "category": "creators",
-    "image": "https://images.unsplash.com/photo-1589739900243-4b52cd9b104e?auto=format&fit=crop&q=85&w=1200",
+    "image": "https://cdsassets.apple.com/live/SZLF0YNV/images/sp/111841_ipad-pro-4gen-mainimage.png",
     "description": "M2 speed and 256GB storage for studio-grade music production and 3D modeling.",
     "specs": [
       "Apple M2 Chip",
@@ -926,7 +969,7 @@ export const products = [
     "name": "iPad Pro 11” M4 256GB",
     "price": 1230000,
     "category": "creators",
-    "image": "https://images.unsplash.com/photo-1589739900243-4b52cd9b104e?auto=format&fit=crop&q=85&w=1200",
+    "image": "https://cdsassets.apple.com/live/7WUAS350/images/tech-specs/ipad-pro-11-inch-13-inch.png",
     "description": "World’s thinnest Apple product. Tandem OLED Ultra Retina XDR with game-changing M4 speed.",
     "specs": [
       "Apple M4 Chip",
@@ -949,7 +992,7 @@ export const products = [
     "name": "iPad Pro 11” M4 512GB",
     "price": 1380000,
     "category": "biz",
-    "image": "https://images.unsplash.com/photo-1589739900243-4b52cd9b104e?auto=format&fit=crop&q=85&w=1200",
+    "image": "https://cdsassets.apple.com/live/7WUAS350/images/tech-specs/ipad-pro-11-inch-13-inch.png",
     "description": "Pro flagship in 512GB capacity. Tandem OLED display and desktop-crushing M4.",
     "specs": [
       "Apple M4 Chip",
@@ -972,7 +1015,7 @@ export const products = [
     "name": "iPad Pro 12.9” 2nd Gen 64GB",
     "price": 280000,
     "category": "students",
-    "image": "https://m.media-amazon.com/images/I/81c+9BOQNWL._AC_SL1500_.jpg",
+    "image": "https://cdsassets.apple.com/live/SZLF0YNV/images/sp/111964_ipad-pro-12in-hero-201706.png",
     "description": "Huge 12.9\" display with 120Hz ProMotion at an accessible price point.",
     "specs": [
       "12.9\" ProMotion Display",
@@ -995,7 +1038,7 @@ export const products = [
     "name": "iPad Pro 12.9” 2nd Gen 128GB",
     "price": 290000,
     "category": "students",
-    "image": "https://m.media-amazon.com/images/I/81c+9BOQNWL._AC_SL1500_.jpg",
+    "image": "https://cdsassets.apple.com/live/SZLF0YNV/images/sp/111964_ipad-pro-12in-hero-201706.png",
     "description": "12.9\" large format display with 128GB storage for reading sheet music, PDFs, and media.",
     "specs": [
       "12.9\" Display",
@@ -1018,7 +1061,7 @@ export const products = [
     "name": "iPad Pro 12.9” 2nd Gen 256GB",
     "price": 340000,
     "category": "students",
-    "image": "https://m.media-amazon.com/images/I/81c+9BOQNWL._AC_SL1500_.jpg",
+    "image": "https://cdsassets.apple.com/live/SZLF0YNV/images/sp/111964_ipad-pro-12in-hero-201706.png",
     "description": "High storage 12.9\" tablet for students needing expansive screen real estate.",
     "specs": [
       "12.9\" Display",
@@ -1041,7 +1084,7 @@ export const products = [
     "name": "iPad Pro 12.9” 2nd Gen 512GB",
     "price": 420000,
     "category": "students",
-    "image": "https://m.media-amazon.com/images/I/81c+9BOQNWL._AC_SL1500_.jpg",
+    "image": "https://cdsassets.apple.com/live/SZLF0YNV/images/sp/111964_ipad-pro-12in-hero-201706.png",
     "description": "Massive 512GB storage on a 12.9\" canvas with high-volume quad stereo speakers.",
     "specs": [
       "512GB Storage",
@@ -1064,7 +1107,7 @@ export const products = [
     "name": "iPad Pro 12.9” 3rd Gen 64GB",
     "price": 550000,
     "category": "creators",
-    "image": "https://m.media-amazon.com/images/I/81c+9BOQNWL._AC_SL1500_.jpg",
+    "image": "https://cdsassets.apple.com/live/7WUAS350/images/ipad/ipad/ios12-ipad-pro-12-9-in.png",
     "description": "All-screen bezels with Face ID, A12X Bionic silicon, USB-C, and Pencil 2 magnetic snap.",
     "specs": [
       "A12X Bionic",
@@ -1087,7 +1130,7 @@ export const products = [
     "name": "iPad Pro 12.9” 3rd Gen 256GB",
     "price": 650000,
     "category": "creators",
-    "image": "https://m.media-amazon.com/images/I/81c+9BOQNWL._AC_SL1500_.jpg",
+    "image": "https://cdsassets.apple.com/live/7WUAS350/images/ipad/ipad/ios12-ipad-pro-12-9-in.png",
     "description": "Pro creator favorite with 256GB storage and all-day battery life.",
     "specs": [
       "A12X Bionic",
@@ -1110,7 +1153,7 @@ export const products = [
     "name": "iPad Pro 12.9” 3rd Gen 512GB",
     "price": 700000,
     "category": "creators",
-    "image": "https://m.media-amazon.com/images/I/81c+9BOQNWL._AC_SL1500_.jpg",
+    "image": "https://cdsassets.apple.com/live/7WUAS350/images/ipad/ipad/ios12-ipad-pro-12-9-in.png",
     "description": "Half-terabyte capacity for high-resolution RAW photo editing and illustration.",
     "specs": [
       "512GB Storage",
@@ -1133,7 +1176,7 @@ export const products = [
     "name": "iPad Pro 12.9” 4th Gen 128GB",
     "price": 750000,
     "category": "creators",
-    "image": "https://m.media-amazon.com/images/I/81c+9BOQNWL._AC_SL1500_.jpg",
+    "image": "https://www.apple.com/newsroom/images/product/ipad/standard/Apple_new-iPad-Pro_03182020_big.jpg.large_2x.jpg",
     "description": "2020 12.9\" Pro featuring LiDAR scanner, A12Z Bionic, and dual ultra-wide cameras.",
     "specs": [
       "A12Z Bionic",
@@ -1156,7 +1199,7 @@ export const products = [
     "name": "iPad Pro 12.9” 4th Gen 256GB",
     "price": 800000,
     "category": "creators",
-    "image": "https://m.media-amazon.com/images/I/81c+9BOQNWL._AC_SL1500_.jpg",
+    "image": "https://www.apple.com/newsroom/images/product/ipad/standard/Apple_new-iPad-Pro_03182020_big.jpg.large_2x.jpg",
     "description": "The optimal balance of storage and performance with 256GB and LiDAR.",
     "specs": [
       "A12Z Bionic",
@@ -1179,7 +1222,7 @@ export const products = [
     "name": "iPad Pro 12.9” 4th Gen 512GB",
     "price": 870000,
     "category": "biz",
-    "image": "https://m.media-amazon.com/images/I/81c+9BOQNWL._AC_SL1500_.jpg",
+    "image": "https://www.apple.com/newsroom/images/product/ipad/standard/Apple_new-iPad-Pro_03182020_big.jpg.large_2x.jpg",
     "description": "512GB 4th Gen flagship for intense architectural blueprints and video timelines.",
     "specs": [
       "A12Z Bionic",
@@ -1202,7 +1245,7 @@ export const products = [
     "name": "iPad Pro 12.9” 4th Gen 1TB",
     "price": 920000,
     "category": "biz",
-    "image": "https://m.media-amazon.com/images/I/81c+9BOQNWL._AC_SL1500_.jpg",
+    "image": "https://www.apple.com/newsroom/images/product/ipad/standard/Apple_new-iPad-Pro_03182020_big.jpg.large_2x.jpg",
     "description": "Enormous 1TB enterprise storage tier for unlimited offline project libraries.",
     "specs": [
       "1TB Massive Storage",
@@ -1225,7 +1268,7 @@ export const products = [
     "name": "iPad Pro 12.9” 5th Gen M1 128GB",
     "price": 950000,
     "category": "creators",
-    "image": "https://m.media-amazon.com/images/I/81c+9BOQNWL._AC_SL1500_.jpg",
+    "image": "https://www.apple.com/newsroom/images/product/ipad/standard/apple_ipad-pro-spring21_hero_04202021_big.jpg.large_2x.jpg",
     "description": "Revolutionary Liquid Retina XDR Mini-LED display with 1600 nits peak brightness and M1 speed.",
     "specs": [
       "Liquid Retina XDR (Mini-LED)",
@@ -1248,7 +1291,7 @@ export const products = [
     "name": "iPad Pro 12.9” 5th Gen M1 256GB",
     "price": 980000,
     "category": "creators",
-    "image": "https://m.media-amazon.com/images/I/81c+9BOQNWL._AC_SL1500_.jpg",
+    "image": "https://www.apple.com/newsroom/images/product/ipad/standard/apple_ipad-pro-spring21_hero_04202021_big.jpg.large_2x.jpg",
     "description": "Mini-LED HDR reference screen with 256GB storage and M1 processing power.",
     "specs": [
       "Mini-LED XDR Display",
@@ -1271,7 +1314,7 @@ export const products = [
     "name": "iPad Pro 12.9” 5th Gen M1 512GB",
     "price": 970000,
     "category": "creators",
-    "image": "https://m.media-amazon.com/images/I/81c+9BOQNWL._AC_SL1500_.jpg",
+    "image": "https://www.apple.com/newsroom/images/product/ipad/standard/apple_ipad-pro-spring21_hero_04202021_big.jpg.large_2x.jpg",
     "description": "512GB Mini-LED production flagship for color grading and broadcast design.",
     "specs": [
       "Mini-LED XDR Display",
@@ -1294,7 +1337,7 @@ export const products = [
     "name": "iPad Pro 12.9” 5th Gen M1 1TB",
     "price": 1100000,
     "category": "biz",
-    "image": "https://m.media-amazon.com/images/I/81c+9BOQNWL._AC_SL1500_.jpg",
+    "image": "https://www.apple.com/newsroom/images/product/ipad/standard/apple_ipad-pro-spring21_hero_04202021_big.jpg.large_2x.jpg",
     "description": "Massive 1TB NVMe storage equipped with 16GB Unified RAM for intense rendering.",
     "specs": [
       "1TB NVMe Storage",
@@ -1317,7 +1360,7 @@ export const products = [
     "name": "iPad Pro 12.9” 6th Gen M2 128GB",
     "price": 850000,
     "category": "creators",
-    "image": "https://m.media-amazon.com/images/I/81c+9BOQNWL._AC_SL1500_.jpg",
+    "image": "https://cdsassets.apple.com/live/SZLF0YNV/images/sp/111841_ipad-pro-4gen-mainimage.png",
     "description": "Apple M2 silicon with Apple Pencil hover detection and Mini-LED XDR screen.",
     "specs": [
       "Apple M2 Chip",
@@ -1340,7 +1383,7 @@ export const products = [
     "name": "iPad Pro 12.9” 6th Gen M2 256GB",
     "price": 990000,
     "category": "creators",
-    "image": "https://m.media-amazon.com/images/I/81c+9BOQNWL._AC_SL1500_.jpg",
+    "image": "https://cdsassets.apple.com/live/SZLF0YNV/images/sp/111841_ipad-pro-4gen-mainimage.png",
     "description": "256GB M2 Pro with ProRes encode engine, WiFi 6E, and hover precision.",
     "specs": [
       "Apple M2 Chip",
@@ -1363,7 +1406,7 @@ export const products = [
     "name": "iPad Pro 12.9” 6th Gen M2 512GB",
     "price": 1020000,
     "category": "biz",
-    "image": "https://m.media-amazon.com/images/I/81c+9BOQNWL._AC_SL1500_.jpg",
+    "image": "https://cdsassets.apple.com/live/SZLF0YNV/images/sp/111841_ipad-pro-4gen-mainimage.png",
     "description": "Half-terabyte M2 12.9\" powerhouse for professional studio grade media creation.",
     "specs": [
       "Apple M2 Chip",
@@ -1386,7 +1429,7 @@ export const products = [
     "name": "iPad Pro 12.9” 6th Gen M2 1TB",
     "price": 1150000,
     "category": "biz",
-    "image": "https://m.media-amazon.com/images/I/81c+9BOQNWL._AC_SL1500_.jpg",
+    "image": "https://cdsassets.apple.com/live/SZLF0YNV/images/sp/111841_ipad-pro-4gen-mainimage.png",
     "description": "1TB enterprise M2 tablet with 16GB RAM for workstation level workloads.",
     "specs": [
       "1TB Storage",
@@ -1409,7 +1452,7 @@ export const products = [
     "name": "iPad Pro M4 13” 256GB",
     "price": 1350000,
     "category": "biz",
-    "image": "https://m.media-amazon.com/images/I/81c+9BOQNWL._AC_SL1500_.jpg",
+    "image": "https://cdsassets.apple.com/live/7WUAS350/images/tech-specs/ipad-pro-11-inch-13-inch.png",
     "description": "The crowning achievement of Apple design. Tandem OLED Ultra Retina XDR in a 5.1mm chassis.",
     "specs": [
       "Apple M4 Chip",
@@ -1432,7 +1475,7 @@ export const products = [
     "name": "iPad Pro M4 13” 512GB",
     "price": 1450000,
     "category": "biz",
-    "image": "https://m.media-amazon.com/images/I/81c+9BOQNWL._AC_SL1500_.jpg",
+    "image": "https://cdsassets.apple.com/live/7WUAS350/images/tech-specs/ipad-pro-11-inch-13-inch.png",
     "description": "The definitive 13-inch M4 Pro with 512GB storage. Built for next-gen campus leaders.",
     "specs": [
       "Apple M4 Chip",
@@ -1455,7 +1498,7 @@ export const products = [
     "name": "iPhone 15 Pro",
     "price": 1250000,
     "category": "creators",
-    "image": "https://images.unsplash.com/photo-1695048133142-1a20484d2569?auto=format&fit=crop&q=85&w=1200",
+    "image": "https://cdsassets.apple.com/live/7WUAS350/images/tech-specs/iphone_15_pro.png",
     "description": "Phones that shoot like cinema.",
     "specs": [
       "A17 Pro",
@@ -1479,7 +1522,7 @@ export const products = [
     "name": "Samsung Galaxy S24 Ultra",
     "price": 1150000,
     "category": "biz",
-    "image": "https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?auto=format&fit=crop&q=85&w=1200",
+    "image": "https://images.samsung.com/us/smartphones/galaxy-s24-ultra/images/galaxy-s24-ultra-share-image.jpg",
     "description": "Galaxy AI is here.",
     "specs": [
       "Snapdragon 8 Gen 3",
@@ -1502,7 +1545,7 @@ export const products = [
     "name": "AirPods Pro 2",
     "price": 285000,
     "category": "students",
-    "image": "https://m.media-amazon.com/images/I/61f1YfTkTDL._AC_SL1500_.jpg",
+    "image": "https://cdsassets.apple.com/live/7WUAS350/images/tech-specs/airpods-pro-2.png",
     "description": "Noise cancellation that keeps you focused on every deadline.",
     "specs": [
       "H2 Chip",
@@ -1525,7 +1568,7 @@ export const products = [
     "name": "AirPods Max",
     "price": 420000,
     "category": "creators",
-    "image": "https://m.media-amazon.com/images/I/81jqUPkIVRL._AC_SL1500_.jpg",
+    "image": "https://cdsassets.apple.com/live/7WUAS350/images/tech-specs/121205-airpods-max.png",
     "description": "High-fidelity audio meets industry-leading ANC.",
     "specs": [
       "Over-ear",
@@ -1548,7 +1591,7 @@ export const products = [
     "name": "iPod Touch 6th Gen 16GB",
     "price": 65000,
     "category": "students",
-    "image": "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?auto=format&fit=crop&q=85&w=1200",
+    "image": "https://cdsassets.apple.com/live/7WUAS350/images/ipod/ipod-touch/ipod-touch-6th-gen.png",
     "description": "Pocketable Apple media player with 4\" Retina display and 8MP camera.",
     "specs": [
       "Apple A8 Chip",
@@ -1572,7 +1615,7 @@ export const products = [
     "name": "iPod Touch 6th Gen 32GB",
     "price": 80000,
     "category": "students",
-    "image": "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?auto=format&fit=crop&q=85&w=1200",
+    "image": "https://cdsassets.apple.com/live/7WUAS350/images/ipod/ipod-touch/ipod-touch-6th-gen.png",
     "description": "Compact 32GB music and offline media library for distraction-free listening.",
     "specs": [
       "Apple A8 Chip",
@@ -1596,7 +1639,7 @@ export const products = [
     "name": "iPod Touch 6th Gen 64GB",
     "price": 115000,
     "category": "students",
-    "image": "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?auto=format&fit=crop&q=85&w=1200",
+    "image": "https://cdsassets.apple.com/live/7WUAS350/images/ipod/ipod-touch/ipod-touch-6th-gen.png",
     "description": "High capacity 64GB iPod 6th Gen for massive offline music and podcasts.",
     "specs": [
       "Apple A8 Chip",
@@ -1620,7 +1663,7 @@ export const products = [
     "name": "iPod Touch 7th Gen 32GB",
     "price": 155000,
     "category": "students",
-    "image": "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?auto=format&fit=crop&q=85&w=1200",
+    "image": "https://cdsassets.apple.com/live/7WUAS350/images/ipod/ipod-touch/ipod-touch-7th-gen.jpg",
     "description": "Powered by the A10 Fusion chip for AR games, Apple Arcade, and high-res audio.",
     "specs": [
       "Apple A10 Fusion",
@@ -1644,7 +1687,7 @@ export const products = [
     "name": "iPod Touch 7th Gen 128GB",
     "price": 190000,
     "category": "students",
-    "image": "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?auto=format&fit=crop&q=85&w=1200",
+    "image": "https://cdsassets.apple.com/live/7WUAS350/images/ipod/ipod-touch/ipod-touch-7th-gen.jpg",
     "description": "128GB high capacity player. Store thousands of lossless audio tracks.",
     "specs": [
       "Apple A10 Fusion",
@@ -1668,7 +1711,7 @@ export const products = [
     "name": "iPod Touch 7th Gen 256GB",
     "price": 230000,
     "category": "creators",
-    "image": "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?auto=format&fit=crop&q=85&w=1200",
+    "image": "https://cdsassets.apple.com/live/7WUAS350/images/ipod/ipod-touch/ipod-touch-7th-gen.jpg",
     "description": "The maximum 256GB capacity iPod Touch ever made. Collector and audiophile tier.",
     "specs": [
       "Apple A10 Fusion",
@@ -1692,7 +1735,7 @@ export const products = [
     "name": "Razer DeathAdder V3",
     "price": 48000,
     "category": "gamers",
-    "image": "https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?auto=format&fit=crop&q=85&w=1200",
+    "image": "https://assets2.razerzone.com/images/pnx.assets/bf7ea91398b704ea710dfad671d185b9/razer-deathadder-v3-hero-desktop.webp",
     "description": "Ultra-lightweight ergonomic esports mouse.",
     "specs": [
       "59g Weight",
@@ -1736,7 +1779,7 @@ export const products = [
     "name": "Anker 26,800mAh Power Bank",
     "price": 28000,
     "category": "students",
-    "image": "https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?auto=format&fit=crop&q=85&w=1200",
+    "image": "https://cdn.shopify.com/s/files/1/0517/6767/3016/files/A1277011_V1.png?v=1753755956",
     "description": "Massive capacity to keep you charged on campus all week.",
     "specs": [
       "26,800mAh",
@@ -1758,7 +1801,7 @@ export const products = [
     "name": "Sony Alpha A7 IV",
     "price": 1950000,
     "category": "photographers",
-    "image": "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&q=85&w=1200",
+    "image": "https://sony.scene7.com/is/image/sonyglobalsolutions/01_mobile-5?$productIntroPlatemobile$&fmt=png-alpha",
     "description": "Hybrid camera for photo and cinema-grade video.",
     "specs": [
       "33MP Full-Frame",
@@ -1964,7 +2007,7 @@ export const products = [
     "name": "MacBook Air M1",
     "price": 620000,
     "category": "students",
-    "image": "https://m.media-amazon.com/images/I/71jG+e7roXL._AC_SL1500_.jpg",
+    "image": "https://cdsassets.apple.com/live/SZLF0YNV/images/sp/111883_macbookair.png",
     "description": "The legendary student laptop. Fanless silent design, all-day 18hr battery, and fast M1 silicon.",
     "specs": [
       "Apple M1 Chip",
@@ -1988,7 +2031,7 @@ export const products = [
     "name": "MacBook Air M3",
     "price": 1250000,
     "category": "students",
-    "image": "https://m.media-amazon.com/images/I/71f5Eu5lJSL._AC_SL1500_.jpg",
+    "image": "https://cdsassets.apple.com/live/7WUAS350/images/tech-specs/mba_13_m3_2024_hero.png",
     "description": "Strikingly thin design with the lightning-fast M3 chip and dual external display support.",
     "specs": [
       "Apple M3 Chip",
@@ -2012,7 +2055,7 @@ export const products = [
     "name": "iPhone 11 64GB",
     "price": 240000,
     "category": "students",
-    "image": "https://m.media-amazon.com/images/I/71i2XhHU3pL._AC_SL1500_.jpg",
+    "image": "https://cdsassets.apple.com/live/7WUAS350/images/iphone/identify-iphone-11-colors.jpg",
     "description": "The reliable campus champion. Dual-camera system and all-day battery life.",
     "specs": [
       "A13 Bionic",
@@ -2036,7 +2079,7 @@ export const products = [
     "name": "iPhone 12 128GB",
     "price": 360000,
     "category": "students",
-    "image": "https://m.media-amazon.com/images/I/71E5zB1qbIL._AC_SL1500_.jpg",
+    "image": "https://cdsassets.apple.com/live/7WUAS350/images/iphone/2021-iphone12-colors.png",
     "description": "Super-fast 5G speeds and brilliant OLED Super Retina XDR display.",
     "specs": [
       "A14 Bionic",
@@ -2060,7 +2103,7 @@ export const products = [
     "name": "iPhone 13 128GB",
     "price": 490000,
     "category": "students",
-    "image": "https://m.media-amazon.com/images/I/71xb2xkN5qL._AC_SL1500_.jpg",
+    "image": "https://cdsassets.apple.com/live/7WUAS350/images/iphone/2022-spring-iphone13-colors.png",
     "description": "Cinematic mode, durable Ceramic Shield, and exceptional battery jump.",
     "specs": [
       "A15 Bionic",
@@ -2084,7 +2127,7 @@ export const products = [
     "name": "iPhone 14 128GB",
     "price": 620000,
     "category": "students",
-    "image": "https://m.media-amazon.com/images/I/61bK6PMOC3L._AC_SL1500_.jpg",
+    "image": "https://cdsassets.apple.com/live/7WUAS350/images/iphone/iphone-14-colors-spring-2023.png",
     "description": "Crash Detection, Photonic Engine for low-light shots, and smooth iOS performance.",
     "specs": [
       "A15 Bionic (5-core GPU)",
@@ -2108,7 +2151,7 @@ export const products = [
     "name": "iPhone 15 128GB",
     "price": 820000,
     "category": "creators",
-    "image": "https://m.media-amazon.com/images/I/71657TiFeHL._AC_SL1500_.jpg",
+    "image": "https://cdsassets.apple.com/live/7WUAS350/images/tech-specs/iphone_15_hero.png",
     "description": "Dynamic Island, 48MP Main camera, and universal USB-C charging.",
     "specs": [
       "Dynamic Island",
@@ -2132,7 +2175,7 @@ export const products = [
     "name": "iPhone 16 128GB",
     "price": 1100000,
     "category": "creators",
-    "image": "/images/preorders/iphone-16-hero.jpg",
+    "image": "https://cdsassets.apple.com/live/7WUAS350/images/tech-specs/iphone-16.png",
     "description": "Built for Apple Intelligence with Camera Control and next-generation A18 chip.",
     "specs": [
       "A18 Chip",
@@ -2156,7 +2199,7 @@ export const products = [
     "name": "Apple 20W USB-C Fast Charger",
     "price": 22000,
     "category": "students",
-    "image": "https://images.unsplash.com/photo-1583863788434-e58a36330cf0?auto=format&fit=crop&q=85&w=1200",
+    "image": "https://store.storeimages.cdn-apple.com/1/as-images.apple.com/is/MWVV3?wid=1144&hei=1144&fmt=jpeg&qlt=90&.v=Z0NhK081OTZRcVdjS2kxLys5ZGpDUWtuVHYzMERCZURia3c5SzJFOTlPaUxZRW05UENvR2I1ditwQTlTUkJwZHVBYVpQODZ2VDA1a1lBSm83UHYrTWc",
     "description": "Original Apple 20W power adapter for lightning-fast charging from hostel to lecture halls.",
     "specs": [
       "20W Output",
@@ -2177,7 +2220,7 @@ export const products = [
     "name": "Anker 65W GaN Fast Charger",
     "price": 45000,
     "category": "biz",
-    "image": "https://images.unsplash.com/photo-1583863788434-e58a36330cf0?auto=format&fit=crop&q=85&w=1200",
+    "image": "https://cdn.shopify.com/s/files/1/0493/9834/9974/files/A2667113_TD01_V1_1.png?v=1753949913",
     "description": "Pocket-sized GaN III charger that powers your MacBook, iPad, and phone simultaneously.",
     "specs": [
       "65W Total Output",
@@ -2198,7 +2241,7 @@ export const products = [
     "name": "Apple MagSafe Wireless Charger",
     "price": 38000,
     "category": "creators",
-    "image": "https://images.unsplash.com/photo-1616353071588-708dcff912e2?auto=format&fit=crop&q=85&w=1200",
+    "image": "https://www.mytrendyphone.eu/images/Apple-MagSafe-Wireless-Charger-15W-White-0194252192467-02122020-01-p.jpg",
     "description": "Snap-on magnetic wireless charging with up to 15W peak power delivery.",
     "specs": [
       "15W MagSafe",
@@ -2218,7 +2261,7 @@ export const products = [
     "name": "Apple USB-C to Lightning Cable (1m)",
     "price": 15000,
     "category": "students",
-    "image": "https://images.unsplash.com/photo-1583863788434-e58a36330cf0?auto=format&fit=crop&q=85&w=1200",
+    "image": "https://store.storeimages.cdn-apple.com/1/as-images.apple.com/is/MM0A3?wid=1144&hei=1144&fmt=jpeg&qlt=90&.v=M1QzMm9ybmlkQ3d6ZGgvOEtLT2s2d2tuVHYzMERCZURia3c5SzJFOTlPakdhd3hTd0Z4eVU5dlRoTFZsS1dHQnF1RHVsWWtITU8zLy9oRVFmWitIakE",
     "description": "Durable original Apple cable for fast syncing and rapid PD charging.",
     "specs": [
       "1 Meter",
@@ -2238,7 +2281,7 @@ export const products = [
     "name": "Apple EarPods (USB-C)",
     "price": 24000,
     "category": "students",
-    "image": "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?auto=format&fit=crop&q=85&w=1200",
+    "image": "https://store.storeimages.cdn-apple.com/1/as-images.apple.com/is/MTJY3?wid=1144&hei=1144&fmt=jpeg&qlt=90&.v=Y1B2Rk5LMWY4dldFczFQRktGMnBzQWtuVHYzMERCZURia3c5SzJFOTlPZ3g4bUUvaUhjM1pNYS9QZDhuRlp2SWxsWkpjY2g2U1oxTURTR2JLZHQrenc",
     "description": "Crisp audio, zero latency, and built-in inline remote mic for Zoom classes and clear calls.",
     "specs": [
       "Built-in Mic",
@@ -2258,7 +2301,7 @@ export const products = [
     "name": "AirPods 3rd Gen",
     "price": 195000,
     "category": "students",
-    "image": "https://images.unsplash.com/photo-1600294037681-c80b4cb5b434?auto=format&fit=crop&q=85&w=1200",
+    "image": "https://cdsassets.apple.com/live/SZLF0YNV/images/sp/111863_airpods-3rdgen-2.png",
     "description": "Personalized Spatial Audio with dynamic head tracking and sweat/water resistance.",
     "specs": [
       "Spatial Audio",
@@ -2318,7 +2361,7 @@ export const products = [
     "name": "iPad 9th Gen 64GB",
     "price": 280000,
     "category": "students",
-    "image": "https://m.media-amazon.com/images/I/61NGnpjoRDL._AC_SL1500_.jpg",
+    "image": "https://www.apple.com/newsroom/images/product/ipad/standard/Apple_iPad-10-2-inch_SpringBoard_09142021_big_carousel.jpg.large_2x.jpg",
     "description": "The ultimate budget campus powerhouse with A13 Bionic, Center Stage, and Apple Pencil 1st Gen support.",
     "specs": [
       "A13 Bionic",
@@ -2341,7 +2384,7 @@ export const products = [
     "name": "iPad Pro 11” M5 256GB",
     "price": 1750000,
     "category": "creators",
-    "image": "https://images.unsplash.com/photo-1589739900243-4b52cd9b104e?auto=format&fit=crop&q=85&w=1200",
+    "image": "https://cdsassets.apple.com/live/7WUAS350/images/tech-specs/ipad-pro-11-inch-m5.png",
     "description": "Next-gen flagship M5 architecture with Tandem OLED display and extreme ray tracing.",
     "specs": [
       "Apple M5 Chip",
@@ -2364,7 +2407,7 @@ export const products = [
     "name": "iPad Pro 11” M5 512GB",
     "price": 1970000,
     "category": "biz",
-    "image": "https://images.unsplash.com/photo-1589739900243-4b52cd9b104e?auto=format&fit=crop&q=85&w=1200",
+    "image": "https://cdsassets.apple.com/live/7WUAS350/images/tech-specs/ipad-pro-11-inch-m5.png",
     "description": "Pro workstation speed with 512GB high-speed storage and Apple Pencil Pro support.",
     "specs": [
       "Apple M5 Chip",
@@ -2387,7 +2430,7 @@ export const products = [
     "name": "iPad Pro 11” M5 1TB",
     "price": 2220000,
     "category": "biz",
-    "image": "https://images.unsplash.com/photo-1589739900243-4b52cd9b104e?auto=format&fit=crop&q=85&w=1200",
+    "image": "https://cdsassets.apple.com/live/7WUAS350/images/tech-specs/ipad-pro-11-inch-m5.png",
     "description": "Massive 1TB capacity for studio creators, 4K ProRes video rendering, and heavy AI multitasking.",
     "specs": [
       "Apple M5 Chip",
@@ -2410,7 +2453,7 @@ export const products = [
     "name": "iPad Pro 13” M5 256GB",
     "price": 1800000,
     "category": "biz",
-    "image": "https://m.media-amazon.com/images/I/81c+9BOQNWL._AC_SL1500_.jpg",
+    "image": "https://cdsassets.apple.com/live/7WUAS350/images/tech-specs/ipad-pro-13-inch-m5.png",
     "description": "Expansive 13-inch Tandem OLED canvas powered by Apple M5 for designers and developers.",
     "specs": [
       "Apple M5 Chip",
@@ -2433,7 +2476,7 @@ export const products = [
     "name": "iPad Pro 13” M5 512GB",
     "price": 2000000,
     "category": "biz",
-    "image": "https://m.media-amazon.com/images/I/81c+9BOQNWL._AC_SL1500_.jpg",
+    "image": "https://cdsassets.apple.com/live/7WUAS350/images/tech-specs/ipad-pro-13-inch-m5.png",
     "description": "Large format 512GB studio slate. Replaces your laptop with the Magic Keyboard.",
     "specs": [
       "Apple M5 Chip",
@@ -2456,7 +2499,7 @@ export const products = [
     "name": "iPad Pro 13” M5 2TB",
     "price": 2450000,
     "category": "biz",
-    "image": "https://m.media-amazon.com/images/I/81c+9BOQNWL._AC_SL1500_.jpg",
+    "image": "https://cdsassets.apple.com/live/7WUAS350/images/tech-specs/ipad-pro-13-inch-m5.png",
     "description": "The pinnacle 2TB tier. Ultimate storage and 16GB RAM for top-tier creators and entrepreneurs.",
     "specs": [
       "Apple M5 Chip",
@@ -2479,7 +2522,7 @@ export const products = [
     "name": "HP Victus 15 Gaming Laptop Core i7",
     "price": 1650000,
     "category": "gamers",
-    "image": "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?auto=format&fit=crop&q=85&w=1200",
+    "image": "https://olusesi.com/wp-content/uploads/2026/05/HP-VICTUS-15-fa1105nia.png",
     "description": "13th Gen Intel Core i7, 1TB SSD, and NVIDIA RTX 3050 6GB. Brand new with backlit keyboard.",
     "specs": [
       "Core i7 13th Gen",
@@ -2503,7 +2546,7 @@ export const products = [
     "name": "ASUS TUF Gaming A15 Ryzen 7",
     "price": 1470000,
     "category": "gamers",
-    "image": "https://images.unsplash.com/photo-1593642632823-8f785ba67e45?auto=format&fit=crop&q=85&w=1200",
+    "image": "https://dlcdnwebimgs.asus.com/gain/a25d4381-0f1a-48bd-86d6-3bd59f017f19",
     "description": "Military-grade durable gaming laptop powered by AMD Ryzen 7 and RTX 3050 graphics. Brand new.",
     "specs": [
       "AMD Ryzen 7",
@@ -2527,7 +2570,7 @@ export const products = [
     "name": "ASUS TUF Gaming A16 Ryzen 7 RTX 5060",
     "price": 2580000,
     "category": "gamers",
-    "image": "https://images.unsplash.com/photo-1593642632823-8f785ba67e45?auto=format&fit=crop&q=85&w=1200",
+    "image": "https://dlcdnwebimgs.asus.com/gain/9d87f8d2-3d32-4630-a196-7621d2024fad",
     "description": "High-power 16-inch WUXGA anti-glare gaming rig with 32GB RAM and next-gen RTX 5060 8GB. Brand new.",
     "specs": [
       "AMD Ryzen 7",
@@ -2551,7 +2594,7 @@ export const products = [
     "name": "ASUS TUF Gaming F16 Core i7 512GB",
     "price": 2560000,
     "category": "gamers",
-    "image": "https://images.unsplash.com/photo-1593642632823-8f785ba67e45?auto=format&fit=crop&q=85&w=1200",
+    "image": "https://dlcdnwebimgs.asus.com/gain/f129eb8a-3ac0-4482-81bd-dae70023df21",
     "description": "Intel Core i7 16\" gaming beast with RTX 5050 8GB graphics and WUXGA anti-glare screen. Brand new.",
     "specs": [
       "Core i7",
@@ -2575,7 +2618,7 @@ export const products = [
     "name": "ASUS TUF Gaming F16 Core i7 1TB",
     "price": 2700000,
     "category": "gamers",
-    "image": "https://images.unsplash.com/photo-1593642632823-8f785ba67e45?auto=format&fit=crop&q=85&w=1200",
+    "image": "https://dlcdnwebimgs.asus.com/gain/f129eb8a-3ac0-4482-81bd-dae70023df21",
     "description": "1TB high-capacity version of the ASUS TUF F16 with Core i7 and RTX 5050 8GB. Brand new.",
     "specs": [
       "Core i7",
@@ -2599,7 +2642,7 @@ export const products = [
     "name": "Dell Pro Max 16 Premium Core Ultra 7",
     "price": 3600000,
     "category": "biz",
-    "image": "https://images.unsplash.com/photo-1593642634367-d91a135587b5?auto=format&fit=crop&q=85&w=1200",
+    "image": "https://mobileplanet.ua/uploads/product/2025-9-12/dell-pro-max-16-premium-ultra-7-265h-32gb-1tb-win1-354484.webp",
     "description": "Intel Core Ultra 7 265H vPro with 32GB RAM and professional NVIDIA RTX Pro 2000 8GB GPU. Brand new workstation.",
     "specs": [
       "Core Ultra 7 vPro",
@@ -2623,7 +2666,7 @@ export const products = [
     "name": "Dell Alienware 16 Aurora Core i7 RTX 5050",
     "price": 2670000,
     "category": "gamers",
-    "image": "https://images.unsplash.com/photo-1593642702821-c8da6771f0c6?auto=format&fit=crop&q=85&w=1200",
+    "image": "https://laptopmedia.com/wp-content/uploads/2025/07/6-2-scaled.jpg",
     "description": "Iconic Alienware thermal engineering with 13th Gen Core i7, 1TB SSD, 16GB DDR5, and RTX 5050 8GB. Brand new.",
     "specs": [
       "Core i7 13th Gen",
@@ -2647,7 +2690,7 @@ export const products = [
     "name": "Dell Alienware 16 Aurora Core i7 RTX 5060",
     "price": 2800000,
     "category": "gamers",
-    "image": "https://images.unsplash.com/photo-1593642702821-c8da6771f0c6?auto=format&fit=crop&q=85&w=1200",
+    "image": "https://laptopmedia.com/wp-content/uploads/2025/07/6-2-scaled.jpg",
     "description": "Upgraded 32GB DDR5 Alienware 16 Aurora with RTX 5060 8GB graphics for max esports FPS. Brand new.",
     "specs": [
       "Core i7 13th Gen",
@@ -2671,7 +2714,7 @@ export const products = [
     "name": "Dell Pro Max 16 Core Ultra 9 (Open Box)",
     "price": 3300000,
     "category": "biz",
-    "image": "https://images.unsplash.com/photo-1593642634367-d91a135587b5?auto=format&fit=crop&q=85&w=1200",
+    "image": "https://ng.jumia.is/unsafe/fit-in/680x680/filters:fill(white)/product/10/4940024/1.jpg?6409",
     "description": "Flagship Core Ultra 9 285H vPro with 1TB SSD, 32GB RAM, Facial Recognition, and RTX Pro 1000 8GB. Open box deal.",
     "specs": [
       "Core Ultra 9 vPro",
@@ -2695,7 +2738,7 @@ export const products = [
     "name": "HP Victus 15 Gaming Laptop Core i5",
     "price": 1400000,
     "category": "gamers",
-    "image": "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?auto=format&fit=crop&q=85&w=1200",
+    "image": "https://olusesi.com/wp-content/uploads/2026/05/HP-VICTUS-15-fa1105nia.png",
     "description": "Affordable student gaming laptop featuring 13th Gen Core i5, 512GB SSD, 16GB RAM, and RTX 3050 6GB. Brand new.",
     "specs": [
       "Core i5 13th Gen",
@@ -2719,7 +2762,7 @@ export const products = [
     "name": "HP Victus 15 Gaming Laptop Core i7 (Open Box)",
     "price": 1750000,
     "category": "gamers",
-    "image": "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?auto=format&fit=crop&q=85&w=1200",
+    "image": "https://olusesi.com/wp-content/uploads/2026/05/HP-VICTUS-15-fa1105nia.png",
     "description": "13th Gen Core i7 with 1TB SSD, 16GB RAM, and RTX 3050 6GB graphics. Open box verified deal.",
     "specs": [
       "Core i7 13th Gen",
@@ -2743,7 +2786,7 @@ export const products = [
     "name": "iPad 6th Gen 32GB",
     "price": 80000,
     "category": "students",
-    "image": "https://m.media-amazon.com/images/I/61NGnpjoRDL._AC_SL1500_.jpg",
+    "image": "https://cdsassets.apple.com/live/7WUAS350/images/ipad/ipad/ios11-3-ipad-9-7-in-2018.png",
     "description": "Compact 9.7\" Retina iPad with Apple Pencil support and A10 Fusion chip. Includes Free AirPods Pro bonus.",
     "specs": [
       "Apple A10 Fusion",
@@ -2760,48 +2803,5 @@ export const products = [
       "Bonus": "Free AirPods Pro included"
     },
     "stock_quantity": 8
-  }
-];
-
-export const categories = [
-  {
-    "id": "creators",
-    "label": "Creators",
-    "color": "#7C5CFF"
-  },
-  {
-    "id": "gamers",
-    "label": "Gamers",
-    "color": "#B4FF39"
-  },
-  {
-    "id": "students",
-    "label": "Students",
-    "color": "#3D8BFF"
-  },
-  {
-    "id": "biz",
-    "label": "Entrepreneurs",
-    "color": "#FFB800"
-  },
-  {
-    "id": "schools",
-    "label": "Schools",
-    "color": "#FF6B4A"
-  },
-  {
-    "id": "photographers",
-    "label": "Photographers",
-    "color": "#E84393"
-  },
-  {
-    "id": "streamers",
-    "label": "Streamers",
-    "color": "#00CEC9"
-  },
-  {
-    "id": "events",
-    "label": "Events",
-    "color": "#39D9C4"
   }
 ];
