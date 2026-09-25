@@ -905,9 +905,6 @@ export default function PreorderHeroBanner() {
                   }}>
                     {drop.title.split('&')[0].trim()}
                   </div>
-                  <div style={{ fontSize: 11, color: 'var(--text-secondary)' }}>
-                    {drop.priceEst}
-                  </div>
                 </div>
 
                 {isActive && (
