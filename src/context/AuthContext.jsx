@@ -45,26 +45,60 @@ export function AuthProvider({ children }) {
       throw error;
     }
     const displayName = data.user?.user_metadata?.full_name || cleanEmail.split('@')[0];
+
+    // Sync institution between session and local storage
+    const serverInstitution = data.user?.user_metadata?.institution || data.user?.user_metadata?.school;
+    const localSchool = localStorage.getItem('reavo_userSchool');
+    if (serverInstitution) {
+      localStorage.setItem('reavo_userSchool', serverInstitution);
+    } else if (localSchool) {
+      // Sync local school up to server in background
+      supabase.auth.updateUser({
+        data: { institution: localSchool, school: localSchool }
+      }).catch(() => {});
+      supabase.from('customers').upsert({
+        email: cleanEmail,
+        name: displayName,
+        institution: localSchool,
+        updated_at: new Date().toISOString()
+      }, { onConflict: 'email' }).catch(() => {});
+    }
+
     toast.success(`Welcome back, ${displayName}!`);
     return data;
   };
 
-  const register = async (name, email, password) => {
+  const register = async (name, email, password, institution) => {
     const cleanEmail = email.trim().toLowerCase();
     const cleanName = name.trim();
+    const cleanInstitution = (institution || localStorage.getItem('reavo_userSchool') || '').trim();
 
     try {
-      // 1. Call serverless registration endpoint to guarantee verified account creation & duplicate detection
-      const res = await fetch('/api/auth/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: cleanName, email: cleanEmail, password }),
-      });
+      // 1. Call serverless registration endpoint with timeout abort controller to prevent UI hang
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 8000);
+
+      let res;
+      try {
+        res = await fetch('/api/auth/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ 
+            name: cleanName, 
+            email: cleanEmail, 
+            password,
+            institution: cleanInstitution
+          }),
+          signal: controller.signal
+        });
+      } finally {
+        clearTimeout(timeoutId);
+      }
 
       const result = await res.json();
 
       if (!res.ok) {
-        toast.error('Registration failed', { description: result.error || 'Could not complete registration' });
+        toast.error('Registration notice', { description: result.error || 'Could not complete registration' });
         const err = new Error(result.error || 'Registration failed');
         err.emailExists = result.emailExists;
         throw err;
@@ -81,15 +115,28 @@ export function AuthProvider({ children }) {
         return { success: true, autoLogin: false };
       }
 
+      if (cleanInstitution) {
+        localStorage.setItem('reavo_userSchool', cleanInstitution);
+      }
+
       toast.success(`Welcome to REAVO, ${cleanName}! Your account is active.`);
       return { success: true, autoLogin: true };
     } catch (err) {
-      // Offline / fallback handling if fetch failed
-      if (err.message && (err.message.includes('Failed to fetch') || err.message.includes('NetworkError'))) {
+      if (err.emailExists) {
+        throw err;
+      }
+      // Offline / fallback handling if fetch failed or timed out
+      if (err.name === 'AbortError' || (err.message && (err.message.includes('Failed to fetch') || err.message.includes('NetworkError')))) {
         const { data: fallbackData, error: fallbackError } = await supabase.auth.signUp({
           email: cleanEmail,
           password,
-          options: { data: { full_name: cleanName } }
+          options: { 
+            data: { 
+              full_name: cleanName,
+              institution: cleanInstitution || undefined,
+              school: cleanInstitution || undefined
+            } 
+          }
         });
         if (fallbackError) {
           toast.error('Registration failed', { description: fallbackError.message });

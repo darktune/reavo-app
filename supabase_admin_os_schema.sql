@@ -61,9 +61,16 @@ ALTER TABLE public.customers ADD COLUMN IF NOT EXISTS ltv_tier TEXT DEFAULT 'New
 ALTER TABLE public.customers ADD COLUMN IF NOT EXISTS status TEXT DEFAULT 'Active';
 ALTER TABLE public.customers ADD COLUMN IF NOT EXISTS notes TEXT;
 ALTER TABLE public.customers ADD COLUMN IF NOT EXISTS last_order_at TIMESTAMPTZ;
+ALTER TABLE public.customers ADD COLUMN IF NOT EXISTS institution TEXT;
+ALTER TABLE public.customers ADD COLUMN IF NOT EXISTS school TEXT;
+ALTER TABLE public.customers ADD COLUMN IF NOT EXISTS full_name TEXT;
+ALTER TABLE public.customers ADD COLUMN IF NOT EXISTS order_count INTEGER DEFAULT 0;
+ALTER TABLE public.customers ADD COLUMN IF NOT EXISTS last_order_date TIMESTAMPTZ;
+ALTER TABLE public.customers ADD COLUMN IF NOT EXISTS admin_notes TEXT;
 
 CREATE INDEX IF NOT EXISTS idx_customers_email ON public.customers(email);
 CREATE INDEX IF NOT EXISTS idx_customers_ltv ON public.customers(ltv_tier);
+CREATE INDEX IF NOT EXISTS idx_customers_institution ON public.customers(institution);
 
 -- ==============================================================================
 -- 3. ORDERS & FULFILLMENT TABLE & COLUMN MIGRATION

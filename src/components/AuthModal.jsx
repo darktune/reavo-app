@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useUser } from '../context/UserContext';
-import { X, Mail, Lock, User, ArrowLeft, CheckCircle2 } from 'lucide-react';
+import { X, Mail, Lock, User, ArrowLeft, CheckCircle2, Key, AlertCircle, Loader2 } from 'lucide-react';
 
 export default function AuthModal({ isOpen, onClose }) {
   const [tab, setTab] = useState('login'); // 'login' | 'register' | 'forgot'
@@ -9,6 +9,7 @@ export default function AuthModal({ isOpen, onClose }) {
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
   const [forgotSent, setForgotSent] = useState(false);
+  const [accountConflict, setAccountConflict] = useState(false);
   const { login, register, resetPassword } = useAuth();
   const { setUserName } = useUser();
 
@@ -19,12 +20,14 @@ export default function AuthModal({ isOpen, onClose }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    setAccountConflict(false);
     try {
       if (tab === 'login') {
         await login(email, password);
         onClose();
       } else if (tab === 'register') {
-        await register(name, email, password);
+        const userSchool = localStorage.getItem('reavo_userSchool') || '';
+        await register(name, email, password, userSchool);
         if (name && setUserName) setUserName(name.trim());
         onClose();
       } else if (tab === 'forgot') {
@@ -33,7 +36,8 @@ export default function AuthModal({ isOpen, onClose }) {
       }
     } catch (err) {
       if (err?.emailExists) {
-        // Automatically switch to Sign In tab so the user can enter their password or reset it
+        // High visibility duplicate account prompt
+        setAccountConflict(true);
         setTab('login');
       }
     } finally {
@@ -44,6 +48,7 @@ export default function AuthModal({ isOpen, onClose }) {
   const handleClose = () => {
     setTab('login');
     setForgotSent(false);
+    setAccountConflict(false);
     onClose();
   };
 
@@ -200,6 +205,65 @@ export default function AuthModal({ isOpen, onClose }) {
               </button>
             </div>
 
+            {accountConflict && (
+              <div style={{
+                background: 'rgba(255, 184, 0, 0.1)',
+                border: '1px solid rgba(255, 184, 0, 0.35)',
+                borderRadius: 12,
+                padding: '12px 14px',
+                marginBottom: 16,
+                color: '#FFB800',
+                fontSize: 13,
+                lineHeight: 1.5
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontWeight: 700, marginBottom: 4 }}>
+                  <AlertCircle size={16} /> Account already exists
+                </div>
+                <div style={{ color: 'var(--text-primary)', fontSize: 12, marginBottom: 10 }}>
+                  An account is already registered for <strong>{email}</strong>. Enter your password to sign in or reset it immediately below.
+                </div>
+                <div style={{ display: 'flex', gap: 8 }}>
+                  <button
+                    type="button"
+                    onClick={() => { setTab('forgot'); setForgotSent(false); }}
+                    style={{
+                      flex: 1,
+                      padding: '7px 12px',
+                      background: 'var(--accent-teal, #39D9C4)',
+                      color: '#0A0A0C',
+                      border: 'none',
+                      borderRadius: 6,
+                      fontSize: 12,
+                      fontWeight: 700,
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: 6
+                    }}
+                  >
+                    <Key size={13} /> Reset Password
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setAccountConflict(false)}
+                    style={{
+                      padding: '7px 12px',
+                      background: 'rgba(255,255,255,0.08)',
+                      color: 'var(--text-primary)',
+                      border: '1px solid var(--border-subtle)',
+                      borderRadius: 6,
+                      fontSize: 12,
+                      fontWeight: 500,
+                      cursor: 'pointer'
+                    }}
+                  >
+                    Sign In
+                  </button>
+                </div>
+              </div>
+            )}
+
             <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
               {tab === 'register' && (
                 <div style={{ position: 'relative' }}>
@@ -270,28 +334,88 @@ export default function AuthModal({ isOpen, onClose }) {
               </div>
 
               {tab === 'login' && (
-                <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: -4 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: -2 }}>
+                  <span style={{ fontSize: 12, color: 'var(--text-secondary)' }}>Can't recall password?</span>
                   <button
                     type="button"
                     onClick={() => { setTab('forgot'); setForgotSent(false); }}
                     style={{
-                      background: 'transparent',
-                      border: 'none',
+                      background: 'rgba(57, 217, 196, 0.1)',
+                      border: '1px solid rgba(57, 217, 196, 0.3)',
                       color: 'var(--accent-teal, #39D9C4)',
                       fontSize: 12,
-                      fontWeight: 500,
+                      fontWeight: 600,
                       cursor: 'pointer',
-                      padding: 0
+                      padding: '4px 10px',
+                      borderRadius: 6,
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: 5
                     }}
+                  >
+                    <Key size={13} /> Forgot password?
+                  </button>
+                </div>
+              )}
+
+              <button 
+                type="submit" 
+                disabled={loading} 
+                className="btn-primary" 
+                style={{ 
+                  width: '100%', 
+                  marginTop: 8, 
+                  background: '#F7F7F5', 
+                  color: '#0A0A0C', 
+                  opacity: loading ? 0.7 : 1,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: 8,
+                  cursor: loading ? 'not-allowed' : 'pointer'
+                }}
+              >
+                {loading ? (
+                  <>
+                    <Loader2 size={16} className="animate-spin" />
+                    <span>Please wait...</span>
+                  </>
+                ) : (
+                  tab === 'login' ? 'Sign In' : 'Create Account'
+                )}
+              </button>
+
+              {tab === 'login' ? (
+                <div style={{ marginTop: 4, textAlign: 'center', fontSize: 13, color: 'var(--text-secondary)' }}>
+                  Don't have an account?{' '}
+                  <button
+                    type="button"
+                    onClick={() => { setTab('register'); setAccountConflict(false); }}
+                    style={{ background: 'none', border: 'none', color: 'var(--accent-teal, #39D9C4)', cursor: 'pointer', fontWeight: 600, padding: 0 }}
+                  >
+                    Create Account
+                  </button>
+                </div>
+              ) : (
+                <div style={{ marginTop: 4, textAlign: 'center', fontSize: 13, color: 'var(--text-secondary)' }}>
+                  Already have an account?{' '}
+                  <button
+                    type="button"
+                    onClick={() => { setTab('login'); setAccountConflict(false); }}
+                    style={{ background: 'none', border: 'none', color: 'var(--accent-teal, #39D9C4)', cursor: 'pointer', fontWeight: 600, padding: 0 }}
+                  >
+                    Sign In
+                  </button>
+                  <span style={{ margin: '0 8px', opacity: 0.4 }}>•</span>
+                  <button
+                    type="button"
+                    onClick={() => { setTab('forgot'); setForgotSent(false); setAccountConflict(false); }}
+                    style={{ background: 'none', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer', textDecoration: 'underline', padding: 0 }}
                   >
                     Forgot password?
                   </button>
                 </div>
               )}
-
-              <button type="submit" disabled={loading} className="btn-primary" style={{ width: '100%', marginTop: 8, background: '#F7F7F5', color: '#0A0A0C', opacity: loading ? 0.7 : 1 }}>
-                {loading ? 'Please wait...' : (tab === 'login' ? 'Sign In' : 'Create Account')}
-              </button>
             </form>
           </div>
         )}

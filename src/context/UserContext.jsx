@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import { supabase } from '../lib/supabase';
 
 const UserContext = createContext();
 
@@ -70,6 +71,27 @@ export function UserProvider({ children }) {
     setHasSeenIntro(true);
     setSkippedIntro(false);
     setShowWelcomePrompt(false);
+
+    // Sync to Supabase auth user_metadata & customers DB if session exists
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      if (user) {
+        supabase.auth.updateUser({
+          data: {
+            full_name: name || user.user_metadata?.full_name,
+            institution: school || user.user_metadata?.institution,
+            school: school || user.user_metadata?.school,
+            location: location || user.user_metadata?.location
+          }
+        }).catch(() => {});
+
+        supabase.from('customers').upsert({
+          email: user.email,
+          name: name || user.user_metadata?.full_name || user.email.split('@')[0],
+          institution: school || undefined,
+          updated_at: new Date().toISOString()
+        }, { onConflict: 'email' }).catch(() => {});
+      }
+    }).catch(() => {});
   };
 
   // User clicked Skip

@@ -153,7 +153,8 @@ export default function CheckoutPage() {
                 whatsappPhone: formData.whatsappPhone || formData.phone,
                 address: formData.address,
                 city: formData.city,
-                state: formData.state
+                state: formData.state,
+                institution: user?.user_metadata?.institution || user?.user_metadata?.school || localStorage.getItem('reavo_userSchool') || null
               },
               discountCode: appliedDiscount?.code || null,
               koraReference: data?.reference || null

@@ -42,33 +42,22 @@ export default async function handler(req, res) {
   });
 
   try {
-    // 1. Check if user already exists
-    const { data: userList, error: listError } = await supabase.auth.admin.listUsers();
-    if (listError) {
-      console.error('[Register API] Error listing users:', listError);
-    } else {
-      const existingUser = userList?.users?.find(u => u.email?.toLowerCase() === cleanEmail);
-      if (existingUser) {
-        return res.status(409).json({
-          success: false,
-          error: 'An account with this email address already exists. Please sign in or use "Forgot password?".',
-          emailExists: true
-        });
-      }
-    }
+    const cleanInstitution = (req.body?.institution || req.body?.school || '').trim();
 
-    // 2. Identify role
+    // 1. Identify role
     const isOwner = cleanEmail === 'abrahamtoluwani999@gmail.com' || cleanEmail === 'admin@reavoglobal.com';
     const role = isOwner ? 'OWNER' : 'customer';
 
-    // 3. Create pre-confirmed user
+    // 2. Create pre-confirmed user directly (atomic & fast, avoiding slow listUsers table scan)
     const { data: newUser, error: createError } = await supabase.auth.admin.createUser({
       email: cleanEmail,
       password: password,
       email_confirm: true,
       user_metadata: {
         full_name: cleanName,
-        role: role
+        role: role,
+        institution: cleanInstitution || undefined,
+        school: cleanInstitution || undefined
       },
       app_metadata: {
         role: role
@@ -76,23 +65,36 @@ export default async function handler(req, res) {
     });
 
     if (createError) {
+      const isDuplicate = 
+        createError.status === 422 || 
+        (createError.message && /already (been )?registered|already exists/i.test(createError.message));
+
+      if (isDuplicate) {
+        return res.status(409).json({
+          success: false,
+          error: 'An account with this email address already exists. Please sign in or use "Forgot password?".',
+          emailExists: true
+        });
+      }
+
       console.error('[Register API] Create user error:', createError);
       return res.status(400).json({ success: false, error: createError.message });
     }
 
-    // 4. Upsert into customers table for CRM and order history tracking
+    // 3. Upsert into customers table for CRM, Campus analytics, and order history tracking
     try {
       await supabase.from('customers').upsert({
         id: `cust_${newUser.user.id.substring(0, 8)}`,
         name: cleanName,
         email: cleanEmail,
+        institution: cleanInstitution || null,
         status: 'Active',
         ltv_tier: isOwner ? 'VIP' : 'New',
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString()
-      });
+      }, { onConflict: 'email' });
     } catch (crmErr) {
-      console.warn('[Register API] Optional customer sync warning:', crmErr.message);
+      console.warn('[Register API] Customer sync notice:', crmErr.message);
     }
 
     return res.status(200).json({
@@ -101,7 +103,8 @@ export default async function handler(req, res) {
         id: newUser.user.id,
         email: newUser.user.email,
         name: cleanName,
-        role: role
+        role: role,
+        institution: cleanInstitution || null
       }
     });
   } catch (err) {

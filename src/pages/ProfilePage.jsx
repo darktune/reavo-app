@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useWishlist } from '../context/WishlistContext';
 import { Navigate, useNavigate } from 'react-router';
-import { Package, User, LogOut, Settings, Heart, Loader2, LayoutDashboard, MapPin, MessageSquare, CreditCard, Tag, Search, Mail, HelpCircle, Smartphone, Key, CheckCircle, ArrowUpRight, RefreshCw, Zap, Bell, Clock, Trash2 } from 'lucide-react';
+import { Package, User, LogOut, Settings, Heart, Loader2, LayoutDashboard, MapPin, MessageSquare, CreditCard, Tag, Search, Mail, HelpCircle, Smartphone, Key, CheckCircle, ArrowUpRight, RefreshCw, Zap, Bell, Clock, Trash2, GraduationCap } from 'lucide-react';
 import ScrollReveal from '../components/ScrollReveal';
 import { products } from '../data/products';
 import ProductCard from '../components/ProductCard';
@@ -21,6 +21,7 @@ export default function ProfilePage() {
   
   const [newName, setNewName] = useState('');
   const [whatsappNumber, setWhatsappNumber] = useState('');
+  const [institution, setInstitution] = useState('');
   const [address, setAddress] = useState('');
   const [editingAddress, setEditingAddress] = useState(false);
   const [updating, setUpdating] = useState(false);
@@ -95,6 +96,7 @@ export default function ProfilePage() {
       setNewName(user?.user_metadata?.full_name || user?.name || '');
       setWhatsappNumber(user?.user_metadata?.whatsapp || user?.phone || '');
       setAddress(user?.user_metadata?.address || '');
+      setInstitution(user?.user_metadata?.institution || user?.user_metadata?.school || localStorage.getItem('reavo_userSchool') || '');
 
       // Add real-time listener for orders so it updates automatically
       const channel = supabase
@@ -176,12 +178,34 @@ export default function ProfilePage() {
     if (!newName.trim()) return;
     setUpdating(true);
     setUpdateSuccess(false);
+
+    const cleanInstitution = institution.trim();
+    if (cleanInstitution) {
+      localStorage.setItem('reavo_userSchool', cleanInstitution);
+    }
+
     const { data, error } = await supabase.auth.updateUser({
       data: { 
-        full_name: newName,
-        whatsapp: whatsappNumber
+        full_name: newName.trim(),
+        whatsapp: whatsappNumber.trim(),
+        institution: cleanInstitution,
+        school: cleanInstitution
       }
     });
+
+    // Sync to Supabase customers DB table for Admin OS & CRM
+    try {
+      await supabase.from('customers').upsert({
+        email: user.email,
+        name: newName.trim(),
+        phone: whatsappNumber.trim() || undefined,
+        institution: cleanInstitution || undefined,
+        updated_at: new Date().toISOString()
+      }, { onConflict: 'email' });
+    } catch (crmErr) {
+      console.warn('Customer DB sync warning:', crmErr);
+    }
+
     setUpdating(false);
     if (!error) {
       setUpdateSuccess(true);
@@ -756,6 +780,58 @@ export default function ProfilePage() {
                       </div>
                     </div>
 
+                    <div style={{ marginBottom: 24 }}>
+                      <label style={{ fontSize: 13, color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8 }}>
+                        <GraduationCap size={15} color="var(--accent-teal)" />
+                        Institution / University / Campus
+                      </label>
+                      <div style={{ display: 'grid', gridTemplateColumns: 'minmax(180px, 1fr) 2fr', gap: 12 }}>
+                        <select
+                          value={['UNILAG', 'LASU', 'Covenant', 'Babcock', 'UI', 'FUTA'].includes(institution) ? institution : (institution ? 'Other' : '')}
+                          onChange={(e) => {
+                            if (e.target.value !== 'Other') {
+                              setInstitution(e.target.value);
+                            }
+                          }}
+                          className="form-input"
+                          style={{
+                            background: 'var(--bg-void)',
+                            border: '1px solid var(--border-subtle)',
+                            padding: '12px 16px',
+                            borderRadius: 8,
+                            color: 'var(--text-primary)',
+                            outline: 'none'
+                          }}
+                        >
+                          <option value="" style={{ background: '#111' }}>Select Campus</option>
+                          <option value="UNILAG" style={{ background: '#111' }}>University of Lagos (UNILAG)</option>
+                          <option value="LASU" style={{ background: '#111' }}>Lagos State University (LASU)</option>
+                          <option value="Covenant" style={{ background: '#111' }}>Covenant University</option>
+                          <option value="Babcock" style={{ background: '#111' }}>Babcock University</option>
+                          <option value="UI" style={{ background: '#111' }}>University of Ibadan (UI)</option>
+                          <option value="FUTA" style={{ background: '#111' }}>FUTA (Akure)</option>
+                          <option value="Other" style={{ background: '#111' }}>Other / Custom Institution</option>
+                        </select>
+                        <input 
+                          type="text" 
+                          value={institution} 
+                          onChange={(e) => setInstitution(e.target.value)}
+                          placeholder="e.g. Landmark, Pan-Atlantic, Bowen, Nile University..."
+                          className="form-input" 
+                          style={{ 
+                            width: '100%', background: 'var(--bg-void)', border: '1px solid var(--border-subtle)', 
+                            padding: '12px 16px', borderRadius: 8, color: 'var(--text-primary)', outline: 'none',
+                            transition: 'border-color 0.2s'
+                          }} 
+                          onFocus={e => e.target.style.borderColor = 'var(--accent-primary)'}
+                          onBlur={e => e.target.style.borderColor = 'var(--border-subtle)'}
+                        />
+                      </div>
+                      <span style={{ fontSize: 11, color: 'var(--text-secondary)', display: 'block', marginTop: 4 }}>
+                        Used to verify student discounts, activate campus priority delivery, and tailor tech recommendations.
+                      </span>
+                    </div>
+
                     <div style={{ marginBottom: 32 }}>
                       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
                         <label style={{ fontSize: 13, color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: 8 }}>
@@ -794,20 +870,29 @@ export default function ProfilePage() {
                       </span>
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-                      <button 
-                        onClick={handleUpdateProfile}
-                        disabled={updating || !newName.trim() || (newName === (user?.user_metadata?.full_name || user?.name) && whatsappNumber === (user?.user_metadata?.whatsapp || user?.phone || ''))}
-                        className="btn-primary" 
-                        style={{ 
-                          padding: '12px 24px', borderRadius: 100, border: 'none', 
-                          cursor: (updating || !newName.trim() || (newName === (user?.user_metadata?.full_name || user?.name) && whatsappNumber === (user?.user_metadata?.whatsapp || user?.phone || ''))) ? 'not-allowed' : 'pointer', 
-                          fontWeight: 600,
-                          opacity: (updating || !newName.trim() || (newName === (user?.user_metadata?.full_name || user?.name) && whatsappNumber === (user?.user_metadata?.whatsapp || user?.phone || ''))) ? 0.5 : 1,
-                          display: 'flex', alignItems: 'center', gap: 8
-                        }}
-                      >
-                        {updating ? <><Loader2 size={16} className="animate-spin" /> Updating...</> : 'Update Profile'}
-                      </button>
+                      {(() => {
+                        const hasChanges = 
+                          newName.trim() !== (user?.user_metadata?.full_name || user?.name || '').trim() ||
+                          whatsappNumber.trim() !== (user?.user_metadata?.whatsapp || user?.phone || '').trim() ||
+                          institution.trim() !== (user?.user_metadata?.institution || user?.user_metadata?.school || '').trim();
+                        const isSaveDisabled = updating || !newName.trim() || !hasChanges;
+                        return (
+                          <button 
+                            onClick={handleUpdateProfile}
+                            disabled={isSaveDisabled}
+                            className="btn-primary" 
+                            style={{ 
+                              padding: '12px 24px', borderRadius: 100, border: 'none', 
+                              cursor: isSaveDisabled ? 'not-allowed' : 'pointer', 
+                              fontWeight: 600,
+                              opacity: isSaveDisabled ? 0.5 : 1,
+                              display: 'flex', alignItems: 'center', gap: 8
+                            }}
+                          >
+                            {updating ? <><Loader2 size={16} className="animate-spin" /> Updating...</> : 'Update Profile'}
+                          </button>
+                        );
+                      })()}
                       {updateSuccess && (
                         <span style={{ color: 'var(--accent-teal)', fontSize: 14, fontWeight: 500 }}>
                           ✓ Profile updated successfully

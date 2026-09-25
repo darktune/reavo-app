@@ -1,4 +1,4 @@
-﻿import { createClient } from '@supabase/supabase-js';
+import { createClient } from '@supabase/supabase-js';
 
 /**
  * Secure Server-Side Order Processing Handler
@@ -334,21 +334,28 @@ export default async function createOrderHandler(req, res) {
         .eq('email', customerEmail)
         .single();
 
+      const customerInstitution = customerInfo.institution ? String(customerInfo.institution).trim() : null;
+
       if (existingCustomer) {
+        const updatePayload = {
+          total_orders: (existingCustomer.total_orders || 0) + 1,
+          total_spent: Number(existingCustomer.total_spent || 0) + totalAmount,
+          last_order_at: new Date().toISOString(),
+          updated_at: new Date().toISOString()
+        };
+        if (customerInstitution) {
+          updatePayload.institution = customerInstitution;
+        }
         await admin
           .from('customers')
-          .update({
-            total_orders: (existingCustomer.total_orders || 0) + 1,
-            total_spent: Number(existingCustomer.total_spent || 0) + totalAmount,
-            last_order_at: new Date().toISOString(),
-            updated_at: new Date().toISOString()
-          })
+          .update(updatePayload)
           .eq('id', existingCustomer.id);
       } else {
         await admin.from('customers').insert([{
           name: `${customerInfo.firstName} ${customerInfo.lastName || ''}`.trim(),
           email: customerEmail,
           phone: customerInfo.phone || null,
+          institution: customerInstitution || null,
           total_orders: 1,
           total_spent: totalAmount,
           last_order_at: new Date().toISOString()

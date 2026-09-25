@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { toast } from 'sonner';
 import { supabase } from '../../lib/supabase';
 import { 
-  Users, UserPlus, Award, Search, Filter, ChevronRight, X, Phone, Mail, Clock, ShoppingCart, CreditCard, MessageCircle 
+  Users, UserPlus, Award, Search, Filter, ChevronRight, X, Phone, Mail, Clock, ShoppingCart, CreditCard, MessageCircle, GraduationCap 
 } from 'lucide-react';
 import AdminSkeleton from '../../components/admin/AdminSkeleton';
 import ScrollReveal from '../../components/ScrollReveal';
@@ -52,12 +52,27 @@ export default function AdminCustomers() {
       let query = supabase.from('customers').select('*', { count: 'exact' });
 
       if (debouncedSearch) {
-        query = query.or(`full_name.ilike.%${debouncedSearch}%,email.ilike.%${debouncedSearch}%`);
+        query = query.or(`name.ilike.%${debouncedSearch}%,email.ilike.%${debouncedSearch}%,institution.ilike.%${debouncedSearch}%`);
       }
 
       query = query.range(page * pageSize, (page + 1) * pageSize - 1).order('created_at', { ascending: false });
 
-      const { data, count, error } = await query;
+      let { data, count, error } = await query;
+
+      if (error && debouncedSearch) {
+        // Fallback search if institution column is still pending migration
+        const fallbackQuery = supabase
+          .from('customers')
+          .select('*', { count: 'exact' })
+          .or(`email.ilike.%${debouncedSearch}%`)
+          .range(page * pageSize, (page + 1) * pageSize - 1)
+          .order('created_at', { ascending: false });
+        const fallbackRes = await fallbackQuery;
+        if (!fallbackRes.error) {
+          data = fallbackRes.data;
+          error = null;
+        }
+      }
       
       if (error) {
         console.error(error);
@@ -298,11 +313,16 @@ export default function AdminCustomers() {
                       <tr key={customer.id} className="admin-table-row" style={{ borderBottom: '1px solid var(--border-subtle)' }}>
                         <td style={{ padding: '16px 8px', display: 'flex', alignItems: 'center', gap: 12 }}>
                           <div style={{ width: 40, height: 40, borderRadius: '50%', background: 'rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 600, color: 'var(--text-secondary)' }}>
-                            {getInitials(customer.full_name)}
+                            {getInitials(customer.name || customer.full_name)}
                           </div>
                           <div>
-                            <p style={{ margin: 0, fontWeight: 500, fontSize: 14 }}>{customer.full_name || 'Unknown'}</p>
+                            <p style={{ margin: 0, fontWeight: 500, fontSize: 14 }}>{customer.name || customer.full_name || 'Customer'}</p>
                             <p style={{ margin: 0, color: 'var(--text-secondary)', fontSize: 12 }}>{customer.email}</p>
+                            {(customer.institution || customer.school) && (
+                              <div style={{ display: 'inline-flex', alignItems: 'center', gap: 4, marginTop: 4, padding: '2px 7px', borderRadius: 4, background: 'rgba(57, 217, 196, 0.1)', border: '1px solid rgba(57, 217, 196, 0.25)', color: 'var(--accent-teal)', fontSize: 11, fontWeight: 600 }}>
+                                <GraduationCap size={11} /> {customer.institution || customer.school}
+                              </div>
+                            )}
                           </div>
                         </td>
                         <td style={{ padding: '16px 8px', color: 'var(--text-secondary)', fontSize: 14 }}>{customer.order_count || 0}</td>
@@ -415,10 +435,15 @@ export default function AdminCustomers() {
               
               <div style={{ display: 'flex', gap: 24, marginBottom: 32, alignItems: 'center' }}>
                 <div style={{ width: 80, height: 80, borderRadius: '50%', background: 'rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 600, color: 'var(--text-primary)', fontSize: 32 }}>
-                  {getInitials(activeCustomer.full_name)}
+                  {getInitials(activeCustomer.name || activeCustomer.full_name)}
                 </div>
                 <div>
-                  <h2 style={{ margin: '0 0 8px 0', fontSize: 24 }}>{activeCustomer.full_name}</h2>
+                  <h2 style={{ margin: '0 0 4px 0', fontSize: 24 }}>{activeCustomer.name || activeCustomer.full_name}</h2>
+                  {(activeCustomer.institution || activeCustomer.school) && (
+                    <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '3px 10px', borderRadius: 6, background: 'rgba(57, 217, 196, 0.12)', border: '1px solid rgba(57, 217, 196, 0.3)', color: 'var(--accent-teal)', fontSize: 12, fontWeight: 600, marginBottom: 8 }}>
+                      <GraduationCap size={14} /> {activeCustomer.institution || activeCustomer.school}
+                    </div>
+                  )}
                   <div style={{ display: 'flex', gap: 16, color: 'var(--text-secondary)', fontSize: 14, marginBottom: 12 }}>
                     <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}><Mail size={14}/> {activeCustomer.email}</span>
                     <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}><Phone size={14}/> {activeCustomer.phone || 'N/A'}</span>
