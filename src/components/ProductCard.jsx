@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router';
 import { ShoppingBag, Heart, Scale } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useWishlist } from '../context/WishlistContext';
-import { categories } from '../data/products';
+import { categories, products as fallbackProducts } from '../data/products';
 
 export default function ProductCard({ product, onCompare }) {
   const [isHovered, setIsHovered] = useState(false);
@@ -41,6 +41,13 @@ export default function ProductCard({ product, onCompare }) {
         <img 
           src={product.image} 
           alt={`${product.name} • REAVO Campus Gadget${product.category ? ` | ${product.category}` : ''}`}
+          loading="lazy"
+          onError={(e) => {
+            const fallback = fallbackProducts.find(p => p.id === product.id);
+            if (fallback && fallback.image && e.currentTarget.src !== fallback.image) {
+              e.currentTarget.src = fallback.image;
+            }
+          }}
           style={{ 
             width: '100%', 
             height: '100%', 

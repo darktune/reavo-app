@@ -77,17 +77,27 @@ export default function ProductPage() {
     async function loadProduct() {
       try {
         const { data: p } = await supabase.from('products').select('*').eq('id', id).single();
+        const fallback = fallbackProducts.find(item => item.id === id);
         if (p) {
-          setProduct(p);
+          const isStalePlaceholder = !p.image ||
+            p.image.includes('m.media-amazon.com') ||
+            (p.image.includes('images.unsplash.com/photo-15') && fallback?.image && !fallback.image.includes('images.unsplash.com'));
+          const resolvedImage = isStalePlaceholder ? (fallback?.image || p.image) : p.image;
+
+          setProduct({
+            ...fallback,
+            ...p,
+            image: resolvedImage,
+            images: (Array.isArray(p.images) && p.images.length > 0 && !p.images[0]?.includes('m.media-amazon.com'))
+              ? p.images
+              : (resolvedImage ? [resolvedImage] : [])
+          });
           const { data: c } = await supabase.from('categories').select('*').eq('id', p.category).single();
           if (c) setCategory(c);
-        } else {
-          const fallback = fallbackProducts.find(item => item.id === id);
-          if (fallback) {
-            setProduct(fallback);
-            const cat = fallbackCategories.find(c => c.id === fallback.category);
-            if (cat) setCategory(cat);
-          }
+        } else if (fallback) {
+          setProduct(fallback);
+          const cat = fallbackCategories.find(c => c.id === fallback.category);
+          if (cat) setCategory(cat);
         }
       } catch (err) {
         const fallback = fallbackProducts.find(item => item.id === id);
@@ -120,7 +130,9 @@ export default function ProductPage() {
     );
   }
 
-  const gallery = [product.image, product.image, product.image];
+  const gallery = (Array.isArray(product.images) && product.images.length > 0)
+    ? product.images
+    : [product.image].filter(Boolean);
   const isHearted = isInWishlist(product.id);
 
   // Compute live stock count & inventory state
@@ -184,15 +196,37 @@ export default function ProductPage() {
           <ScrollReveal delay={100}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
               <div className="glass-panel" style={{ width: '100%', aspectRatio: '1/1', borderRadius: 24, overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--bg-inner)', padding: 'clamp(16px, 4vw, 32px)' }}>
-                <img src={gallery[selectedImage]} alt={product.name} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+                <img 
+                  src={gallery[selectedImage] || product.image} 
+                  alt={product.name} 
+                  onError={(e) => {
+                    const fallback = fallbackProducts.find(p => p.id === product.id);
+                    if (fallback && fallback.image && e.currentTarget.src !== fallback.image) {
+                      e.currentTarget.src = fallback.image;
+                    }
+                  }}
+                  style={{ width: '100%', height: '100%', objectFit: 'contain' }} 
+                />
               </div>
-              <div style={{ display: 'flex', gap: 12 }}>
-                {gallery.map((img, i) => (
-                  <button key={i} onClick={() => setSelectedImage(i)} style={{ width: 80, height: 80, borderRadius: 12, overflow: 'hidden', border: `2px solid ${selectedImage === i ? 'var(--text-primary)' : 'transparent'}`, background: 'var(--bg-inner)', opacity: selectedImage === i ? 1 : 0.6, cursor: 'pointer', padding: 6 }}>
-                    <img src={img} alt={`${product.name} • view ${i + 1}`} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
-                  </button>
-                ))}
-              </div>
+              {gallery.length > 1 && (
+                <div style={{ display: 'flex', gap: 12 }}>
+                  {gallery.map((img, i) => (
+                    <button key={i} onClick={() => setSelectedImage(i)} style={{ width: 80, height: 80, borderRadius: 12, overflow: 'hidden', border: `2px solid ${selectedImage === i ? 'var(--text-primary)' : 'transparent'}`, background: 'var(--bg-inner)', opacity: selectedImage === i ? 1 : 0.6, cursor: 'pointer', padding: 6 }}>
+                      <img 
+                        src={img} 
+                        alt={`${product.name} • view ${i + 1}`} 
+                        onError={(e) => {
+                          const fallback = fallbackProducts.find(p => p.id === product.id);
+                          if (fallback && fallback.image && e.currentTarget.src !== fallback.image) {
+                            e.currentTarget.src = fallback.image;
+                          }
+                        }}
+                        style={{ width: '100%', height: '100%', objectFit: 'contain' }} 
+                      />
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
           </ScrollReveal>
 

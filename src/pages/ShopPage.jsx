@@ -25,7 +25,27 @@ export default function ShopPage() {
           supabase.from('products').select('*'),
           supabase.from('categories').select('*')
         ]);
-        if (prodData && prodData.length > 0) setProducts(prodData);
+        if (prodData && prodData.length > 0) {
+          const prodMap = new Map();
+          fallbackProducts.forEach(fp => prodMap.set(fp.id, { ...fp }));
+          prodData.forEach(dbProd => {
+            const existing = prodMap.get(dbProd.id);
+            const isStalePlaceholder = !dbProd.image ||
+              dbProd.image.includes('m.media-amazon.com') ||
+              (dbProd.image.includes('images.unsplash.com/photo-15') && existing?.image && !existing.image.includes('images.unsplash.com'));
+            const resolvedImage = isStalePlaceholder ? (existing?.image || dbProd.image) : dbProd.image;
+
+            prodMap.set(dbProd.id, {
+              ...existing,
+              ...dbProd,
+              image: resolvedImage,
+              images: (Array.isArray(dbProd.images) && dbProd.images.length > 0 && !dbProd.images[0]?.includes('m.media-amazon.com'))
+                ? dbProd.images
+                : (resolvedImage ? [resolvedImage] : [])
+            });
+          });
+          setProducts(Array.from(prodMap.values()));
+        }
         if (catData && catData.length > 0) setCategories(catData);
       } catch (e) {
         console.warn('Using fallback catalog data:', e);

@@ -134,8 +134,18 @@ export default function SearchModal({ isOpen, onClose }) {
                 onMouseEnter={e => e.currentTarget.style.background = 'var(--bg-inner)'}
                 onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
               >
-                <div style={{ width: 48, height: 48, borderRadius: 12, background: 'var(--bg-card)', overflow: 'hidden' }}>
-                  <img src={product.image} alt={product.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                <div style={{ width: 48, height: 48, borderRadius: 12, background: 'var(--bg-card)', overflow: 'hidden', padding: 4 }}>
+                  <img 
+                    src={product.image} 
+                    alt={product.name} 
+                    onError={(e) => {
+                      const fallback = products.find(p => p.id === product.id);
+                      if (fallback && fallback.image && e.currentTarget.src !== fallback.image) {
+                        e.currentTarget.src = fallback.image;
+                      }
+                    }}
+                    style={{ width: '100%', height: '100%', objectFit: 'contain' }} 
+                  />
                 </div>
                 <div style={{ flex: 1 }}>
                   <div style={{ fontWeight: 500, color: 'var(--text-primary)' }}>{product.name}</div>
