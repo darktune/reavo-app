@@ -27,11 +27,9 @@ export default function ProfilePage() {
   const [updating, setUpdating] = useState(false);
   const [updateSuccess, setUpdateSuccess] = useState(false);
   
-  // Trade-Ins State
-  const [tradeIns, setTradeIns] = useState([
-    { id: 'TRD-9021', device: 'iPhone 13 Pro (128GB)', condition: 'Pristine', quote: 340000, status: 'Approved', created_at: new Date(Date.now() - 86400000 * 2).toISOString() },
-    { id: 'TRD-8842', device: 'MacBook Air M1 (256GB)', condition: 'Good', quote: 410000, status: 'Pending Inspection', created_at: new Date(Date.now() - 86400000 * 5).toISOString() }
-  ]);
+  // Trade-Ins State (ZERO mock data, strictly loaded from Supabase DB or user actions)
+  const [tradeIns, setTradeIns] = useState([]);
+  const [loadingTradeIns, setLoadingTradeIns] = useState(false);
   const [showTradeInModal, setShowTradeInModal] = useState(false);
 
   // Pre-Orders State
@@ -93,6 +91,7 @@ export default function ProfilePage() {
   useEffect(() => {
     if (user?.email) {
       fetchOrders(false);
+      fetchTradeIns(false);
       setNewName(user?.user_metadata?.full_name || user?.name || '');
       setWhatsappNumber(user?.user_metadata?.whatsapp || user?.phone || '');
       setAddress(user?.user_metadata?.address || '');
@@ -106,8 +105,17 @@ export default function ProfilePage() {
         })
         .subscribe();
 
+      // Add real-time listener for trade-ins
+      const tradeChannel = supabase
+        .channel('profile_trade_ins')
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'trade_ins', filter: `customer_email=eq.${user.email}` }, () => {
+          fetchTradeIns(true);
+        })
+        .subscribe();
+
       return () => {
         supabase.removeChannel(channel);
+        supabase.removeChannel(tradeChannel);
       };
     }
   }, [user]);
@@ -122,6 +130,34 @@ export default function ProfilePage() {
     
     if (data) setOrders(data);
     if (!isBackground) setLoadingOrders(false);
+  }
+
+  async function fetchTradeIns(isBackground = false) {
+    if (!isBackground) setLoadingTradeIns(true);
+    try {
+      const { data, error } = await supabase
+        .from('trade_ins')
+        .select('*')
+        .eq('customer_email', user.email)
+        .order('created_at', { ascending: false });
+
+      if (data && !error) {
+        setTradeIns(data.map(t => ({
+          id: t.id,
+          device: t.device_name || `${t.device_brand || ''} ${t.device_model || ''}`.trim() || 'Pre-owned Gadget',
+          condition: t.condition || 'Inspected',
+          quote: Number(t.estimated_value || t.payout_amount || 0),
+          status: t.status === 'Approved' ? 'Approved' : (t.status === 'Completed' ? 'Completed' : 'Pending Inspection'),
+          created_at: t.created_at
+        })));
+      } else {
+        setTradeIns([]);
+      }
+    } catch {
+      setTradeIns([]);
+    } finally {
+      if (!isBackground) setLoadingTradeIns(false);
+    }
   }
 
   if (!isAuthenticated) {
@@ -233,18 +269,18 @@ export default function ProfilePage() {
   const wishlistProducts = products.filter(p => wishlist.includes(p.id));
 
   return (
-    <div style={{ paddingTop: 120, paddingBottom: 120, minHeight: '100vh' }}>
+    <div style={{ paddingTop: 'clamp(130px, 12vw, 150px)', paddingBottom: 100, minHeight: '100vh' }}>
       <div className="container">
         
         <ScrollReveal>
-          <h1 style={{ fontSize: 'clamp(32px, 5vw, 48px)', marginBottom: 48 }}>My Account</h1>
+          <h1 style={{ fontSize: 'clamp(28px, 4vw, 42px)', fontWeight: 700, marginBottom: 32, letterSpacing: '-0.02em' }}>My Account</h1>
         </ScrollReveal>
 
-        <div className="profile-layout" style={{ display: 'grid', gridTemplateColumns: 'minmax(280px, 1fr) 2.5fr', gap: 48 }}>
+        <div className="profile-layout" style={{ display: 'grid', gridTemplateColumns: '270px minmax(0, 1fr)', gap: 32, alignItems: 'start' }}>
           
           {/* Sidebar */}
           <ScrollReveal delay={100}>
-            <div className="glass-panel profile-sidebar" style={{ padding: 32, display: 'flex', flexDirection: 'column', gap: 32 }}>
+            <div className="glass-panel profile-sidebar" style={{ padding: '24px 20px', display: 'flex', flexDirection: 'column', gap: 24, borderRadius: 20 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 16, overflow: 'hidden' }}>
                 <div style={{
                   width: 56, height: 56, borderRadius: '50%', background: 'var(--accent-purple)', 
@@ -708,41 +744,6 @@ export default function ProfilePage() {
                 </>
               )}
 
-              {activeTab === 'support' && (
-                <>
-                  <h2 style={{ fontSize: 24, marginBottom: 24 }}>Customer Support</h2>
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: 16 }}>
-                    <div className="glass-panel" style={{ padding: 24, display: 'flex', alignItems: 'center', gap: 16, cursor: 'pointer' }} onClick={() => document.getElementById('reavo-assistant-toggle')?.click()}>
-                      <div style={{ padding: 12, background: 'rgba(255,255,255,0.05)', borderRadius: 12 }}>
-                        <MessageSquare size={24} color="var(--text-primary)" />
-                      </div>
-                      <div>
-                        <div style={{ fontWeight: 600, fontSize: 16, marginBottom: 4 }}>Chat with AI Assistant</div>
-                        <div style={{ fontSize: 13, color: 'var(--text-secondary)' }}>Get instant help from REAVO AI</div>
-                      </div>
-                    </div>
-                    <a href="mailto:support@reavo.com" className="glass-panel" style={{ padding: 24, display: 'flex', alignItems: 'center', gap: 16, cursor: 'pointer', textDecoration: 'none', color: 'inherit' }}>
-                      <div style={{ padding: 12, background: 'rgba(255,255,255,0.05)', borderRadius: 12 }}>
-                        <Mail size={24} color="var(--text-primary)" />
-                      </div>
-                      <div>
-                        <div style={{ fontWeight: 600, fontSize: 16, marginBottom: 4 }}>Email your concerns</div>
-                        <div style={{ fontSize: 13, color: 'var(--text-secondary)' }}>support@reavo.com</div>
-                      </div>
-                    </a>
-                    <div className="glass-panel" onClick={() => navigate('/faq')} style={{ padding: 24, display: 'flex', alignItems: 'center', gap: 16, cursor: 'pointer' }}>
-                      <div style={{ padding: 12, background: 'rgba(255,255,255,0.05)', borderRadius: 12 }}>
-                        <HelpCircle size={24} color="var(--text-primary)" />
-                      </div>
-                      <div>
-                        <div style={{ fontWeight: 600, fontSize: 16, marginBottom: 4 }}>FAQs & Tutorials</div>
-                        <div style={{ fontSize: 13, color: 'var(--text-secondary)' }}>Browse our comprehensive help center</div>
-                      </div>
-                    </div>
-                  </div>
-                </>
-              )}
-
               {activeTab === 'details' && (
                 <>
                   <h2 style={{ fontSize: 24, marginBottom: 24 }}>Account Details</h2>
@@ -1055,35 +1056,93 @@ export default function ProfilePage() {
                     </button>
                   </div>
 
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-                    {tradeIns.map(item => (
-                      <div key={item.id} className="glass-panel" style={{ padding: 24, borderRadius: 16, display: 'flex', flexWrap: 'wrap', gap: 16, justifyContent: 'space-between', alignItems: 'center' }}>
-                        <div>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
-                            <span className="font-mono" style={{ fontSize: 12, color: 'var(--text-secondary)' }}>{item.id}</span>
-                            <span style={{ 
-                              padding: '2px 10px', borderRadius: 100, fontSize: 11, fontWeight: 700,
-                              background: item.status === 'Approved' ? 'rgba(57, 217, 196, 0.15)' : 'rgba(255, 184, 0, 0.15)',
-                              color: item.status === 'Approved' ? 'var(--accent-teal)' : '#FFB800'
-                            }}>
-                              {item.status}
-                            </span>
-                          </div>
-                          <div style={{ fontWeight: 600, fontSize: 16, color: 'var(--text-primary)', marginBottom: 4 }}>{item.device}</div>
-                          <div style={{ fontSize: 13, color: 'var(--text-secondary)' }}>
-                            Graded Condition: <strong>{item.condition}</strong> • Submitted {new Date(item.created_at).toLocaleDateString()}
-                          </div>
+                  {loadingTradeIns ? (
+                    <div className="glass-panel" style={{ padding: 48, textAlign: 'center', color: 'var(--text-secondary)', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                      <Loader2 className="animate-spin" size={32} style={{ marginBottom: 16, color: 'var(--accent-teal)' }} />
+                      <p>Loading your trade-in appraisal records...</p>
+                    </div>
+                  ) : tradeIns.length === 0 ? (
+                    <div className="glass-panel" style={{ padding: '44px 28px', textAlign: 'center', borderRadius: 20, border: '1px dashed var(--border-subtle)' }}>
+                      <div style={{
+                        width: 56,
+                        height: 56,
+                        borderRadius: '50%',
+                        background: 'rgba(57, 217, 196, 0.12)',
+                        border: '1px solid rgba(57, 217, 196, 0.25)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        margin: '0 auto 16px auto'
+                      }}>
+                        <Smartphone size={26} color="var(--accent-teal)" />
+                      </div>
+                      <h3 style={{ fontSize: 18, fontWeight: 700, margin: '0 0 8px 0', color: 'var(--text-primary)' }}>
+                        No Trade-In Appraisals Yet
+                      </h3>
+                      <p style={{ color: 'var(--text-secondary)', fontSize: 14, maxWidth: 440, margin: '0 auto 24px auto', lineHeight: 1.6 }}>
+                        Turn your pre-owned smartphone or laptop into instant store credit or campus cash towards your next gadget upgrade.
+                      </p>
+                      <button 
+                        onClick={() => setShowTradeInModal(true)}
+                        className="btn-primary" 
+                        style={{ padding: '12px 28px', borderRadius: 100, fontSize: 13, fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: 8 }}
+                      >
+                        <Smartphone size={16} /> Appraise Your First Gadget
+                      </button>
+
+                      {/* 3 Steps Informational Workflow */}
+                      <div style={{
+                        display: 'grid',
+                        gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
+                        gap: 16,
+                        marginTop: 36,
+                        textAlign: 'left'
+                      }}>
+                        <div style={{ background: 'rgba(255,255,255,0.02)', padding: '16px 18px', borderRadius: 14, border: '1px solid var(--border-subtle)' }}>
+                          <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--accent-teal)', marginBottom: 4 }}>1. Model Valuation</div>
+                          <div style={{ fontSize: 12, color: 'var(--text-secondary)', lineHeight: 1.5 }}>Select model & storage condition to generate an automated quote.</div>
                         </div>
-                        <div style={{ textAlign: 'right' }}>
-                          <div style={{ fontSize: 12, color: 'var(--text-secondary)', marginBottom: 2 }}>Estimated Trade-In Value</div>
-                          <div className="font-mono" style={{ fontSize: 22, fontWeight: 700, color: 'var(--accent-teal)' }}>
-                            ₦{item.quote.toLocaleString()}
-                          </div>
-                          <span style={{ fontSize: 11, color: 'var(--text-secondary)' }}>Verified by REAVO Diagnostics</span>
+                        <div style={{ background: 'rgba(255,255,255,0.02)', padding: '16px 18px', borderRadius: 14, border: '1px solid var(--border-subtle)' }}>
+                          <div style={{ fontSize: 12, fontWeight: 700, color: '#FFB800', marginBottom: 4 }}>2. Campus Inspection</div>
+                          <div style={{ fontSize: 12, color: 'var(--text-secondary)', lineHeight: 1.5 }}>A verified REAVO agent checks screen condition & battery health.</div>
+                        </div>
+                        <div style={{ background: 'rgba(255,255,255,0.02)', padding: '16px 18px', borderRadius: 14, border: '1px solid var(--border-subtle)' }}>
+                          <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--accent-purple)', marginBottom: 4 }}>3. Instant Payout</div>
+                          <div style={{ fontSize: 12, color: 'var(--text-secondary)', lineHeight: 1.5 }}>Receive cash directly to your bank account or checkout credit.</div>
                         </div>
                       </div>
-                    ))}
-                  </div>
+                    </div>
+                  ) : (
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+                      {tradeIns.map(item => (
+                        <div key={item.id} className="glass-panel" style={{ padding: 22, borderRadius: 16, display: 'flex', flexWrap: 'wrap', gap: 16, justifyContent: 'space-between', alignItems: 'center' }}>
+                          <div>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
+                              <span className="font-mono" style={{ fontSize: 12, color: 'var(--text-secondary)' }}>{item.id}</span>
+                              <span style={{ 
+                                padding: '2px 10px', borderRadius: 100, fontSize: 11, fontWeight: 700,
+                                background: item.status === 'Approved' ? 'rgba(57, 217, 196, 0.15)' : 'rgba(255, 184, 0, 0.15)',
+                                color: item.status === 'Approved' ? 'var(--accent-teal)' : '#FFB800'
+                              }}>
+                                {item.status}
+                              </span>
+                            </div>
+                            <div style={{ fontWeight: 600, fontSize: 16, color: 'var(--text-primary)', marginBottom: 4 }}>{item.device}</div>
+                            <div style={{ fontSize: 13, color: 'var(--text-secondary)' }}>
+                              Graded Condition: <strong>{item.condition}</strong> • Submitted {new Date(item.created_at).toLocaleDateString()}
+                            </div>
+                          </div>
+                          <div style={{ textAlign: 'right' }}>
+                            <div style={{ fontSize: 12, color: 'var(--text-secondary)', marginBottom: 2 }}>Estimated Trade-In Value</div>
+                            <div className="font-mono" style={{ fontSize: 22, fontWeight: 700, color: 'var(--accent-teal)' }}>
+                              ₦{Number(item.quote || 0).toLocaleString()}
+                            </div>
+                            <span style={{ fontSize: 11, color: 'var(--text-secondary)' }}>Verified by REAVO Diagnostics</span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
 
                   {/* Trade-In Modal */}
                   {showTradeInModal && (
@@ -1106,7 +1165,7 @@ export default function ProfilePage() {
                           
                           const quoteVal = condition === 'Pristine' ? 320000 : condition === 'Good' ? 260000 : 180000;
                           const newSubmission = {
-                            id: 'TRD-' + Math.floor(1000 + Math.random() * 9000),
+                            id: 'ti-' + Math.random().toString(36).substring(2, 10),
                             device: `${deviceModel} (${storage})`,
                             condition: condition,
                             quote: quoteVal,
@@ -1119,14 +1178,19 @@ export default function ProfilePage() {
                           
                           try {
                             await supabase.from('trade_ins').insert([{
+                              id: newSubmission.id,
                               customer_name: user?.user_metadata?.full_name || user?.name || 'Customer',
                               customer_email: user?.email,
+                              customer_phone: user?.user_metadata?.whatsapp || user?.phone || null,
                               device_name: newSubmission.device,
                               condition: condition,
                               estimated_value: quoteVal,
                               status: 'pending'
                             }]);
-                          } catch {}
+                            fetchTradeIns(true);
+                          } catch (err) {
+                            console.warn('Trade-in save notice:', err);
+                          }
 
                           alert(`Appraisal quote generated: ₦${quoteVal.toLocaleString()}! Our campus agent will contact your WhatsApp to inspect your gadget.`);
                         }}>
@@ -1178,36 +1242,116 @@ export default function ProfilePage() {
 
               {activeTab === 'support' && (
                 <>
-                  <h2 style={{ fontSize: 24, marginBottom: 12 }}>Customer Support</h2>
-                  <p style={{ color: 'var(--text-secondary)', marginBottom: 24 }}>Need help with an order, campus delivery, or gadget trade-in? Our team is on standby.</p>
+                  <div style={{ marginBottom: 28 }}>
+                    <h2 style={{ fontSize: 26, fontWeight: 700, margin: '0 0 8px 0', color: 'var(--text-primary)' }}>Customer Support</h2>
+                    <p style={{ color: 'var(--text-secondary)', margin: 0, fontSize: 14, lineHeight: 1.5 }}>
+                      Need help with an order, campus handover, warranty claim, or device trade-in? Our team is on standby.
+                    </p>
+                  </div>
 
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 20 }}>
-                    <div className="glass-panel" style={{ padding: 24, borderRadius: 16, display: 'flex', flexDirection: 'column', gap: 12 }}>
-                      <MessageSquare size={28} color="#25D366" />
-                      <div style={{ fontWeight: 600, fontSize: 16 }}>Live WhatsApp Desk</div>
-                      <p style={{ fontSize: 13, color: 'var(--text-secondary)', margin: 0 }}>Direct priority chat with our student operations team.</p>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 20 }}>
+                    {/* Live WhatsApp Desk */}
+                    <div className="glass-panel" style={{ padding: 24, borderRadius: 16, display: 'flex', flexDirection: 'column', gap: 14, border: '1px solid rgba(37, 211, 102, 0.25)' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <div style={{ width: 44, height: 44, borderRadius: 12, background: 'rgba(37, 211, 102, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                          <MessageSquare size={22} color="#25D366" />
+                        </div>
+                        <span style={{ fontSize: 11, fontWeight: 700, padding: '3px 8px', borderRadius: 100, background: 'rgba(37, 211, 102, 0.15)', color: '#25D366' }}>
+                          Fastest Reply • ~5m
+                        </span>
+                      </div>
+                      <div>
+                        <div style={{ fontWeight: 600, fontSize: 16, color: 'var(--text-primary)' }}>Live WhatsApp Desk</div>
+                        <p style={{ fontSize: 13, color: 'var(--text-secondary)', margin: '4px 0 0 0', lineHeight: 1.4 }}>
+                          Direct priority chat with student operations for live deliveries and urgent order changes.
+                        </p>
+                      </div>
                       <a 
                         href={`https://wa.me/2349158554158?text=Hi%20REAVO%20Support%2C%20I'm%20${encodeURIComponent(user?.user_metadata?.full_name || 'a customer')}%20and%20need%20assistance.`} 
                         target="_blank" 
                         rel="noopener noreferrer" 
                         className="btn-primary" 
-                        style={{ marginTop: 'auto', textAlign: 'center', textDecoration: 'none', background: '#25D366', borderColor: '#25D366', color: '#000', fontWeight: 600, padding: '10px', borderRadius: 100 }}
+                        style={{ marginTop: 'auto', textAlign: 'center', textDecoration: 'none', background: '#25D366', border: '1px solid #25D366', color: '#000', fontWeight: 600, padding: '10px 16px', borderRadius: 100, fontSize: 13 }}
                       >
-                        Message WhatsApp (09158554158)
+                        Chat on WhatsApp (09158554158)
                       </a>
                     </div>
 
-                    <div className="glass-panel" style={{ padding: 24, borderRadius: 16, display: 'flex', flexDirection: 'column', gap: 12 }}>
-                      <Mail size={28} color="var(--accent-teal)" />
-                      <div style={{ fontWeight: 600, fontSize: 16 }}>Email Support</div>
-                      <p style={{ fontSize: 13, color: 'var(--text-secondary)', margin: 0 }}>For receipts, warranty claims, and institutional partnerships.</p>
+                    {/* AI Instant Assistant */}
+                    <div className="glass-panel" style={{ padding: 24, borderRadius: 16, display: 'flex', flexDirection: 'column', gap: 14, border: '1px solid rgba(57, 217, 196, 0.2)' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <div style={{ width: 44, height: 44, borderRadius: 12, background: 'rgba(57, 217, 196, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                          <Zap size={22} color="var(--accent-teal)" />
+                        </div>
+                        <span style={{ fontSize: 11, fontWeight: 700, padding: '3px 8px', borderRadius: 100, background: 'rgba(57, 217, 196, 0.12)', color: 'var(--accent-teal)' }}>
+                          Instant 24/7
+                        </span>
+                      </div>
+                      <div>
+                        <div style={{ fontWeight: 600, fontSize: 16, color: 'var(--text-primary)' }}>REAVO AI Assistant</div>
+                        <p style={{ fontSize: 13, color: 'var(--text-secondary)', margin: '4px 0 0 0', lineHeight: 1.4 }}>
+                          Instant answers on gadget compatibility, student discounts, and delivery timelines.
+                        </p>
+                      </div>
+                      <button 
+                        type="button"
+                        onClick={() => document.getElementById('reavo-assistant-toggle')?.click()}
+                        className="btn-primary" 
+                        style={{ marginTop: 'auto', textAlign: 'center', background: '#F7F7F5', color: '#0A0A0C', fontWeight: 600, padding: '10px 16px', borderRadius: 100, fontSize: 13, cursor: 'pointer', border: 'none' }}
+                      >
+                        Launch AI Copilot
+                      </button>
+                    </div>
+
+                    {/* Email Support */}
+                    <div className="glass-panel" style={{ padding: 24, borderRadius: 16, display: 'flex', flexDirection: 'column', gap: 14, border: '1px solid var(--border-subtle)' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <div style={{ width: 44, height: 44, borderRadius: 12, background: 'rgba(255,255,255,0.06)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                          <Mail size={22} color="var(--text-primary)" />
+                        </div>
+                        <span style={{ fontSize: 11, fontWeight: 600, padding: '3px 8px', borderRadius: 100, background: 'rgba(255,255,255,0.08)', color: 'var(--text-secondary)' }}>
+                          Formal Desk
+                        </span>
+                      </div>
+                      <div>
+                        <div style={{ fontWeight: 600, fontSize: 16, color: 'var(--text-primary)' }}>Email Support</div>
+                        <p style={{ fontSize: 13, color: 'var(--text-secondary)', margin: '4px 0 0 0', lineHeight: 1.4 }}>
+                          For official invoices, warranty claims, and institutional partnership inquiries.
+                        </p>
+                      </div>
                       <a 
                         href="mailto:support@reavo.com" 
-                        className="btn-secondary" 
-                        style={{ marginTop: 'auto', textAlign: 'center', textDecoration: 'none', padding: '10px', borderRadius: 100 }}
+                        className="btn-ghost" 
+                        style={{ marginTop: 'auto', textAlign: 'center', textDecoration: 'none', border: '1px solid var(--border-subtle)', color: 'var(--text-primary)', padding: '10px 16px', borderRadius: 100, fontSize: 13 }}
                       >
-                        Email support@reavo.com
+                        support@reavo.com
                       </a>
+                    </div>
+
+                    {/* FAQs & Knowledge Base */}
+                    <div className="glass-panel" style={{ padding: 24, borderRadius: 16, display: 'flex', flexDirection: 'column', gap: 14, border: '1px solid var(--border-subtle)' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <div style={{ width: 44, height: 44, borderRadius: 12, background: 'rgba(255,255,255,0.06)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                          <HelpCircle size={22} color="var(--text-primary)" />
+                        </div>
+                        <span style={{ fontSize: 11, fontWeight: 600, padding: '3px 8px', borderRadius: 100, background: 'rgba(255,255,255,0.08)', color: 'var(--text-secondary)' }}>
+                          Self-Service
+                        </span>
+                      </div>
+                      <div>
+                        <div style={{ fontWeight: 600, fontSize: 16, color: 'var(--text-primary)' }}>FAQs & Knowledge Base</div>
+                        <p style={{ fontSize: 13, color: 'var(--text-secondary)', margin: '4px 0 0 0', lineHeight: 1.4 }}>
+                          Browse answers about campus deliveries, return windows, Kora Pay, and PIN verification.
+                        </p>
+                      </div>
+                      <button 
+                        type="button"
+                        onClick={() => navigate('/faq')} 
+                        className="btn-ghost" 
+                        style={{ marginTop: 'auto', textAlign: 'center', border: '1px solid var(--border-subtle)', color: 'var(--text-primary)', padding: '10px 16px', borderRadius: 100, fontSize: 13, cursor: 'pointer' }}
+                      >
+                        Browse Help Center
+                      </button>
                     </div>
                   </div>
                 </>
@@ -1292,7 +1436,7 @@ export default function ProfilePage() {
         .mobile-modal-handle {
           display: none;
         }
-        @media (max-width: 768px) {
+        @media (max-width: 900px) {
           .profile-layout {
             grid-template-columns: 1fr !important;
             gap: 20px !important;
