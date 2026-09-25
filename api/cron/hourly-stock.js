@@ -1,6 +1,6 @@
 import { createClient } from '@supabase/supabase-js';
-import { verifyCronAuth } from '../core/cronAuth.js';
-import { sendEmail } from '../core/mailer.js';
+import { verifyCronAuth } from '../_core/cronAuth.js';
+import { sendEmail } from '../_core/mailer.js';
 
 /**
  * Hourly Stock Check Serverless Function

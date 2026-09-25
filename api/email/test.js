@@ -1,4 +1,4 @@
-import { sendEmail } from '../core/mailer.js';
+import { sendEmail } from '../_core/mailer.js';
 import { createClient } from '@supabase/supabase-js';
 
 /**

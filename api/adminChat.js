@@ -1,4 +1,4 @@
-import { aiProvider } from './core/aiProvider.js';
+import { aiProvider } from './_core/aiProvider.js';
 import { createClient } from '@supabase/supabase-js';
 import dotenv from 'dotenv';
 

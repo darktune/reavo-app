@@ -1,5 +1,5 @@
-import { aiProvider } from './core/aiProvider.js';
-import { detectIntentLocally } from './core/intentRouter.js';
+import { aiProvider } from './_core/aiProvider.js';
+import { detectIntentLocally } from './_core/intentRouter.js';
 import { createClient } from '@supabase/supabase-js';
 import dotenv from 'dotenv';
 
