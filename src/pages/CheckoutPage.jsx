@@ -112,9 +112,9 @@ export default function CheckoutPage() {
     } else if (codeUpper === 'STUDENT5') {
       const discountValue = Math.round(cartTotal * 0.05);
       setAppliedDiscount({ code: 'STUDENT5', discountValue, description: '5% Student Campus Discount' });
-    } else if (codeUpper === 'CAMPUS1000') {
-      const discountValue = Math.min(cartTotal, 1000);
-      setAppliedDiscount({ code: 'CAMPUS1000', discountValue, description: '₦1,000 Off Campus Voucher' });
+    } else if (codeUpper === 'CAMPUS10' || codeUpper === 'CAMPUS1000') {
+      const discountValue = Math.round(cartTotal * 0.1);
+      setAppliedDiscount({ code: codeUpper, discountValue, description: '10% Campus Voucher' });
     } else {
       setCouponError('Invalid or expired promo code.');
       setAppliedDiscount(null);
@@ -326,7 +326,7 @@ export default function CheckoutPage() {
               </div>
               {appliedDiscount && (
                 <div style={{ marginTop: 8, fontSize: 12, color: 'var(--accent-primary)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span>✓ Code <strong>{appliedDiscount.code}</strong> applied ({appliedDiscount.description})</span>
+                  <span>Code <strong>{appliedDiscount.code}</strong> applied ({appliedDiscount.description})</span>
                   <button type="button" onClick={() => setAppliedDiscount(null)} style={{ background: 'none', border: 'none', color: '#FF6B4A', cursor: 'pointer', fontSize: 12, padding: '4px 8px' }}>Remove</button>
                 </div>
               )}

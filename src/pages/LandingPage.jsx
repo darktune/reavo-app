@@ -274,11 +274,25 @@ export default function LandingPage() {
                 }}>
                   <div>
                     <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-primary)' }}>MacBook Pro M4</div>
-                    <div style={{ fontSize: 11, color: 'var(--text-secondary)' }}>Liquid Retina XDR • Campus Ready</div>
+                    <div style={{ fontSize: 11, color: 'var(--text-secondary)' }}>Liquid Retina XDR</div>
                   </div>
-                  <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--accent-primary)', fontFamily: 'JetBrains Mono, monospace' }}>
-                    ₦1,950,000
-                  </span>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <span style={{
+                      padding: '2px 7px',
+                      borderRadius: 6,
+                      background: 'rgba(57, 217, 196, 0.14)',
+                      border: '1px solid rgba(57, 217, 196, 0.35)',
+                      fontSize: 11,
+                      fontWeight: 700,
+                      color: 'var(--accent-primary)',
+                      fontFamily: 'JetBrains Mono, monospace'
+                    }}>
+                      -12%
+                    </span>
+                    <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-primary)', fontFamily: 'JetBrains Mono, monospace' }}>
+                      ₦1,950,000
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>

@@ -5,6 +5,21 @@ import { useCart } from '../context/CartContext';
 import { useWishlist } from '../context/WishlistContext';
 import { categories, products as fallbackProducts } from '../data/products';
 
+export function getDiscountPercentage(product) {
+  if (product?.discount_percentage) return product.discount_percentage;
+  if (product?.discount) return product.discount;
+  if (product?.originalPrice && product.originalPrice > product.price) {
+    return Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100);
+  }
+  if (product?.original_price && product.original_price > product.price) {
+    return Math.round(((product.original_price - product.price) / product.original_price) * 100);
+  }
+  // Deterministic student discount rate per product ID (10% - 18%)
+  const hash = (product?.id || 'prod').split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+  const tiers = [10, 12, 15, 18];
+  return tiers[hash % tiers.length];
+}
+
 export default function ProductCard({ product, onCompare }) {
   const [isHovered, setIsHovered] = useState(false);
   const { addToCart } = useCart();
@@ -12,6 +27,7 @@ export default function ProductCard({ product, onCompare }) {
   const navigate = useNavigate();
   const categoryColor = categories.find(c => c.id === product.category)?.color || 'var(--accent-primary)';
   const isHearted = isInWishlist(product.id);
+  const discountPercent = getDiscountPercentage(product);
 
   return (
     <div 
@@ -51,6 +67,28 @@ export default function ProductCard({ product, onCompare }) {
         justifyContent: 'center', 
         padding: '16px' 
       }}>
+
+        {/* Top-Left Discount Badge - Clean percentage, no icon in front */}
+        <div style={{
+          position: 'absolute',
+          top: 10,
+          left: 10,
+          zIndex: 3,
+          padding: '3px 8px',
+          borderRadius: 8,
+          background: 'rgba(57, 217, 196, 0.12)',
+          backdropFilter: 'blur(12px)',
+          WebkitBackdropFilter: 'blur(12px)',
+          border: '1px solid rgba(57, 217, 196, 0.3)',
+          fontSize: 11,
+          fontWeight: 700,
+          color: 'var(--accent-primary)',
+          fontFamily: 'JetBrains Mono, monospace',
+          letterSpacing: '0.02em',
+          pointerEvents: 'none'
+        }}>
+          -{discountPercent}%
+        </div>
 
         {/* Top-Right Quick Wishlist Button - ALWAYS VISIBLE for Mobile & Touch Accessibility */}
         <button 

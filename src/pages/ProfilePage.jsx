@@ -452,8 +452,8 @@ export default function ProfilePage() {
                                 </div>
                                 <div style={{ display: 'flex', gap: 8, justifyContent: 'flex-end', alignItems: 'center' }}>
                                   {order.discount_code && (
-                                    <span style={{ fontSize: 11, fontWeight: 600, padding: '2px 8px', borderRadius: 100, background: 'rgba(57, 217, 196, 0.1)', color: 'var(--accent-teal)' }}>
-                                      🏷️ {order.discount_code}
+                                    <span style={{ fontSize: 11, fontWeight: 600, padding: '2px 8px', borderRadius: 100, background: 'rgba(57, 217, 196, 0.1)', color: 'var(--accent-teal)', fontFamily: 'JetBrains Mono, monospace' }}>
+                                      {order.discount_code}
                                     </span>
                                   )}
                                   <span style={{ 
