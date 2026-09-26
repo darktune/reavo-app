@@ -33,6 +33,8 @@ export default function ShopPage() {
             const isStalePlaceholder = !dbProd.image ||
               (existing?.image && existing.image.startsWith('/images/')) ||
               dbProd.image.includes('m.media-amazon.com') ||
+              dbProd.image.includes('apple.com') ||
+              dbProd.image.includes('cdsassets') ||
               (dbProd.image.includes('images.unsplash.com/photo-15') && existing?.image && !existing.image.includes('images.unsplash.com'));
             const resolvedImage = isStalePlaceholder ? (existing?.image || dbProd.image) : dbProd.image;
 

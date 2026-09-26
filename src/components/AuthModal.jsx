@@ -85,13 +85,59 @@ export default function AuthModal({ isOpen, onClose, onSkip, allowGuestSkip = fa
         border: '1px solid var(--border-subtle)',
         boxShadow: '0 24px 48px rgba(0,0,0,0.5)'
       }}>
-        <button 
-          onClick={handleClose}
-          aria-label="Close"
-          style={{ position: 'absolute', top: 24, right: 24, color: 'var(--text-secondary)', background: 'transparent', border: 'none', cursor: 'pointer' }}
-        >
-          <X size={20} />
-        </button>
+        {/* Dedicated Top Header Row */}
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          marginBottom: 20
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <img 
+              src="/logos/Reavo Complete@2x.png" 
+              alt="Reavo Logo" 
+              style={{ height: 22, objectFit: 'contain' }} 
+            />
+            <span style={{ 
+              fontSize: 11, 
+              fontWeight: 600, 
+              letterSpacing: '0.08em', 
+              color: 'var(--text-secondary)',
+              textTransform: 'uppercase'
+            }}>
+              {tab === 'forgot' ? 'Account Recovery' : 'Member Access'}
+            </span>
+          </div>
+
+          <button 
+            type="button"
+            onClick={handleClose}
+            aria-label="Close"
+            style={{
+              width: 32,
+              height: 32,
+              borderRadius: '50%',
+              background: 'rgba(255, 255, 255, 0.06)',
+              border: '1px solid var(--border-subtle)',
+              color: 'var(--text-secondary)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              cursor: 'pointer',
+              transition: 'all 0.15s ease'
+            }}
+            onMouseEnter={e => {
+              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.12)';
+              e.currentTarget.style.color = 'var(--text-primary)';
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.06)';
+              e.currentTarget.style.color = 'var(--text-secondary)';
+            }}
+          >
+            <X size={16} />
+          </button>
+        </div>
 
         {tab === 'forgot' ? (
           <div>
@@ -160,10 +206,11 @@ export default function AuthModal({ isOpen, onClose, onSkip, allowGuestSkip = fa
                       required
                       style={{
                         width: '100%',
+                        height: 46,
                         background: 'var(--bg-inner)',
                         border: '1px solid var(--border-subtle)',
-                        borderRadius: 8,
-                        padding: '12px 16px 12px 44px',
+                        borderRadius: 12,
+                        padding: '0 16px 0 44px',
                         color: 'var(--text-primary)',
                         outline: 'none',
                         fontSize: 14,
@@ -176,7 +223,22 @@ export default function AuthModal({ isOpen, onClose, onSkip, allowGuestSkip = fa
                     type="submit"
                     disabled={loading}
                     className="btn-primary"
-                    style={{ width: '100%', marginTop: 8, background: '#F7F7F5', color: '#0A0A0C', opacity: loading ? 0.7 : 1 }}
+                    style={{ 
+                      width: '100%', 
+                      height: 46,
+                      marginTop: 8, 
+                      background: '#F7F7F5', 
+                      color: '#0A0A0C', 
+                      borderRadius: 12,
+                      fontWeight: 700,
+                      fontSize: 14,
+                      opacity: loading ? 0.7 : 1,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: 8,
+                      cursor: loading ? 'not-allowed' : 'pointer'
+                    }}
                   >
                     {loading ? 'Sending link...' : 'Send Recovery Email'}
                   </button>
@@ -248,31 +310,47 @@ export default function AuthModal({ isOpen, onClose, onSkip, allowGuestSkip = fa
               <div style={{ flex: 1, height: 1, background: 'var(--border-subtle)' }} />
             </div>
 
-            <div style={{ display: 'flex', gap: 24, marginBottom: 28, borderBottom: '1px solid var(--border-subtle)' }}>
+            {/* iOS-Style Segmented Tab Switcher */}
+            <div style={{
+              display: 'flex',
+              background: 'var(--bg-inner)',
+              padding: 4,
+              borderRadius: 12,
+              marginBottom: 20,
+              border: '1px solid var(--border-subtle)'
+            }}>
               <button 
-                onClick={() => setTab('login')}
+                type="button"
+                onClick={() => { setTab('login'); setAccountConflict(false); }}
                 style={{ 
-                  paddingBottom: 12, 
+                  flex: 1,
+                  padding: '9px 0',
                   fontWeight: 600,
-                  background: 'transparent',
+                  fontSize: 13,
+                  borderRadius: 9,
                   border: 'none',
                   cursor: 'pointer',
-                  color: tab === 'login' ? 'var(--text-primary)' : 'var(--text-secondary)',
-                  borderBottom: `2px solid ${tab === 'login' ? 'var(--accent-purple)' : 'transparent'}`
+                  background: tab === 'login' ? 'var(--text-primary)' : 'transparent',
+                  color: tab === 'login' ? 'var(--bg-void)' : 'var(--text-secondary)',
+                  transition: 'all 0.2s cubic-bezier(0.16, 1, 0.3, 1)'
                 }}
               >
                 Sign In
               </button>
               <button 
-                onClick={() => setTab('register')}
+                type="button"
+                onClick={() => { setTab('register'); setAccountConflict(false); }}
                 style={{ 
-                  paddingBottom: 12, 
+                  flex: 1,
+                  padding: '9px 0',
                   fontWeight: 600,
-                  background: 'transparent',
+                  fontSize: 13,
+                  borderRadius: 9,
                   border: 'none',
                   cursor: 'pointer',
-                  color: tab === 'register' ? 'var(--text-primary)' : 'var(--text-secondary)',
-                  borderBottom: `2px solid ${tab === 'register' ? 'var(--accent-purple)' : 'transparent'}`
+                  background: tab === 'register' ? 'var(--text-primary)' : 'transparent',
+                  color: tab === 'register' ? 'var(--bg-void)' : 'var(--text-secondary)',
+                  transition: 'all 0.2s cubic-bezier(0.16, 1, 0.3, 1)'
                 }}
               >
                 Create Account
@@ -338,7 +416,7 @@ export default function AuthModal({ isOpen, onClose, onSkip, allowGuestSkip = fa
               </div>
             )}
 
-            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
               {tab === 'register' && (
                 <div style={{ position: 'relative' }}>
                   <User size={18} style={{ position: 'absolute', left: 16, top: '50%', transform: 'translateY(-50%)', color: 'var(--text-secondary)' }} />
@@ -350,10 +428,11 @@ export default function AuthModal({ isOpen, onClose, onSkip, allowGuestSkip = fa
                     required
                     style={{
                       width: '100%',
+                      height: 46,
                       background: 'var(--bg-inner)',
                       border: '1px solid var(--border-subtle)',
-                      borderRadius: 8,
-                      padding: '12px 16px 12px 44px',
+                      borderRadius: 12,
+                      padding: '0 16px 0 44px',
                       color: 'var(--text-primary)',
                       outline: 'none',
                       fontSize: 14,
@@ -373,10 +452,11 @@ export default function AuthModal({ isOpen, onClose, onSkip, allowGuestSkip = fa
                   required
                   style={{
                     width: '100%',
+                    height: 46,
                     background: 'var(--bg-inner)',
                     border: '1px solid var(--border-subtle)',
-                    borderRadius: 8,
-                    padding: '12px 16px 12px 44px',
+                    borderRadius: 12,
+                    padding: '0 16px 0 44px',
                     color: 'var(--text-primary)',
                     outline: 'none',
                     fontSize: 14,
@@ -395,10 +475,11 @@ export default function AuthModal({ isOpen, onClose, onSkip, allowGuestSkip = fa
                   required
                   style={{
                     width: '100%',
+                    height: 46,
                     background: 'var(--bg-inner)',
                     border: '1px solid var(--border-subtle)',
-                    borderRadius: 8,
-                    padding: '12px 16px 12px 44px',
+                    borderRadius: 12,
+                    padding: '0 16px 0 44px',
                     color: 'var(--text-primary)',
                     outline: 'none',
                     fontSize: 14,
@@ -408,26 +489,21 @@ export default function AuthModal({ isOpen, onClose, onSkip, allowGuestSkip = fa
               </div>
 
               {tab === 'login' && (
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: -2 }}>
-                  <span style={{ fontSize: 12, color: 'var(--text-secondary)' }}>Can't recall password?</span>
+                <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: -4 }}>
                   <button
                     type="button"
                     onClick={() => { setTab('forgot'); setForgotSent(false); }}
                     style={{
-                      background: 'rgba(57, 217, 196, 0.1)',
-                      border: '1px solid rgba(57, 217, 196, 0.3)',
+                      background: 'none',
+                      border: 'none',
                       color: 'var(--accent-teal, #39D9C4)',
                       fontSize: 12,
                       fontWeight: 600,
                       cursor: 'pointer',
-                      padding: '4px 10px',
-                      borderRadius: 6,
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: 5
+                      padding: 0
                     }}
                   >
-                    <Key size={13} /> Forgot password?
+                    Forgot password?
                   </button>
                 </div>
               )}
@@ -438,9 +514,13 @@ export default function AuthModal({ isOpen, onClose, onSkip, allowGuestSkip = fa
                 className="btn-primary" 
                 style={{ 
                   width: '100%', 
-                  marginTop: 8, 
+                  height: 46,
+                  marginTop: 6, 
                   background: '#F7F7F5', 
                   color: '#0A0A0C', 
+                  borderRadius: 12,
+                  fontWeight: 700,
+                  fontSize: 14,
                   opacity: loading ? 0.7 : 1,
                   display: 'flex',
                   alignItems: 'center',
@@ -460,7 +540,7 @@ export default function AuthModal({ isOpen, onClose, onSkip, allowGuestSkip = fa
               </button>
 
               {tab === 'login' ? (
-                <div style={{ marginTop: 4, textAlign: 'center', fontSize: 13, color: 'var(--text-secondary)' }}>
+                <div style={{ marginTop: 6, textAlign: 'center', fontSize: 13, color: 'var(--text-secondary)' }}>
                   Don't have an account?{' '}
                   <button
                     type="button"
@@ -471,7 +551,7 @@ export default function AuthModal({ isOpen, onClose, onSkip, allowGuestSkip = fa
                   </button>
                 </div>
               ) : (
-                <div style={{ marginTop: 4, textAlign: 'center', fontSize: 13, color: 'var(--text-secondary)' }}>
+                <div style={{ marginTop: 6, textAlign: 'center', fontSize: 13, color: 'var(--text-secondary)' }}>
                   Already have an account?{' '}
                   <button
                     type="button"
@@ -479,14 +559,6 @@ export default function AuthModal({ isOpen, onClose, onSkip, allowGuestSkip = fa
                     style={{ background: 'none', border: 'none', color: 'var(--accent-teal, #39D9C4)', cursor: 'pointer', fontWeight: 600, padding: 0 }}
                   >
                     Sign In
-                  </button>
-                  <span style={{ margin: '0 8px', opacity: 0.4 }}>•</span>
-                  <button
-                    type="button"
-                    onClick={() => { setTab('forgot'); setForgotSent(false); setAccountConflict(false); }}
-                    style={{ background: 'none', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer', textDecoration: 'underline', padding: 0 }}
-                  >
-                    Forgot password?
                   </button>
                 </div>
               )}

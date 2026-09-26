@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { CheckCircle2, Shield, Play, Pause } from 'lucide-react';
+import { CheckCircle2, Shield, Play, Pause, X } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { toast } from 'sonner';
 import { supabase } from '../lib/supabase';
@@ -245,6 +245,7 @@ export default function PreorderHeroBanner() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [hasReserved, setHasReserved] = useState(false);
   const [hoveredColor, setHoveredColor] = useState(null);
+  const [showDetailsModal, setShowDetailsModal] = useState(false);
 
   const currentDrop = PREORDER_DROPS[activeSlide];
   const currentView = currentDrop.views[activeViewIndex] || currentDrop.views[0];
@@ -460,9 +461,26 @@ export default function PreorderHeroBanner() {
               </span>
             </div>
 
-            <span style={{ fontSize: 13, color: 'var(--text-secondary)' }}>
-              Nigeria Early Access • Lagos & Campus Direct Delivery
-            </span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 13, color: 'var(--text-secondary)' }}>
+              <span>Nigeria Wave 1 Allocation</span>
+              <span style={{ opacity: 0.5 }}>•</span>
+              <button
+                type="button"
+                onClick={() => setShowDetailsModal(true)}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  color: 'var(--accent-primary)',
+                  fontSize: 13,
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  padding: 0,
+                  textDecoration: 'underline'
+                }}
+              >
+                Learn more
+              </button>
+            </div>
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
@@ -669,25 +687,33 @@ export default function PreorderHeroBanner() {
                 </button>
               </div>
 
-              {/* Pricing Notice Note */}
-              <div style={{
-                fontSize: 11,
-                color: 'var(--text-secondary)',
-                marginBottom: 8,
-                lineHeight: 1.4
-              }}>
-                <span style={{ color: 'var(--accent-primary)', fontWeight: 600 }}>Note:</span> Estimated US launch conversion • Nigerian retail pricing will be finalized upon Lagos warehouse arrival.
-              </div>
-
+              {/* Streamlined Pricing & Warranty Assurance */}
               <div style={{
                 display: 'flex',
                 alignItems: 'center',
                 gap: 8,
                 fontSize: 12,
-                color: 'var(--text-secondary)'
+                color: 'var(--text-secondary)',
+                flexWrap: 'wrap'
               }}>
                 <Shield size={14} color="var(--accent-primary)" />
-                <span>Zero advance deposit needed • 100% official 1-year warranty across Nigeria</span>
+                <span>Zero deposit • 1-Year Official Warranty.</span>
+                <button
+                  type="button"
+                  onClick={() => setShowDetailsModal(true)}
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    color: 'var(--accent-primary)',
+                    fontSize: 12,
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                    padding: 0,
+                    textDecoration: 'underline'
+                  }}
+                >
+                  Learn more
+                </button>
               </div>
             </div>
 
@@ -1121,6 +1147,161 @@ export default function PreorderHeroBanner() {
                 </button>
               </div>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Wave 1 Allocation & Distribution Info Modal */}
+      {showDetailsModal && (
+        <div 
+          onClick={() => setShowDetailsModal(false)}
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 1000,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            background: 'rgba(0, 0, 0, 0.75)',
+            backdropFilter: 'blur(12px)',
+            WebkitBackdropFilter: 'blur(12px)',
+            padding: 20
+          }}
+        >
+          <div 
+            onClick={e => e.stopPropagation()}
+            style={{
+              width: '100%',
+              maxWidth: 520,
+              background: 'var(--bg-card)',
+              borderRadius: 24,
+              padding: 'clamp(24px, 4vw, 32px)',
+              position: 'relative',
+              border: '1px solid var(--border-subtle)',
+              boxShadow: '0 24px 60px rgba(0,0,0,0.6)'
+            }}
+          >
+            {/* Header */}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                <div style={{
+                  width: 36,
+                  height: 36,
+                  borderRadius: 10,
+                  background: 'rgba(57, 217, 196, 0.12)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}>
+                  <Shield size={20} color="var(--accent-primary)" />
+                </div>
+                <div>
+                  <h3 style={{ fontSize: 18, fontWeight: 700, margin: 0, color: 'var(--text-primary)' }}>
+                    Wave 1 Allocation & Delivery
+                  </h3>
+                  <span className="font-mono" style={{ fontSize: 10, color: 'var(--text-secondary)', letterSpacing: '0.08em' }}>
+                    OFFICIAL 2026 NIGERIA ACCESS
+                  </span>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setShowDetailsModal(false)}
+                aria-label="Close"
+                style={{
+                  width: 32,
+                  height: 32,
+                  borderRadius: '50%',
+                  background: 'rgba(255, 255, 255, 0.06)',
+                  border: '1px solid var(--border-subtle)',
+                  color: 'var(--text-secondary)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer'
+                }}
+              >
+                <X size={16} />
+              </button>
+            </div>
+
+            {/* Content List */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 24 }}>
+              <div style={{
+                background: 'var(--bg-inner)',
+                borderRadius: 14,
+                padding: '12px 16px',
+                border: '1px solid var(--border-subtle)'
+              }}>
+                <div style={{ fontWeight: 600, fontSize: 13, color: 'var(--text-primary)', marginBottom: 2 }}>
+                  📦 Lagos Warehouse Arrival & Final Pricing
+                </div>
+                <p style={{ margin: 0, fontSize: 12, color: 'var(--text-secondary)', lineHeight: 1.5 }}>
+                  Nigerian retail pricing in Naira is locked upon Lagos cargo clearance, safeguarding you from unexpected exchange rate swings.
+                </p>
+              </div>
+
+              <div style={{
+                background: 'var(--bg-inner)',
+                borderRadius: 14,
+                padding: '12px 16px',
+                border: '1px solid var(--border-subtle)'
+              }}>
+                <div style={{ fontWeight: 600, fontSize: 13, color: 'var(--text-primary)', marginBottom: 2 }}>
+                  🛡️ Zero Advance Deposit Required
+                </div>
+                <p style={{ margin: 0, fontSize: 12, color: 'var(--text-secondary)', lineHeight: 1.5 }}>
+                  Pre-orders secure your queue priority in Wave 1 Nigeria allocation with zero upfront financial commitment. You only pay when your unit arrives.
+                </p>
+              </div>
+
+              <div style={{
+                background: 'var(--bg-inner)',
+                borderRadius: 14,
+                padding: '12px 16px',
+                border: '1px solid var(--border-subtle)'
+              }}>
+                <div style={{ fontWeight: 600, fontSize: 13, color: 'var(--text-primary)', marginBottom: 2 }}>
+                  🚚 Lagos & Campus Direct Delivery
+                </div>
+                <p style={{ margin: 0, fontSize: 12, color: 'var(--text-secondary)', lineHeight: 1.5 }}>
+                  Same-day courier dispatch across Lagos (Island & Mainland) and prioritized delivery to accredited university campuses nationwide.
+                </p>
+              </div>
+
+              <div style={{
+                background: 'var(--bg-inner)',
+                borderRadius: 14,
+                padding: '12px 16px',
+                border: '1px solid var(--border-subtle)'
+              }}>
+                <div style={{ fontWeight: 600, fontSize: 13, color: 'var(--text-primary)', marginBottom: 2 }}>
+                  ✨ Official 1-Year Local Warranty
+                </div>
+                <p style={{ margin: 0, fontSize: 12, color: 'var(--text-secondary)', lineHeight: 1.5 }}>
+                  Every device includes 100% genuine Apple hardware warranty handled directly by the REAVO Lagos Desk.
+                </p>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => setShowDetailsModal(false)}
+              className="btn-primary"
+              style={{
+                width: '100%',
+                height: 44,
+                borderRadius: 12,
+                background: 'var(--text-primary)',
+                color: 'var(--bg-void)',
+                fontWeight: 600,
+                fontSize: 14,
+                cursor: 'pointer'
+              }}
+            >
+              Got it
+            </button>
           </div>
         </div>
       )}

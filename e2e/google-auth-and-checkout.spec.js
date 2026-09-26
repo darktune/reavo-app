@@ -2,6 +2,13 @@ import { test, expect } from '@playwright/test';
 
 test.describe('Google Auth, Guest Checkout & Catalog Visual Tests', () => {
 
+  test.beforeEach(async ({ page }) => {
+    await page.addInitScript(() => {
+      localStorage.setItem('reavo_skip_loader', 'true');
+      localStorage.setItem('reavo_hasSeenIntro', 'true');
+    });
+  });
+
   test('Navbar displays guest flickering beacon and opens AuthModal with Google Sign-In', async ({ page }) => {
     await page.goto('/');
 
@@ -11,6 +18,7 @@ test.describe('Google Auth, Guest Checkout & Catalog Visual Tests', () => {
 
     // 2. Click user profile button to open AuthModal
     const userBtn = page.locator('button[aria-label="User Profile"]');
+    await expect(userBtn).toBeVisible({ timeout: 10000 });
     await userBtn.click();
 
     // 3. Verify AuthModal is open
@@ -70,7 +78,8 @@ test.describe('Google Auth, Guest Checkout & Catalog Visual Tests', () => {
     // Verify checkout button in cart drawer
     const checkoutBtn = page.locator('button:has-text("Checkout")');
     await expect(checkoutBtn).toBeVisible({ timeout: 10000 });
-    await checkoutBtn.click({ force: true });
+    await page.waitForTimeout(600);
+    await checkoutBtn.click();
 
     // Verify AuthModal opened with guest skip option
     const guestSkipBtn = page.locator('.guest-skip-btn');
@@ -99,6 +108,8 @@ test.describe('Google Auth, Guest Checkout & Catalog Visual Tests', () => {
     for (let i = 0; i < Math.min(count, 4); i++) {
       const img = productImages.nth(i);
       await img.scrollIntoViewIfNeeded();
+      const info = await img.evaluate(el => ({ src: el.src, complete: el.complete, naturalWidth: el.naturalWidth }));
+      console.log(`Product Image ${i} [${await img.getAttribute('alt')}]:`, info);
       await expect.poll(async () => {
         return await img.evaluate(el => el.complete && el.naturalWidth > 0);
       }, { timeout: 10000 }).toBe(true);

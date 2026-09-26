@@ -82,6 +82,8 @@ export default function ProductPage() {
           const isStalePlaceholder = !p.image ||
             (fallback?.image && fallback.image.startsWith('/images/')) ||
             p.image.includes('m.media-amazon.com') ||
+            p.image.includes('apple.com') ||
+            p.image.includes('cdsassets') ||
             (p.image.includes('images.unsplash.com/photo-15') && fallback?.image && !fallback.image.includes('images.unsplash.com'));
           const resolvedImage = isStalePlaceholder ? (fallback?.image || p.image) : p.image;
 
