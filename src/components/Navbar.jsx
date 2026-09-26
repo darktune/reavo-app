@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
-import { ShoppingBag, User, Search, Menu, X } from 'lucide-react';
+import { ShoppingBag, User, Search, Menu, X, Heart } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
+import { useWishlist } from '../context/WishlistContext';
 import { useNavigate } from 'react-router';
 import AuthModal from './AuthModal';
 import SearchModal from './SearchModal';
@@ -39,6 +40,7 @@ function CardHover({ children, onClick, style = {}, className = '', ...rest }) {
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const { cartCount, toggleCart } = useCart();
+  const { wishlist } = useWishlist();
   const { isAuthenticated, user } = useAuth();
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
@@ -139,6 +141,35 @@ export default function Navbar() {
             title="Search"
           >
             <Search size={20} style={{ color: 'var(--text-secondary)' }} />
+          </CardHover>
+
+          <CardHover
+            onClick={() => navigate('/shop?wishlist=true')}
+            style={{ borderRadius: 12, padding: 8, position: 'relative' }}
+            aria-label="Wishlist"
+            title="Wishlist"
+          >
+            <Heart size={20} style={{ color: wishlist.length > 0 ? '#FF4757' : 'var(--text-secondary)' }} fill={wishlist.length > 0 ? '#FF4757' : 'none'} />
+            {wishlist.length > 0 && (
+              <div style={{
+                position: 'absolute',
+                top: 0,
+                right: 0,
+                background: '#FF4757',
+                color: '#FFFFFF',
+                fontSize: 10,
+                width: 16,
+                height: 16,
+                borderRadius: '50%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontWeight: 'bold',
+                transform: 'translate(25%, -25%)',
+              }}>
+                {wishlist.length}
+              </div>
+            )}
           </CardHover>
 
           <CardHover

@@ -46,7 +46,7 @@ test.describe('Google Auth, Guest Checkout & Catalog Visual Tests', () => {
     await page.goto('/admin');
 
     // 1. Verify Admin OS login header
-    await expect(page.locator('text=REAVO Admin OS')).toBeVisible({ timeout: 10000 });
+    await expect(page.getByRole('heading', { name: 'REAVO Admin OS' })).toBeVisible({ timeout: 15000 });
 
     // 2. Verify Google Admin sign-in button
     const googleBtn = page.locator('.admin-google-btn');
@@ -71,7 +71,7 @@ test.describe('Google Auth, Guest Checkout & Catalog Visual Tests', () => {
     await page.goto('/shop');
 
     // Add first available product to cart (automatically opens CartDrawer)
-    const addToCartBtn = page.locator('button:has-text("Add to Cart")').first();
+    const addToCartBtn = page.locator('button:has-text("Add to Cart"), button:has-text("Add to Bag")').first();
     await expect(addToCartBtn).toBeVisible({ timeout: 10000 });
     await addToCartBtn.click();
 

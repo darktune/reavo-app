@@ -277,6 +277,15 @@ export default function AssistantWidget() {
           </form>
         </div>
       </div>
+
+      <style>{`
+        @media (max-width: 768px) {
+          #reavo-assistant-toggle {
+            bottom: 78px !important;
+            right: 16px !important;
+          }
+        }
+      `}</style>
     </>
   );
 }

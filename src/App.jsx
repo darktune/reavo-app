@@ -20,6 +20,7 @@ import AmbassadorPage from './pages/AmbassadorPage';
 import NotFoundPage from './pages/NotFoundPage';
 import FaqPage from './pages/FaqPage';
 import CartDrawer from './components/CartDrawer';
+import MobileBottomBar from './components/MobileBottomBar';
 import ScrollToTop from './components/ScrollToTop';
 import AssistantWidget from './components/assistant/AssistantWidget';
 import { WishlistProvider } from './context/WishlistContext';
@@ -128,6 +129,7 @@ function App() {
           </main>
 
           {!hideNavAndFooter && <Footer />}
+          {!hideNavAndFooter && <MobileBottomBar />}
           {!location.pathname.startsWith('/admin') && <CartDrawer />}
           {!location.pathname.startsWith('/admin') && <AssistantWidget />}
 

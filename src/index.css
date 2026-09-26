@@ -558,3 +558,11 @@ input:focus, select:focus, textarea:focus {
     padding-right: 64px;
   }
 }
+
+/* Mobile Bottom Bar Safe Area Spacing */
+@media (max-width: 768px) {
+  main {
+    padding-bottom: 72px;
+  }
+}
+
