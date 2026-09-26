@@ -1790,7 +1790,7 @@ export const products = [
       "Weight": "59g",
       "Switches": "Optical Mouse Switches Gen-3",
       "PollingRate": "8000Hz HyperPolling",
-      "Connectivity": "Wired - Speedflex Cable"
+      "Connectivity": "Wired, Speedflex Cable"
     },
     "stock_quantity": 108,
     "images": [
@@ -2363,7 +2363,7 @@ export const products = [
     ],
     "technicalSpecs": {
       "Connector": "USB-C / Lightning",
-      "FrequencyResponse": "20Hz - 20,000Hz",
+      "FrequencyResponse": "20Hz to 20,000Hz",
       "Controls": "Volume, playback, call answer/end"
     },
     "stock_quantity": 124

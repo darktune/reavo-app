@@ -248,7 +248,7 @@ export default function CheckoutPage() {
                   title="Recommended: Your campus delivery courier will use this number to send live dispatch alerts, location coordinates, and handover updates directly on WhatsApp."
                   style={{ fontSize: 11, fontWeight: 600, color: 'var(--accent-primary)', background: 'rgba(57, 217, 196, 0.1)', padding: '2px 8px', borderRadius: 100, cursor: 'help' }}
                 >
-                  (Optional - Recommended)
+                  (Optional, Recommended)
                 </span>
               </div>
               <input 

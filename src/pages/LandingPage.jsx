@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 import { Link, useNavigate } from 'react-router';
-import { ArrowRight, ChevronRight, MessageCircle } from 'lucide-react';
+import { ArrowRight, ChevronRight, MessageCircle, Laptop, Tablet, Headphones, SlidersHorizontal, Package, Zap } from 'lucide-react';
 import ScrollReveal from '../components/ScrollReveal';
 import { products, categories } from '../data/products';
 import DotNav from '../components/DotNav';
@@ -8,6 +8,15 @@ import SEO from '../components/SEO';
 import PreorderHeroBanner from '../components/PreorderHeroBanner';
 import PersonalizedGreeting from '../components/PersonalizedGreeting';
 import ProductCard from '../components/ProductCard';
+
+const HARDWARE_PILLS = [
+  { label: 'Laptops', type: 'laptops', icon: Laptop },
+  { label: 'Tablets', type: 'tablets', icon: Tablet },
+  { label: 'Audio', type: 'audio', icon: Headphones },
+  { label: 'Gear', type: 'gear', icon: SlidersHorizontal },
+  { label: 'Campus Bundles', type: 'kits', icon: Package },
+  { label: 'Student Deals', type: 'deals', icon: Zap },
+];
 
 const communityImages = [
   "https://emit-dome-71800164.figma.site/_components/v2/30d1827fe34837c08bb982e13e2d71d7d108eee4/DSC04369.b9a907ea.jpeg",
@@ -21,24 +30,7 @@ const communityImages = [
   "https://emit-dome-71800164.figma.site/_components/v2/30d1827fe34837c08bb982e13e2d71d7d108eee4/IMG_0275.9046d256.jpeg"
 ];
 
-const ambassadorImages = [
-  "/ambassadors/14.jpg",
-  "/ambassadors/18.jpg",
-  "/ambassadors/20.jpg",
-  "/ambassadors/21.jpg",
-  "/ambassadors/24.jpg",
-  "/ambassadors/26.jpg",
-  "/ambassadors/29.jpg",
-  "/ambassadors/31.jpg",
-  "/ambassadors/32.jpg",
-  "/ambassadors/34.jpg",
-  "/ambassadors/35.jpg",
-  "/ambassadors/37.jpg",
-  "/ambassadors/photo_2026-08-17_20-56-56.jpg",
-  "/ambassadors/photo_2026-08-17_20-58-49.jpg",
-];
-
-function ImageGallery({ images, isAmbassadors = false }) {
+function ImageGallery({ images }) {
   const [skew, setSkew] = useState(0);
   const [activeIndex, setActiveIndex] = useState(0);
   const scrollRef = useRef(null);
@@ -89,7 +81,7 @@ function ImageGallery({ images, isAmbassadors = false }) {
         {images.map((src, i) => (
           <div key={i} className="glass-panel" style={{ 
             minWidth: '280px', 
-            height: isAmbassadors ? '420px' : '360px', 
+            height: '360px', 
             borderRadius: 24, 
             overflow: 'hidden',
             flexShrink: 0,
@@ -100,7 +92,7 @@ function ImageGallery({ images, isAmbassadors = false }) {
           }}>
             <img 
               src={src} 
-              alt={isAmbassadors ? `REAVO Campus Ambassador • Nigeria` : `REAVO community event • Nigerian student tech culture`} 
+              alt="REAVO community event • Nigerian student tech culture" 
               loading="lazy"
               style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
             />
@@ -300,6 +292,51 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* Quick Hardware Pills: Immediate Direct Access to Catalog Categories */}
+      <section style={{ padding: '16px 0 24px', background: 'var(--bg-void)', position: 'relative' }}>
+        <div className="container">
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 12,
+            overflowX: 'auto',
+            paddingBottom: 8,
+            scrollbarWidth: 'none',
+            WebkitOverflowScrolling: 'touch'
+          }}>
+            {HARDWARE_PILLS.map((pill) => {
+              const Icon = pill.icon;
+              return (
+                <button
+                  key={pill.type}
+                  onClick={() => navigate(`/shop?type=${pill.type}`)}
+                  className="glass-panel glass-hover"
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: 10,
+                    padding: '10px 18px',
+                    borderRadius: 9999,
+                    border: '1px solid var(--border-subtle)',
+                    background: 'var(--bg-inner)',
+                    color: 'var(--text-primary)',
+                    fontSize: 13,
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                    whiteSpace: 'nowrap',
+                    transition: 'all 0.2s ease',
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+                  }}
+                >
+                  <Icon size={16} color="var(--accent-primary)" />
+                  <span>{pill.label}</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
       {/* 2. Flagship Pre-Order Video Hero Showcase (Apple & Spotify Style) */}
       <PreorderHeroBanner />
 
@@ -407,13 +444,13 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* 5. Meet the Community Section (Restored: Visual-first social proof) */}
+      {/* 5. Meet the Community Section (Visual-first social proof) */}
       <section style={{ padding: 'clamp(60px, 8vw, 80px) 0', borderTop: '1px solid var(--border-subtle)' }}>
         <ScrollReveal>
           <div className="container" style={{ textAlign: 'center', marginBottom: 48 }}>
             <h2 className="heading-primary" style={{ fontSize: 'clamp(32px, 6vw, 48px)', marginBottom: 16 }}>Loved by the Community.</h2>
             <p className="text-secondary" style={{ fontSize: 18, maxWidth: 600, margin: '0 auto' }}>
-              Built by students, for students. We're more than a tech brand — we're a movement across campuses.
+              Built by students, for students. We are more than a tech brand, we are a movement across campuses.
             </p>
           </div>
         </ScrollReveal>
@@ -423,33 +460,12 @@ export default function LandingPage() {
         </ScrollReveal>
       </section>
 
-      {/* 6. Our Ambassadors Section (Restored: Real faces of REAVO across universities) */}
-      <section style={{ padding: 'clamp(60px, 8vw, 80px) 0', background: 'var(--bg-inner)', borderTop: '1px solid var(--border-subtle)' }}>
-        <ScrollReveal>
-          <div className="container" style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: 48, flexWrap: 'wrap', gap: 24 }}>
-            <div>
-              <h2 className="heading-primary" style={{ fontSize: 'clamp(32px, 6vw, 48px)', marginBottom: 16 }}>Our Ambassadors.</h2>
-              <p className="text-secondary" style={{ fontSize: 18, maxWidth: 500 }}>
-                The faces of REAVO. Representing our vision for accessible, premium technology in universities across Nigeria.
-              </p>
-            </div>
-            <Link to="/ambassadors" className="btn-secondary" style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>
-              Meet the Team <ArrowRight size={18} />
-            </Link>
-          </div>
-        </ScrollReveal>
-
-        <ScrollReveal delay={200}>
-          <ImageGallery images={ambassadorImages} isAmbassadors={true} />
-        </ScrollReveal>
-      </section>
-
-      {/* 7. Explore REAVO Links (Clean portal linking to all other pages without clutter) */}
+      {/* 6. Explore REAVO Links (Clean portal linking to all other pages without clutter) */}
       <section style={{ padding: 'clamp(40px, 6vw, 60px) 0', borderTop: '1px solid var(--border-subtle)' }}>
         <div className="container">
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
             gap: 20
           }}>
             <div 
@@ -471,6 +487,27 @@ export default function LandingPage() {
                 <p style={{ fontSize: 13, color: 'var(--text-secondary)' }}>The manifesto behind Nigeria's student tech brand.</p>
               </div>
               <ChevronRight size={18} color="var(--accent-purple, #7C5CFF)" />
+            </div>
+
+            <div 
+              onClick={() => navigate('/ambassadors')}
+              className="glass-panel glass-hover"
+              style={{
+                padding: '24px 28px',
+                borderRadius: 20,
+                background: 'var(--bg-card)',
+                border: '1px solid var(--border-subtle)',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between'
+              }}
+            >
+              <div>
+                <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 4, color: 'var(--text-primary)' }}>Ambassadors</h3>
+                <p style={{ fontSize: 13, color: 'var(--text-secondary)' }}>The student representatives across Nigerian campuses.</p>
+              </div>
+              <ChevronRight size={18} color="var(--accent-primary)" />
             </div>
 
             <div 

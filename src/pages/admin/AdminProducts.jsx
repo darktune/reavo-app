@@ -153,7 +153,7 @@ export default function AdminProducts() {
         image: 'https://images.unsplash.com/photo-1526738549149-8e07eca6c147?w=500',
         description: `Experience uncompromising precision with the ${cleanName}. Engineered for professionals requiring exceptional speed, reliability, and modern aesthetic elegance.`,
         specs: 'Dimensions: 14.2 x 9.8 x 0.6 in\nWeight: 1.4kg\nWarranty: 2-Year REAVO Care',
-        seo_title: `${cleanName} | Buy in Nigeria - REAVO`,
+        seo_title: `${cleanName} | Buy in Nigeria | REAVO`,
         seo_description: `Get the authentic ${cleanName} at REAVO. Official warranty, same-day delivery in Lagos, verified authentic.`,
         quality_score: 95
       });

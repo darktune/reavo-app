@@ -289,9 +289,9 @@ export default function ProductPage() {
                       }} />
                       <span>
                         {isLowStock ? (
-                          <>Only <strong>{stockCount} left</strong> in stock — order soon</>
+                          <>Only <strong>{stockCount} left</strong> in stock, order soon</>
                         ) : (
-                          <><strong>{stockCount} units in stock</strong> — Ready to ship</>
+                          <><strong>{stockCount} units in stock</strong>, ready to ship</>
                         )}
                       </span>
                     </div>
@@ -316,7 +316,7 @@ export default function ProductPage() {
                         boxShadow: '0 0 8px rgba(255, 107, 74, 0.8)',
                         display: 'inline-block'
                       }} />
-                      <span><strong>0 units in stock</strong> — Currently sold out</span>
+                      <span><strong>0 units in stock</strong>, currently sold out</span>
                     </div>
                   )}
                 </div>
