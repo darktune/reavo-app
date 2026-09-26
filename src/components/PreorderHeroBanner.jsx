@@ -14,7 +14,6 @@ const PREORDER_DROPS = [
     tagline: 'Pro beyond words.',
     subTagline: 'Sculpted Grade 5 Titanium • Next-Gen 2nm A20 Pro',
     accentColor: '#39D9C4', // REAVO Electric Teal
-    priceEst: 'From ₦1,980,000',
     views: [
       {
         id: 'hero',
@@ -60,7 +59,6 @@ const PREORDER_DROPS = [
     tagline: 'Two screens. Infinite flow.',
     subTagline: '7.6" Folding Nano-Texture Canvas • Polished Mirror Titanium',
     accentColor: '#7C5CFF', // REAVO Purple
-    priceEst: 'From ₦2,650,000',
     views: [
       {
         id: 'hero',
@@ -104,7 +102,6 @@ const PREORDER_DROPS = [
     tagline: 'Impossibly thin. 5.6mm.',
     subTagline: 'The lightest iPhone in history • 165g Ultralight Monocoque',
     accentColor: '#3D8BFF', // REAVO Blue
-    priceEst: 'From ₦1,450,000',
     views: [
       {
         id: 'hero',
@@ -150,7 +147,6 @@ const PREORDER_DROPS = [
     tagline: 'Peak endurance.',
     subTagline: 'Satin Black Titanium • 3,500 Nits Micro-LED',
     accentColor: '#39D9C4', // REAVO Electric Teal
-    priceEst: 'From ₦1,320,000',
     views: [
       {
         id: 'hero',
@@ -194,7 +190,6 @@ const PREORDER_DROPS = [
     tagline: 'Pure acoustic immersion.',
     subTagline: 'Lossless Studio Audio Over USB-C • Apple H2 Silicon',
     accentColor: '#7C5CFF', // REAVO Purple
-    priceEst: 'From ₦890,000',
     views: [
       {
         id: 'hero',
@@ -354,7 +349,7 @@ export default function PreorderHeroBanner() {
         customer_email: user.email,
         customer_name: user.user_metadata?.full_name || user.name || 'VIP Member',
         customer_phone: user.user_metadata?.whatsapp || user.phone || '09158554158',
-        notes: `REAVO Priority Wave 1 Nigeria Allocation. Queue #${queueNumber}. Estimated Retail: ${drop.priceEst}`
+        notes: `REAVO Priority Wave 1 Nigeria Allocation. Queue #${queueNumber}.`
       }]);
     } catch (err) {
       console.log('Supabase preorder sync:', err?.message);
