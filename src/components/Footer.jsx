@@ -76,7 +76,7 @@ export default function Footer() {
             <h4 className="font-mono" style={{ fontSize: 11, color: 'var(--text-secondary)', marginBottom: 20, letterSpacing: 1 }}>CONNECT</h4>
             <a href="https://wa.me/2349158554158" target="_blank" rel="noopener noreferrer" className="footer-link">WhatsApp (09158554158)</a>
             <a href="https://www.instagram.com/reavo_global?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer" className="footer-link">Instagram</a>
-            <a href="https://twitter.com/reavoglobal" target="_blank" rel="noopener noreferrer" className="footer-link">X (Twitter)</a>
+            <a href="https://www.snapchat.com/add/reavoglobal" target="_blank" rel="noopener noreferrer" className="footer-link">Snapchat</a>
             <a href="https://www.linkedin.com/company/reavo/posts/?feedView=all" target="_blank" rel="noopener noreferrer" className="footer-link">LinkedIn</a>
           </div>
         </div>
