@@ -51,30 +51,6 @@ export default function ProductCard({ product, onCompare }) {
         justifyContent: 'center', 
         padding: '16px' 
       }}>
-        {/* Top-Left Trust Badge */}
-        <div style={{
-          position: 'absolute',
-          top: 10,
-          left: 10,
-          zIndex: 3,
-          display: 'flex',
-          alignItems: 'center',
-          gap: 5,
-          padding: '4px 9px',
-          borderRadius: 100,
-          background: 'var(--glass-bg)',
-          backdropFilter: 'blur(12px)',
-          WebkitBackdropFilter: 'blur(12px)',
-          border: '1px solid var(--border-subtle)',
-          fontSize: 10,
-          fontWeight: 600,
-          color: 'var(--accent-primary)',
-          letterSpacing: '0.02em',
-          pointerEvents: 'none'
-        }}>
-          <span style={{ width: 5, height: 5, borderRadius: '50%', background: 'var(--accent-primary)', display: 'inline-block' }} />
-          <span>Campus Ready</span>
-        </div>
 
         {/* Top-Right Quick Wishlist Button - ALWAYS VISIBLE for Mobile & Touch Accessibility */}
         <button 

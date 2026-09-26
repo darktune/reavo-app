@@ -10,13 +10,13 @@ import { useWishlist } from '../context/WishlistContext';
 import { products as fallbackProducts, categories as fallbackCategories } from '../data/products';
 
 const HARDWARE_TYPES = [
-  { id: 'all', label: 'All Hardware' },
-  { id: 'laptops', label: '💻 Laptops' },
-  { id: 'tablets', label: '📱 iPads & Tablets' },
-  { id: 'audio', label: '🎧 Audio & AirPods' },
-  { id: 'gear', label: '⚡ Gear & Sleeves' },
-  { id: 'kits', label: '📦 Campus Bundles' },
-  { id: 'deals', label: '🔥 Under ₦150k' },
+  { id: 'all', label: 'All Types' },
+  { id: 'laptops', label: 'Laptops' },
+  { id: 'tablets', label: 'iPads & Tablets' },
+  { id: 'audio', label: 'Audio & AirPods' },
+  { id: 'gear', label: 'Gear & Sleeves' },
+  { id: 'kits', label: 'Campus Bundles' },
+  { id: 'deals', label: 'Under ₦150k' },
 ];
 
 function matchesHardwareType(product, type) {
@@ -228,7 +228,66 @@ export default function ShopPage() {
             </button>
           </div>
 
-          {/* Row 2: Hardware Category Quick Pills (Hick's Law: Direct concrete hardware) */}
+          {/* Row 2: Student Categories (Signature REAVO identity with color indicators) */}
+          <div style={{ display: 'flex', gap: 8, overflowX: 'auto', paddingBottom: 2, scrollbarWidth: 'none' }}>
+            <button 
+              className="glass-hover"
+              onClick={() => {
+                const p = new URLSearchParams(searchParams);
+                p.delete('cat');
+                p.delete('wishlist');
+                setSearchParams(p);
+              }}
+              style={{
+                flexShrink: 0,
+                padding: '7px 16px',
+                borderRadius: 100,
+                background: currentCategory === 'all' && !isWishlistOnly ? 'var(--text-primary)' : 'var(--bg-inner)',
+                color: currentCategory === 'all' && !isWishlistOnly ? 'var(--bg-void)' : 'var(--text-secondary)',
+                border: `1px solid ${currentCategory === 'all' && !isWishlistOnly ? 'transparent' : 'var(--border-subtle)'}`,
+                fontSize: 13,
+                fontWeight: 600,
+                whiteSpace: 'nowrap',
+                cursor: 'pointer',
+                transition: 'all 0.2s'
+              }}
+            >
+              All Categories
+            </button>
+            {categories.map(cat => (
+              <button 
+                key={cat.id}
+                className="glass-hover"
+                onClick={() => {
+                  const p = new URLSearchParams(searchParams);
+                  p.delete('wishlist');
+                  p.set('cat', cat.id);
+                  setSearchParams(p);
+                }}
+                style={{
+                  flexShrink: 0,
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 8,
+                  padding: '7px 16px',
+                  borderRadius: 100,
+                  background: currentCategory === cat.id && !isWishlistOnly ? 'var(--text-primary)' : 'var(--bg-inner)',
+                  color: currentCategory === cat.id && !isWishlistOnly ? 'var(--bg-void)' : 'var(--text-secondary)',
+                  border: `1px solid ${currentCategory === cat.id && !isWishlistOnly ? 'transparent' : 'var(--border-subtle)'}`,
+                  fontSize: 13,
+                  fontWeight: 500,
+                  whiteSpace: 'nowrap',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s'
+                }}
+              >
+                <div style={{ width: 8, height: 8, borderRadius: '50%', background: cat.color }} />
+                <span>{cat.label}</span>
+              </button>
+            ))}
+          </div>
+
+          {/* Row 3: Hardware Type Quick Pills (Clean text, zero emojis) */}
           <div style={{ display: 'flex', gap: 6, overflowX: 'auto', paddingBottom: 2, scrollbarWidth: 'none' }}>
             {HARDWARE_TYPES.map(hw => {
               const active = !isWishlistOnly && currentHardwareType === hw.id;
@@ -247,9 +306,9 @@ export default function ShopPage() {
                   }}
                   style={{
                     flexShrink: 0,
-                    padding: '6px 14px',
+                    padding: '5px 12px',
                     borderRadius: 100,
-                    background: active ? 'var(--text-primary)' : 'var(--bg-inner)',
+                    background: active ? 'var(--text-primary)' : 'transparent',
                     color: active ? 'var(--bg-void)' : 'var(--text-secondary)',
                     border: `1px solid ${active ? 'transparent' : 'var(--border-subtle)'}`,
                     fontSize: 12,
@@ -273,14 +332,24 @@ export default function ShopPage() {
         {/* Active Filter Pill Bar if filtered */}
         {(currentHardwareType !== 'all' || currentCategory !== 'all' || isWishlistOnly || searchQuery) && (
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 24, flexWrap: 'wrap' }}>
-            <span style={{ fontSize: 13, color: 'var(--text-secondary)' }}>Active Filter:</span>
+            <span style={{ fontSize: 13, color: 'var(--text-secondary)' }}>Active:</span>
             {isWishlistOnly && (
               <span style={{ 
                 display: 'inline-flex', alignItems: 'center', gap: 4, 
                 padding: '3px 10px', borderRadius: 100, background: 'rgba(255, 71, 87, 0.15)', 
                 color: '#FF4757', fontSize: 12, fontWeight: 600 
               }}>
-                ❤️ Saved Wishlist
+                <Heart size={12} fill="#FF4757" /> Saved Wishlist
+              </span>
+            )}
+            {currentCategory !== 'all' && (
+              <span style={{ 
+                display: 'inline-flex', alignItems: 'center', gap: 6, 
+                padding: '3px 10px', borderRadius: 100, background: 'var(--bg-inner)', 
+                border: '1px solid var(--border-subtle)', color: 'var(--text-primary)', fontSize: 12, fontWeight: 600 
+              }}>
+                <div style={{ width: 6, height: 6, borderRadius: '50%', background: categories.find(c => c.id === currentCategory)?.color || 'var(--accent-primary)' }} />
+                <span>{categories.find(c => c.id === currentCategory)?.label || currentCategory}</span>
               </span>
             )}
             {currentHardwareType !== 'all' && (
@@ -326,7 +395,7 @@ export default function ShopPage() {
                   Your Wishlist is Empty
                 </h3>
                 <p style={{ maxWidth: 420, margin: '0 auto 24px', fontSize: 14 }}>
-                  Tap the ❤️ heart icon on any gadget while browsing to save your dream setup here.
+                  Tap the heart icon on any gadget while browsing to save your dream setup here.
                 </p>
                 <button onClick={clearAllFilters} className="btn-primary" style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>
                   Explore All Gadgets

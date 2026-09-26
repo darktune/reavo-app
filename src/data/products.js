@@ -47,7 +47,7 @@ export const products = [
     "name": "MacBook Pro M4",
     "price": 1950000,
     "category": "biz",
-    "image": "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&q=80&w=1000",
+    "image": "/images/products/apple-desk.jpg",
     "description": "Pro-grade tools for founders, freelancers, and people who mean business.",
     "specs": [
       "M4 Chip",

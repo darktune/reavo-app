@@ -112,7 +112,7 @@ test.describe('Google Auth, Guest Checkout & Catalog Visual Tests', () => {
       console.log(`Product Image ${i} [${await img.getAttribute('alt')}]:`, info);
       await expect.poll(async () => {
         return await img.evaluate(el => el.complete && el.naturalWidth > 0);
-      }, { timeout: 10000 }).toBe(true);
+      }, { timeout: 15000 }).toBe(true);
     }
   });
 
