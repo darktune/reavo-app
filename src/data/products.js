@@ -141,7 +141,7 @@ export const products = [
     "name": "iPad Mini 5 64GB",
     "price": 270000,
     "category": "students",
-    "image": "https://www.apple.com/newsroom/images/product/ipad/standard/New-iPad-Mini-iMovie-03192019_big.jpg.large_2x.jpg",
+    "image": "/images/products/ipad-mini-5-64gb.jpg",
     "description": "Pocketable power with Apple Pencil support and True Tone Retina display.",
     "specs": [
       "64GB Storage",
@@ -157,14 +157,17 @@ export const products = [
       "Battery": "Up to 10 hours",
       "Ports": "Lightning"
     },
-    "stock_quantity": 9
+    "stock_quantity": 9,
+    "images": [
+      "/images/products/ipad-mini-5-64gb.jpg"
+    ]
   },
   {
     "id": "ipad-mini-5-256gb",
     "name": "iPad Mini 5 256GB",
     "price": 350000,
     "category": "students",
-    "image": "https://www.apple.com/newsroom/images/product/ipad/standard/New-iPad-Mini-iMovie-03192019_big.jpg.large_2x.jpg",
+    "image": "/images/products/ipad-mini-5-256gb.jpg",
     "description": "High capacity compact powerhouse for students and creators.",
     "specs": [
       "256GB Storage",
@@ -180,7 +183,10 @@ export const products = [
       "Battery": "Up to 10 hours",
       "Ports": "Lightning"
     },
-    "stock_quantity": 8
+    "stock_quantity": 8,
+    "images": [
+      "/images/products/ipad-mini-5-256gb.jpg"
+    ]
   },
   {
     "id": "ipad-mini-6-64gb",
@@ -256,7 +262,7 @@ export const products = [
     "name": "iPad 10th Gen 64GB",
     "price": 420000,
     "category": "students",
-    "image": "https://cdsassets.apple.com/live/SZLF0YNV/images/sp/111896_ipad-10th-gen.png",
+    "image": "/images/products/ipad-10th-gen-all.jpg",
     "description": "The colorful, versatile all-screen notebook replacement for campus life.",
     "specs": [
       "A14 Bionic",
@@ -272,14 +278,17 @@ export const products = [
       "Battery": "Up to 10 hours",
       "Ports": "USB-C"
     },
-    "stock_quantity": 10
+    "stock_quantity": 10,
+    "images": [
+      "/images/products/ipad-10th-gen-all.jpg"
+    ]
   },
   {
     "id": "ipad-10th-gen-256gb",
     "name": "iPad 10th Gen 256GB",
     "price": 620000,
     "category": "students",
-    "image": "https://cdsassets.apple.com/live/SZLF0YNV/images/sp/111896_ipad-10th-gen.png",
+    "image": "/images/products/ipad-10th-gen-all.jpg",
     "description": "High-storage campus classic. Download full course notes, videos, and sketches.",
     "specs": [
       "A14 Bionic",
@@ -295,7 +304,10 @@ export const products = [
       "Battery": "Up to 10 hours",
       "Ports": "USB-C"
     },
-    "stock_quantity": 5
+    "stock_quantity": 5,
+    "images": [
+      "/images/products/ipad-10th-gen-all.jpg"
+    ]
   },
   {
     "id": "ipad-11th-gen-wifi-128gb",
@@ -463,7 +475,7 @@ export const products = [
     "name": "iPad Air 3 64GB",
     "price": 230000,
     "category": "students",
-    "image": "https://www.apple.com/newsroom/images/product/ipad/standard/New-iPad-Air-nba2k-03192019_big.jpg.large_2x.jpg",
+    "image": "/images/products/ipad-air-3.jpg",
     "description": "10.5\" Retina display with A12 Bionic and Smart Keyboard connector.",
     "specs": [
       "A12 Bionic",
@@ -479,14 +491,17 @@ export const products = [
       "Battery": "Up to 10 hours",
       "Ports": "Lightning"
     },
-    "stock_quantity": 8
+    "stock_quantity": 8,
+    "images": [
+      "/images/products/ipad-air-3.jpg"
+    ]
   },
   {
     "id": "ipad-air-3-256gb",
     "name": "iPad Air 3 256GB",
     "price": 320000,
     "category": "students",
-    "image": "https://www.apple.com/newsroom/images/product/ipad/standard/New-iPad-Air-nba2k-03192019_big.jpg.large_2x.jpg",
+    "image": "/images/products/ipad-air-3.jpg",
     "description": "256GB capacity with A12 Bionic speed and lightweight portability.",
     "specs": [
       "A12 Bionic",
@@ -502,7 +517,10 @@ export const products = [
       "Battery": "Up to 10 hours",
       "Ports": "Lightning"
     },
-    "stock_quantity": 9
+    "stock_quantity": 9,
+    "images": [
+      "/images/products/ipad-air-3.jpg"
+    ]
   },
   {
     "id": "ipad-air-4-64gb",
@@ -1452,7 +1470,7 @@ export const products = [
     "name": "iPad Pro M4 13” 256GB",
     "price": 1350000,
     "category": "biz",
-    "image": "https://cdsassets.apple.com/live/7WUAS350/images/tech-specs/ipad-pro-11-inch-13-inch.png",
+    "image": "/images/products/ipad-pro-m4-keyboard.jpg",
     "description": "The crowning achievement of Apple design. Tandem OLED Ultra Retina XDR in a 5.1mm chassis.",
     "specs": [
       "Apple M4 Chip",
@@ -1468,14 +1486,17 @@ export const products = [
       "Battery": "Up to 10 hours",
       "Ports": "Thunderbolt / USB 4"
     },
-    "stock_quantity": 9
+    "stock_quantity": 9,
+    "images": [
+      "/images/products/ipad-pro-m4-keyboard.jpg"
+    ]
   },
   {
     "id": "ipad-pro-m4-13-512gb",
     "name": "iPad Pro M4 13” 512GB",
     "price": 1450000,
     "category": "biz",
-    "image": "https://cdsassets.apple.com/live/7WUAS350/images/tech-specs/ipad-pro-11-inch-13-inch.png",
+    "image": "/images/products/ipad-pro-m4-keyboard.jpg",
     "description": "The definitive 13-inch M4 Pro with 512GB storage. Built for next-gen campus leaders.",
     "specs": [
       "Apple M4 Chip",
@@ -1491,7 +1512,10 @@ export const products = [
       "Battery": "Up to 10 hours",
       "Ports": "Thunderbolt / USB 4"
     },
-    "stock_quantity": 10
+    "stock_quantity": 10,
+    "images": [
+      "/images/products/ipad-pro-m4-keyboard.jpg"
+    ]
   },
   {
     "id": "iphone-15-pro",
@@ -1591,7 +1615,7 @@ export const products = [
     "name": "iPod Touch 6th Gen 16GB",
     "price": 65000,
     "category": "students",
-    "image": "https://cdsassets.apple.com/live/7WUAS350/images/ipod/ipod-touch/ipod-touch-6th-gen.png",
+    "image": "/images/products/ipod-7th-gen.jpg",
     "description": "Pocketable Apple media player with 4\" Retina display and 8MP camera.",
     "specs": [
       "Apple A8 Chip",
@@ -1608,14 +1632,17 @@ export const products = [
       "Battery": "Up to 40 hours audio playback",
       "Ports": "Lightning, 3.5mm Headphone Jack"
     },
-    "stock_quantity": 9
+    "stock_quantity": 9,
+    "images": [
+      "/images/products/ipod-7th-gen.jpg"
+    ]
   },
   {
     "id": "ipod-touch-6th-32gb",
     "name": "iPod Touch 6th Gen 32GB",
     "price": 80000,
     "category": "students",
-    "image": "https://cdsassets.apple.com/live/7WUAS350/images/ipod/ipod-touch/ipod-touch-6th-gen.png",
+    "image": "/images/products/ipod-7th-gen.jpg",
     "description": "Compact 32GB music and offline media library for distraction-free listening.",
     "specs": [
       "Apple A8 Chip",
@@ -1632,14 +1659,17 @@ export const products = [
       "Battery": "Up to 40 hours audio",
       "Ports": "Lightning, 3.5mm Jack"
     },
-    "stock_quantity": 7
+    "stock_quantity": 7,
+    "images": [
+      "/images/products/ipod-7th-gen.jpg"
+    ]
   },
   {
     "id": "ipod-touch-6th-64gb",
     "name": "iPod Touch 6th Gen 64GB",
     "price": 115000,
     "category": "students",
-    "image": "https://cdsassets.apple.com/live/7WUAS350/images/ipod/ipod-touch/ipod-touch-6th-gen.png",
+    "image": "/images/products/ipod-7th-gen.jpg",
     "description": "High capacity 64GB iPod 6th Gen for massive offline music and podcasts.",
     "specs": [
       "Apple A8 Chip",
@@ -1656,14 +1686,17 @@ export const products = [
       "Battery": "Up to 40 hours audio",
       "Ports": "Lightning, 3.5mm Jack"
     },
-    "stock_quantity": 6
+    "stock_quantity": 6,
+    "images": [
+      "/images/products/ipod-7th-gen.jpg"
+    ]
   },
   {
     "id": "ipod-touch-7th-32gb",
     "name": "iPod Touch 7th Gen 32GB",
     "price": 155000,
     "category": "students",
-    "image": "https://cdsassets.apple.com/live/7WUAS350/images/ipod/ipod-touch/ipod-touch-7th-gen.jpg",
+    "image": "/images/products/ipod-7th-gen.jpg",
     "description": "Powered by the A10 Fusion chip for AR games, Apple Arcade, and high-res audio.",
     "specs": [
       "Apple A10 Fusion",
@@ -1680,14 +1713,17 @@ export const products = [
       "Battery": "Up to 40 hours audio, 8 hours video",
       "Ports": "Lightning, 3.5mm Headphone Jack"
     },
-    "stock_quantity": 10
+    "stock_quantity": 10,
+    "images": [
+      "/images/products/ipod-7th-gen.jpg"
+    ]
   },
   {
     "id": "ipod-touch-7th-128gb",
     "name": "iPod Touch 7th Gen 128GB",
     "price": 190000,
     "category": "students",
-    "image": "https://cdsassets.apple.com/live/7WUAS350/images/ipod/ipod-touch/ipod-touch-7th-gen.jpg",
+    "image": "/images/products/ipod-7th-gen.jpg",
     "description": "128GB high capacity player. Store thousands of lossless audio tracks.",
     "specs": [
       "Apple A10 Fusion",
@@ -1704,14 +1740,17 @@ export const products = [
       "Battery": "Up to 40 hours audio",
       "Ports": "Lightning, 3.5mm Jack"
     },
-    "stock_quantity": 6
+    "stock_quantity": 6,
+    "images": [
+      "/images/products/ipod-7th-gen.jpg"
+    ]
   },
   {
     "id": "ipod-touch-7th-256gb",
     "name": "iPod Touch 7th Gen 256GB",
     "price": 230000,
     "category": "creators",
-    "image": "https://cdsassets.apple.com/live/7WUAS350/images/ipod/ipod-touch/ipod-touch-7th-gen.jpg",
+    "image": "/images/products/ipod-7th-gen.jpg",
     "description": "The maximum 256GB capacity iPod Touch ever made. Collector and audiophile tier.",
     "specs": [
       "Apple A10 Fusion",
@@ -1728,14 +1767,17 @@ export const products = [
       "Battery": "Up to 40 hours audio",
       "Ports": "Lightning, 3.5mm Headphone Jack"
     },
-    "stock_quantity": 10
+    "stock_quantity": 10,
+    "images": [
+      "/images/products/ipod-7th-gen.jpg"
+    ]
   },
   {
     "id": "razer-deathadder-v3",
     "name": "Razer DeathAdder V3",
     "price": 48000,
     "category": "gamers",
-    "image": "https://assets2.razerzone.com/images/pnx.assets/bf7ea91398b704ea710dfad671d185b9/razer-deathadder-v3-hero-desktop.webp",
+    "image": "/images/products/razer-deathadder-v3.jpg",
     "description": "Ultra-lightweight ergonomic esports mouse.",
     "specs": [
       "59g Weight",
@@ -1750,14 +1792,17 @@ export const products = [
       "PollingRate": "8000Hz HyperPolling",
       "Connectivity": "Wired - Speedflex Cable"
     },
-    "stock_quantity": 108
+    "stock_quantity": 108,
+    "images": [
+      "/images/products/razer-deathadder-v3.jpg"
+    ]
   },
   {
     "id": "mech-keyboard",
     "name": "Mechanical Gaming Keyboard",
     "price": 95000,
     "category": "gamers",
-    "image": "https://images.unsplash.com/photo-1587829741301-dc798b83add3?auto=format&fit=crop&q=85&w=1200",
+    "image": "/images/products/mechanical-keyboard.jpg",
     "description": "Tactile, responsive, and built to last.",
     "specs": [
       "Linear Switches",
@@ -1772,7 +1817,10 @@ export const products = [
       "PollingRate": "1000Hz",
       "Connectivity": "USB-C Detachable"
     },
-    "stock_quantity": 132
+    "stock_quantity": 132,
+    "images": [
+      "/images/products/mechanical-keyboard.jpg"
+    ]
   },
   {
     "id": "anker-powerbank",
@@ -1825,7 +1873,7 @@ export const products = [
     "price": 4200000,
     "priceDisplay": "From ₦4,200,000",
     "category": "schools",
-    "image": "https://cdsassets.apple.com/live/SZLF0YNV/images/sp/111896_ipad-10th-gen.png",
+    "image": "/images/products/ipad-classroom-bundle.jpg",
     "description": "Complete digital learning deployment for 20 students.",
     "specs": [
       "20x iPads",
@@ -1840,7 +1888,10 @@ export const products = [
       "Software": "MDM Configuration Included",
       "Support": "1 Year Priority Support"
     },
-    "stock_quantity": 6
+    "stock_quantity": 6,
+    "images": [
+      "/images/products/ipad-classroom-bundle.jpg"
+    ]
   },
   {
     "id": "macbook-lab-kit",
@@ -1848,7 +1899,7 @@ export const products = [
     "price": 4250000,
     "priceDisplay": "From ₦4,250,000",
     "category": "schools",
-    "image": "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&q=85&w=1200",
+    "image": "/images/products/macbook-lab-kit.jpg",
     "description": "Ready-to-deploy MacBook Airs for computer labs.",
     "specs": [
       "10x MacBook Air",
@@ -1864,7 +1915,10 @@ export const products = [
       "Accessories": "USB-C Hubs Included",
       "Support": "1 Year Priority Support"
     },
-    "stock_quantity": 8
+    "stock_quantity": 8,
+    "images": [
+      "/images/products/macbook-lab-kit.jpg"
+    ]
   },
   {
     "id": "android-tablet-pack",
@@ -1872,7 +1926,7 @@ export const products = [
     "price": 2500000,
     "priceDisplay": "From ₦2,500,000",
     "category": "schools",
-    "image": "https://images.samsung.com/is/image/samsung/p6pim/global/sm-x210nzaaxfe/gallery/global-galaxy-tab-a9-plus-wifi-sm-x210-sm-x210nzaaxfe-thumb-538292019?$650_519_PNG$",
+    "image": "/images/products/android-tablet-bundle.jpg",
     "description": "Cost-effective digital learning solution.",
     "specs": [
       "30x Tablets",
@@ -1887,7 +1941,10 @@ export const products = [
       "Software": "Kiosk Mode Setup",
       "Support": "1 Year Priority Support"
     },
-    "stock_quantity": 5
+    "stock_quantity": 5,
+    "images": [
+      "/images/products/android-tablet-bundle.jpg"
+    ]
   },
   {
     "id": "charging-station-kit",
@@ -1895,7 +1952,7 @@ export const products = [
     "price": 500000,
     "priceDisplay": "Quoted on request",
     "category": "events",
-    "image": "https://images.unsplash.com/photo-1583863788434-e58a36330cf0?auto=format&fit=crop&q=85&w=1200",
+    "image": "/images/products/charging-station-kit.jpg",
     "description": "Keep your attendees powered up.",
     "specs": [
       "Custom Branding",
@@ -1909,7 +1966,10 @@ export const products = [
       "Features": "Custom branded wrap, Secure PIN lockers",
       "Power": "Requires standard 220V outlet"
     },
-    "stock_quantity": 166
+    "stock_quantity": 166,
+    "images": [
+      "/images/products/charging-station-kit.jpg"
+    ]
   },
   {
     "id": "pa-system-package",
@@ -1917,7 +1977,7 @@ export const products = [
     "price": 1500000,
     "priceDisplay": "Quoted on request",
     "category": "events",
-    "image": "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&q=85&w=1200",
+    "image": "/images/products/pa-system-package.jpg",
     "description": "Professional audio deployment for campus events.",
     "specs": [
       "Line Array",
@@ -1932,7 +1992,10 @@ export const products = [
       "Mixer": "16-Channel Digital Mixer",
       "Staff": "Includes Sound Engineer"
     },
-    "stock_quantity": 9
+    "stock_quantity": 9,
+    "images": [
+      "/images/products/pa-system-package.jpg"
+    ]
   },
   {
     "id": "livestream-kit",
@@ -1940,7 +2003,7 @@ export const products = [
     "price": 2000000,
     "priceDisplay": "Quoted on request",
     "category": "streamers",
-    "image": "https://images.unsplash.com/photo-1635350736475-c8cef4b21906?auto=format&fit=crop&q=85&w=1200",
+    "image": "/images/products/multicamera-livestream-kit.jpg",
     "description": "Broadcast your convocation or summit globally.",
     "specs": [
       "3x 4K Cameras",
@@ -1955,7 +2018,10 @@ export const products = [
       "Audio": "XLR Integration to PA",
       "Staff": "Includes Technical Director"
     },
-    "stock_quantity": 6
+    "stock_quantity": 6,
+    "images": [
+      "/images/products/multicamera-livestream-kit.jpg"
+    ]
   },
   {
     "id": "stage-lighting",
@@ -1963,7 +2029,7 @@ export const products = [
     "price": 1000000,
     "priceDisplay": "Quoted on request",
     "category": "events",
-    "image": "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?auto=format&fit=crop&q=85&w=1200",
+    "image": "/images/products/stage-lighting-package.jpg",
     "description": "Transform any hall into a spectacular venue.",
     "specs": [
       "Moving Heads",
@@ -1978,7 +2044,10 @@ export const products = [
       "Trussing": "Included based on venue",
       "Staff": "Includes Lighting Technician"
     },
-    "stock_quantity": 6
+    "stock_quantity": 6,
+    "images": [
+      "/images/products/stage-lighting-package.jpg"
+    ]
   },
   {
     "id": "reavo-booth",
@@ -1986,7 +2055,7 @@ export const products = [
     "price": 3500000,
     "priceDisplay": "Quoted on request",
     "category": "events",
-    "image": "https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&q=85&w=1200",
+    "image": "/images/products/reavo-tradefair-booth.jpg",
     "description": "A complete brand activation setup.",
     "specs": [
       "Custom Build",
@@ -2000,7 +2069,10 @@ export const products = [
       "Furniture": "Branded Counters, Stools",
       "Logistics": "Delivery, Setup, and Tear Down Included"
     },
-    "stock_quantity": 9
+    "stock_quantity": 9,
+    "images": [
+      "/images/products/reavo-tradefair-booth.jpg"
+    ]
   },
   {
     "id": "macbook-air-m1",
@@ -2321,7 +2393,7 @@ export const products = [
     "name": "REAVO Aluminum Laptop Stand",
     "price": 32000,
     "category": "students",
-    "image": "https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?auto=format&fit=crop&q=85&w=1200",
+    "image": "/images/products/reavo-aluminium-stand.jpg",
     "description": "Ergonomic brushed aluminum riser for better hostel desk posture and optimal cooling airflow.",
     "specs": [
       "Solid Aluminum",
@@ -2334,14 +2406,17 @@ export const products = [
       "Compatibility": "11\" to 17\" Laptops & MacBooks",
       "Weight": "750g"
     },
-    "stock_quantity": 111
+    "stock_quantity": 111,
+    "images": [
+      "/images/products/reavo-aluminium-stand.jpg"
+    ]
   },
   {
     "id": "reavo-shockproof-sleeve",
     "name": "REAVO Shockproof Tech Sleeve",
     "price": 18000,
     "category": "students",
-    "image": "https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&q=85&w=1200",
+    "image": "/images/products/reavo-shockproof-sleeve.jpg",
     "description": "Padded water-repellent protective case and accessory pouch for student campus backpacks.",
     "specs": [
       "Water-Repellent",
@@ -2354,7 +2429,10 @@ export const products = [
       "Lining": "Anti-Scratch Soft Microfiber",
       "Closure": "YKK Smooth Zippers"
     },
-    "stock_quantity": 110
+    "stock_quantity": 110,
+    "images": [
+      "/images/products/reavo-shockproof-sleeve.jpg"
+    ]
   },
   {
     "id": "ipad-9th-gen-64gb",
@@ -2803,5 +2881,69 @@ export const products = [
       "Bonus": "Free AirPods Pro included"
     },
     "stock_quantity": 8
+  },
+  {
+    "id": "ipad-pro-m4",
+    "name": "iPad Pro M4 + Magic Keyboard",
+    "price": 960000,
+    "priceDisplay": "₦960,000",
+    "category": "creators",
+    "image": "/images/products/ipad-pro-m4-keyboard.jpg",
+    "description": "Ultra-thin OLED iPad Pro with M4 chip paired with Apple Magic Keyboard.",
+    "specs": [
+      "Apple M4 Chip",
+      "OLED Ultra Retina XDR",
+      "Magic Keyboard Included",
+      "Apple Pencil Pro Ready"
+    ],
+    "stock_quantity": 8
+  },
+  {
+    "id": "ipad-10th-gen",
+    "name": "iPad 10th Gen + Pencil",
+    "price": 520000,
+    "priceDisplay": "₦520,000",
+    "category": "students",
+    "image": "/images/products/ipad-10th-gen-pencil.jpg",
+    "description": "The complete student campus setup. iPad 10th Gen bundled with precision Apple Pencil.",
+    "specs": [
+      "A14 Bionic",
+      "Apple Pencil Included",
+      "10.9-inch Liquid Retina",
+      "All-Day Battery"
+    ],
+    "stock_quantity": 12
+  },
+  {
+    "id": "samsung-tab-a9",
+    "name": "Samsung Galaxy Tab A9+",
+    "price": 285000,
+    "priceDisplay": "₦285,000",
+    "category": "students",
+    "image": "/images/products/samsung-galaxy-tab-a9.jpg",
+    "description": "Versatile 11-inch Android tablet for lectures, reading, and media streaming on campus.",
+    "specs": [
+      "11.0-inch 90Hz Display",
+      "Quad Speakers Dolby Atmos",
+      "7040mAh Battery",
+      "Samsung DeX Support"
+    ],
+    "stock_quantity": 15
+  },
+  {
+    "id": "ipod-7th-gen",
+    "name": "iPod 7th Gen 32GB",
+    "price": 750000,
+    "priceDisplay": "₦750,000",
+    "category": "creators",
+    "image": "/images/products/ipod-7th-gen.jpg",
+    "description": "Collector-grade Apple iPod Touch 7th Gen in pristine condition with A10 Fusion chip.",
+    "specs": [
+      "A10 Fusion Chip",
+      "4-inch Retina Display",
+      "32GB Storage",
+      "iOS 15 Supported"
+    ],
+    "stock_quantity": 4
   }
 ];

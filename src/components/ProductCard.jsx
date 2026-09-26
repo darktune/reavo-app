@@ -43,8 +43,10 @@ export default function ProductCard({ product, onCompare }) {
           alt={`${product.name} • REAVO Campus Gadget${product.category ? ` | ${product.category}` : ''}`}
           loading="lazy"
           onError={(e) => {
+            if (e.currentTarget.dataset.fallbackTried) return;
+            e.currentTarget.dataset.fallbackTried = 'true';
             const fallback = fallbackProducts.find(p => p.id === product.id);
-            if (fallback && fallback.image && e.currentTarget.src !== fallback.image) {
+            if (fallback && fallback.image) {
               e.currentTarget.src = fallback.image;
             }
           }}

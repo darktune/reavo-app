@@ -80,6 +80,7 @@ export default function ProductPage() {
         const fallback = fallbackProducts.find(item => item.id === id);
         if (p) {
           const isStalePlaceholder = !p.image ||
+            (fallback?.image && fallback.image.startsWith('/images/')) ||
             p.image.includes('m.media-amazon.com') ||
             (p.image.includes('images.unsplash.com/photo-15') && fallback?.image && !fallback.image.includes('images.unsplash.com'));
           const resolvedImage = isStalePlaceholder ? (fallback?.image || p.image) : p.image;
@@ -200,8 +201,10 @@ export default function ProductPage() {
                   src={gallery[selectedImage] || product.image} 
                   alt={product.name} 
                   onError={(e) => {
+                    if (e.currentTarget.dataset.fallbackTried) return;
+                    e.currentTarget.dataset.fallbackTried = 'true';
                     const fallback = fallbackProducts.find(p => p.id === product.id);
-                    if (fallback && fallback.image && e.currentTarget.src !== fallback.image) {
+                    if (fallback && fallback.image) {
                       e.currentTarget.src = fallback.image;
                     }
                   }}

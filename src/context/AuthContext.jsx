@@ -167,6 +167,26 @@ export function AuthProvider({ children }) {
     toast.success('Password recovery link sent! Check your email.');
   };
 
+  const signInWithGoogle = async (redirectTo) => {
+    const siteUrl = window.location.origin;
+    const targetUrl = redirectTo || siteUrl;
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: targetUrl,
+        queryParams: {
+          access_type: 'offline',
+          prompt: 'consent',
+        }
+      }
+    });
+    if (error) {
+      toast.error('Google Sign-In failed', { description: error.message });
+      throw error;
+    }
+    return data;
+  };
+
   const logout = async () => {
     const { error } = await supabase.auth.signOut();
     if (error) {
@@ -177,7 +197,7 @@ export function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, user, loading, login, register, logout, resetPassword }}>
+    <AuthContext.Provider value={{ isAuthenticated, user, loading, login, register, logout, resetPassword, signInWithGoogle }}>
       {!loading && children}
     </AuthContext.Provider>
   );

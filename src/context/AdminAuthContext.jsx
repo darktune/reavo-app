@@ -60,6 +60,22 @@ export function AdminAuthProvider({ children }) {
     localStorage.setItem('reavo-demo-admin', 'true');
   };
 
+  const signInWithGoogle = async () => {
+    const siteUrl = window.location.origin;
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: `${siteUrl}/admin`,
+        queryParams: {
+          access_type: 'offline',
+          prompt: 'consent',
+        }
+      }
+    });
+    if (error) throw error;
+    return data;
+  };
+
   const signOut = async () => {
     localStorage.removeItem('reavo-demo-admin');
     await supabase.auth.signOut();
@@ -67,7 +83,7 @@ export function AdminAuthProvider({ children }) {
   };
 
   return (
-    <AdminAuthContext.Provider value={{ adminUser, loading, signInWithEmail, signInAsDemoAdmin, signOut }}>
+    <AdminAuthContext.Provider value={{ adminUser, loading, signInWithEmail, signInWithGoogle, signInAsDemoAdmin, signOut }}>
       {children}
     </AdminAuthContext.Provider>
   );

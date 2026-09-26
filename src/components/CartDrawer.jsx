@@ -112,7 +112,16 @@ export default function CartDrawer() {
         )}
       </div>
 
-      <AuthModal isOpen={showAuth} onClose={() => setShowAuth(false)} />
+      <AuthModal 
+        isOpen={showAuth} 
+        onClose={() => setShowAuth(false)} 
+        allowGuestSkip={true}
+        onSkip={() => {
+          toggleCart();
+          navigate('/checkout');
+        }}
+        redirectTo={typeof window !== 'undefined' ? `${window.location.origin}/checkout` : undefined}
+      />
     </>
   );
 }

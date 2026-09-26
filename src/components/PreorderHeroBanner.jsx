@@ -520,15 +520,6 @@ export default function PreorderHeroBanner() {
                 }}>
                   {currentDrop.badge}
                 </span>
-                <span style={{
-                  marginLeft: 'auto',
-                  fontSize: 13,
-                  fontWeight: 700,
-                  color: 'var(--accent-teal)',
-                  fontFamily: 'JetBrains Mono, monospace'
-                }}>
-                  {currentDrop.priceEst}
-                </span>
               </div>
 
               {/* Title */}

@@ -100,9 +100,24 @@ export default function WelcomePrompt() {
     });
   };
 
+  const [cueRequired, setCueRequired] = useState(false);
+
   const handleContinue = (e) => {
     e.preventDefault();
     const finalSchool = school === 'Other' ? customSchool.trim() : school;
+    if (!finalSchool) {
+      setCueRequired(true);
+      if (cardRef.current) {
+        anime({
+          targets: cardRef.current,
+          translateX: [-8, 8, -6, 6, -3, 3, 0],
+          duration: 400,
+          easing: 'easeInOutQuad'
+        });
+      }
+      return;
+    }
+    setCueRequired(false);
     animateOut(() => {
       completeIntro(name.trim(), finalSchool, location.trim());
       setVisible(false);
@@ -110,6 +125,7 @@ export default function WelcomePrompt() {
   };
 
   const handleSkip = () => {
+    setCueRequired(false);
     animateOut(() => {
       // If manually opened (from stranger link), just close without re-skipping
       if (showWelcomePrompt) {
@@ -302,9 +318,14 @@ export default function WelcomePrompt() {
             </label>
             <select
               value={school}
-              onChange={(e) => setSchool(e.target.value)}
+              onChange={(e) => {
+                setSchool(e.target.value);
+                if (e.target.value) setCueRequired(false);
+              }}
               style={{
                 ...inputStyle,
+                borderColor: (cueRequired && !school) ? '#FFB800' : 'rgba(255,255,255,0.12)',
+                boxShadow: (cueRequired && !school) ? '0 0 0 3px rgba(255, 184, 0, 0.25)' : 'none',
                 cursor: 'pointer',
                 appearance: 'none',
                 backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='rgba(255,255,255,0.4)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E")`,
@@ -338,9 +359,16 @@ export default function WelcomePrompt() {
               <input
                 type="text"
                 value={customSchool}
-                onChange={(e) => setCustomSchool(e.target.value)}
+                onChange={(e) => {
+                  setCustomSchool(e.target.value);
+                  if (e.target.value) setCueRequired(false);
+                }}
                 placeholder="Enter your school name"
-                style={inputStyle}
+                style={{
+                  ...inputStyle,
+                  borderColor: (cueRequired && !customSchool.trim()) ? '#FFB800' : 'rgba(255,255,255,0.12)',
+                  boxShadow: (cueRequired && !customSchool.trim()) ? '0 0 0 3px rgba(255, 184, 0, 0.25)' : 'none',
+                }}
                 {...inputFocusHandlers}
               />
             </div>
@@ -369,6 +397,25 @@ export default function WelcomePrompt() {
             />
           </div>
         </div>
+
+        {/* Gentle Reminder Cue Banner if continuing without identification */}
+        {cueRequired && (!school || (school === 'Other' && !customSchool.trim())) && (
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 10,
+            background: 'rgba(255, 184, 0, 0.1)',
+            border: '1px solid rgba(255, 184, 0, 0.35)',
+            borderRadius: 14,
+            padding: '12px 16px',
+            color: '#FFB800',
+            fontSize: 13,
+            lineHeight: 1.45,
+            marginBottom: 20
+          }}>
+            <span>🎓 <strong>Please select or enter your school/institution</strong> so we can unlock student discounts and direct campus delivery for you! (Or click <strong>Skip</strong> to continue anonymously).</span>
+          </div>
+        )}
 
         {/* Action buttons — Skip is clearly visible alongside Continue */}
         <div style={{

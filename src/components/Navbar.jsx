@@ -8,10 +8,11 @@ import SearchModal from './SearchModal';
 import ThemeToggle from './ThemeToggle';
 
 /* iOS-style hover card wrapper */
-function CardHover({ children, onClick, style = {}, className = '' }) {
+function CardHover({ children, onClick, style = {}, className = '', ...rest }) {
   const [hovered, setHovered] = useState(false);
   return (
-    <div
+    <button
+      type="button"
       className={className}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
@@ -25,10 +26,13 @@ function CardHover({ children, onClick, style = {}, className = '' }) {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
+        border: 'none',
+        outline: 'none',
       }}
+      {...rest}
     >
       {children}
-    </div>
+    </button>
   );
 }
 
@@ -144,7 +148,7 @@ export default function Navbar() {
             title={isAuthenticated ? (user?.user_metadata?.full_name ? `${user.user_metadata.full_name} (My Profile)` : 'My Profile') : 'Sign In / Register'}
           >
             <User size={20} style={{ color: isAuthenticated ? 'var(--accent-teal, #39D9C4)' : 'var(--text-secondary)' }} />
-            {isAuthenticated && (
+            {isAuthenticated ? (
               <span style={{
                 position: 'absolute',
                 top: 7,
@@ -155,6 +159,21 @@ export default function Navbar() {
                 background: 'var(--accent-teal, #39D9C4)',
                 border: '1.5px solid var(--bg-primary)'
               }} />
+            ) : (
+              <span 
+                className="auth-guest-beacon"
+                title="Guest Mode • Sign in to save orders"
+                style={{
+                  position: 'absolute',
+                  top: 7,
+                  right: 7,
+                  width: 7,
+                  height: 7,
+                  borderRadius: '50%',
+                  background: '#FFB800',
+                  border: '1.5px solid var(--bg-void)'
+                }} 
+              />
             )}
           </CardHover>
 

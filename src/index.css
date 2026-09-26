@@ -23,6 +23,23 @@
   --bg-admin-glass: rgba(10, 10, 12, 0.96);
 }
 
+@keyframes authFlicker {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+    box-shadow: 0 0 6px rgba(255, 184, 0, 0.9), 0 0 14px rgba(255, 184, 0, 0.5);
+  }
+  50% {
+    opacity: 0.2;
+    transform: scale(0.8);
+    box-shadow: 0 0 2px rgba(255, 184, 0, 0.2);
+  }
+}
+
+.auth-guest-beacon {
+  animation: authFlicker 1.8s infinite ease-in-out;
+}
+
 [data-theme='light'] {
   --bg-void: #F8FAFC;
   --bg-surface: #FFFFFF;

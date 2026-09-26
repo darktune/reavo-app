@@ -197,6 +197,27 @@ export default function CheckoutPage() {
       <div className="checkout-grid">
         <div>
           <form id="checkout-form" onSubmit={handlePayClick} className="glass-panel" style={{ padding: 'clamp(24px, 4vw, 40px)' }}>
+            {!isAuthenticated && (
+              <div style={{
+                background: 'rgba(255, 184, 0, 0.08)',
+                border: '1px solid rgba(255, 184, 0, 0.25)',
+                borderRadius: 12,
+                padding: '12px 16px',
+                marginBottom: 24,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                flexWrap: 'wrap',
+                gap: 10
+              }}>
+                <span style={{ fontSize: 13, color: '#FFB800' }}>
+                  🛒 <strong>Guest Checkout:</strong> No password or sign-up required to place your order.
+                </span>
+                <span style={{ fontSize: 12, color: 'var(--text-secondary)' }}>
+                  Save your order details on the receipt screen.
+                </span>
+              </div>
+            )}
             <h3 style={{ fontSize: 20, marginBottom: 32 }}>1. Shipping Details</h3>
             
             <div className="form-row" style={{ marginBottom: 20 }}>

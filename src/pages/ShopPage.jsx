@@ -31,6 +31,7 @@ export default function ShopPage() {
           prodData.forEach(dbProd => {
             const existing = prodMap.get(dbProd.id);
             const isStalePlaceholder = !dbProd.image ||
+              (existing?.image && existing.image.startsWith('/images/')) ||
               dbProd.image.includes('m.media-amazon.com') ||
               (dbProd.image.includes('images.unsplash.com/photo-15') && existing?.image && !existing.image.includes('images.unsplash.com'));
             const resolvedImage = isStalePlaceholder ? (existing?.image || dbProd.image) : dbProd.image;
