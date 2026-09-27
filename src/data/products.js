@@ -47,7 +47,13 @@ export const products = [
     "name": "MacBook Pro M4",
     "price": 1950000,
     "category": "biz",
-    "image": "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&q=80&w=1000",
+    "image": "/images/products/macbook-pro-m4.jpg",
+    "images": [
+      "/images/products/macbook-pro-m4.jpg",
+      "/images/products/macbook-pro-m4-pinterest.jpg",
+      "/images/products/macbook-pro-m4-desk.jpg",
+      "/images/products/apple-desk.jpg"
+    ],
     "description": "Pro-grade tools for founders, freelancers, and people who mean business.",
     "specs": [
       "M4 Chip",
@@ -71,7 +77,10 @@ export const products = [
     "name": "MacBook Air M2",
     "price": 850000,
     "category": "students",
-    "image": "https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?auto=format&fit=crop&q=80&w=1000",
+    "image": "/images/products/macbook-air-m2.jpg",
+    "images": [
+      "/images/products/macbook-air-m2.jpg"
+    ],
     "description": "Lightweight power for the modern student.",
     "specs": [
       "M2 Chip",

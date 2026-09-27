@@ -27,7 +27,7 @@ export default function ProductCard({ product, onCompare }) {
   const navigate = useNavigate();
   const categoryColor = categories.find(c => c.id === product.category)?.color || 'var(--accent-primary)';
   const isHearted = isInWishlist(product.id);
-  const discountPercent = getDiscountPercentage(product);
+
 
   return (
     <div 
@@ -68,27 +68,7 @@ export default function ProductCard({ product, onCompare }) {
         padding: '16px' 
       }}>
 
-        {/* Top-Left Discount Badge - Clean percentage, no icon in front */}
-        <div style={{
-          position: 'absolute',
-          top: 10,
-          left: 10,
-          zIndex: 3,
-          padding: '3px 8px',
-          borderRadius: 8,
-          background: 'rgba(57, 217, 196, 0.12)',
-          backdropFilter: 'blur(12px)',
-          WebkitBackdropFilter: 'blur(12px)',
-          border: '1px solid rgba(57, 217, 196, 0.3)',
-          fontSize: 11,
-          fontWeight: 700,
-          color: 'var(--accent-primary)',
-          fontFamily: 'JetBrains Mono, monospace',
-          letterSpacing: '0.02em',
-          pointerEvents: 'none'
-        }}>
-          -{discountPercent}%
-        </div>
+
 
         {/* Top-Right Quick Wishlist Button - ALWAYS VISIBLE for Mobile & Touch Accessibility */}
         <button 

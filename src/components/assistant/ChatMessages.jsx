@@ -1,6 +1,8 @@
 import React, { useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import { products as localProductDB } from '../../data/products.js';
+import { Sparkles } from 'lucide-react';
+
 
 export default function ChatMessages({ messages, isTyping, onActionClick }) {
   const scrollRef = useRef(null);
@@ -73,7 +75,9 @@ export default function ChatMessages({ messages, isTyping, onActionClick }) {
                       <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-primary)' }}>{p.name}</div>
                       <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>₦{p.price.toLocaleString()}</div>
                       {aiProd.reason && (
-                        <div style={{ fontSize: '11px', color: '#7C5CFF', marginTop: '2px' }}>✨ {aiProd.reason}</div>
+                        <div style={{ fontSize: '11px', color: '#7C5CFF', marginTop: '2px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                          <Sparkles size={12} /> {aiProd.reason}
+                        </div>
                       )}
                     </div>
                     <button 

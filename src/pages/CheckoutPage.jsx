@@ -4,7 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import { Navigate, useNavigate } from 'react-router';
 import { useKorapay } from '../hooks/useKorapay';
 import SEO from '../components/SEO';
-import { ShieldCheck, ArrowRight, CreditCard, Tag, MessageCircle } from 'lucide-react';
+import { ShieldCheck, ArrowRight, CreditCard, Tag, MessageCircle, ShoppingCart } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 
 export default function CheckoutPage() {
@@ -210,8 +210,8 @@ export default function CheckoutPage() {
                 flexWrap: 'wrap',
                 gap: 10
               }}>
-                <span style={{ fontSize: 13, color: '#FFB800' }}>
-                  🛒 <strong>Guest Checkout:</strong> No password or sign-up required to place your order.
+                <span style={{ fontSize: 13, color: '#FFB800', display: 'flex', alignItems: 'center', gap: 6 }}>
+                  <ShoppingCart size={16} /> <span><strong>Guest Checkout:</strong> No password or sign-up required to place your order.</span>
                 </span>
                 <span style={{ fontSize: 12, color: 'var(--text-secondary)' }}>
                   Save your order details on the receipt screen.

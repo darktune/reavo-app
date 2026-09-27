@@ -8,7 +8,7 @@ import { useWishlist } from '../context/WishlistContext';
 import { supabase } from '../lib/supabase';
 import ScrollReveal from '../components/ScrollReveal';
 import { products as fallbackProducts, categories as fallbackCategories } from '../data/products';
-import { getDiscountPercentage } from '../components/ProductCard';
+
 
 // Helper to distinguish accessories (AirPods, chargers, cables, etc.) from gadgets
 function isAccessoryItem(p) {
@@ -138,7 +138,7 @@ export default function ProductPage() {
     ? product.images
     : [product.image].filter(Boolean);
   const isHearted = isInWishlist(product.id);
-  const discountPercent = getDiscountPercentage(product);
+
 
   // Compute live stock count & inventory state
   const stockCount = getStockCount(product);
@@ -250,19 +250,7 @@ export default function ProductPage() {
                     {product.priceDisplay || `₦${product.price.toLocaleString()}`}
                   </div>
 
-                  {/* Percentage Discount Badge - No icon in front */}
-                  <span style={{
-                    padding: '4px 10px',
-                    borderRadius: 8,
-                    background: 'rgba(57, 217, 196, 0.12)',
-                    border: '1px solid rgba(57, 217, 196, 0.3)',
-                    color: 'var(--accent-primary)',
-                    fontSize: 13,
-                    fontWeight: 700,
-                    fontFamily: 'JetBrains Mono, monospace'
-                  }}>
-                    -{discountPercent}%
-                  </span>
+
 
                   {/* Live Stock Quantity Indicator */}
                   {!isOutOfStock ? (

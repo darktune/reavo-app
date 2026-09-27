@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useUser } from '../context/UserContext';
-import { X, Mail, Lock, User, ArrowLeft, CheckCircle2, Key, AlertCircle, Loader2 } from 'lucide-react';
+import { X, Mail, Lock, User, ArrowLeft, CheckCircle2, Key, AlertCircle, Loader2, Zap } from 'lucide-react';
 
 export default function AuthModal({ isOpen, onClose, onSkip, allowGuestSkip = false, redirectTo }) {
   const [tab, setTab] = useState('login'); // 'login' | 'register' | 'forgot'
@@ -599,7 +599,7 @@ export default function AuthModal({ isOpen, onClose, onSkip, allowGuestSkip = fa
                     e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
                   }}
                 >
-                  <span>⚡ Skip Authentication • Continue as Guest</span>
+                  <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}><Zap size={16} /> Skip Authentication • Continue as Guest</span>
                 </button>
               </div>
             )}

@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { CheckCircle2, Shield, Play, Pause, X } from 'lucide-react';
+import { CheckCircle2, Shield, Play, Pause, X, Package, ShieldCheck, Truck, Sparkles } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { toast } from 'sonner';
 import { supabase } from '../lib/supabase';
@@ -1234,8 +1234,8 @@ export default function PreorderHeroBanner() {
                 padding: '12px 16px',
                 border: '1px solid var(--border-subtle)'
               }}>
-                <div style={{ fontWeight: 600, fontSize: 13, color: 'var(--text-primary)', marginBottom: 2 }}>
-                  📦 Lagos Warehouse Arrival & Final Pricing
+                <div style={{ fontWeight: 600, fontSize: 13, color: 'var(--text-primary)', marginBottom: 4, display: 'flex', alignItems: 'center', gap: 6 }}>
+                  <Package size={14} color="var(--accent-primary)" /> Lagos Warehouse Arrival & Final Pricing
                 </div>
                 <p style={{ margin: 0, fontSize: 12, color: 'var(--text-secondary)', lineHeight: 1.5 }}>
                   Nigerian retail pricing in Naira is locked upon Lagos cargo clearance, safeguarding you from unexpected exchange rate swings.
@@ -1248,8 +1248,8 @@ export default function PreorderHeroBanner() {
                 padding: '12px 16px',
                 border: '1px solid var(--border-subtle)'
               }}>
-                <div style={{ fontWeight: 600, fontSize: 13, color: 'var(--text-primary)', marginBottom: 2 }}>
-                  🛡️ Zero Advance Deposit Required
+                <div style={{ fontWeight: 600, fontSize: 13, color: 'var(--text-primary)', marginBottom: 4, display: 'flex', alignItems: 'center', gap: 6 }}>
+                  <ShieldCheck size={14} color="var(--accent-primary)" /> Zero Advance Deposit Required
                 </div>
                 <p style={{ margin: 0, fontSize: 12, color: 'var(--text-secondary)', lineHeight: 1.5 }}>
                   Pre-orders secure your queue priority in Wave 1 Nigeria allocation with zero upfront financial commitment. You only pay when your unit arrives.
@@ -1262,8 +1262,8 @@ export default function PreorderHeroBanner() {
                 padding: '12px 16px',
                 border: '1px solid var(--border-subtle)'
               }}>
-                <div style={{ fontWeight: 600, fontSize: 13, color: 'var(--text-primary)', marginBottom: 2 }}>
-                  🚚 Lagos & Campus Direct Delivery
+                <div style={{ fontWeight: 600, fontSize: 13, color: 'var(--text-primary)', marginBottom: 4, display: 'flex', alignItems: 'center', gap: 6 }}>
+                  <Truck size={14} color="var(--accent-primary)" /> Lagos & Campus Direct Delivery
                 </div>
                 <p style={{ margin: 0, fontSize: 12, color: 'var(--text-secondary)', lineHeight: 1.5 }}>
                   Same-day courier dispatch across Lagos (Island & Mainland) and prioritized delivery to accredited university campuses nationwide.
@@ -1276,8 +1276,8 @@ export default function PreorderHeroBanner() {
                 padding: '12px 16px',
                 border: '1px solid var(--border-subtle)'
               }}>
-                <div style={{ fontWeight: 600, fontSize: 13, color: 'var(--text-primary)', marginBottom: 2 }}>
-                  ✨ Official 1-Year Local Warranty
+                <div style={{ fontWeight: 600, fontSize: 13, color: 'var(--text-primary)', marginBottom: 4, display: 'flex', alignItems: 'center', gap: 6 }}>
+                  <Sparkles size={14} color="var(--accent-primary)" /> Official 1-Year Local Warranty
                 </div>
                 <p style={{ margin: 0, fontSize: 12, color: 'var(--text-secondary)', lineHeight: 1.5 }}>
                   Every device includes 100% genuine Apple hardware warranty handled directly by the REAVO Lagos Desk.

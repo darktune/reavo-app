@@ -103,7 +103,7 @@ UPDATE public.products SET image = 'https://www.apple.com/newsroom/images/produc
 UPDATE public.products SET image = 'https://sony.scene7.com/is/image/sonyglobalsolutions/01_mobile-5?$productIntroPlatemobile$&fmt=png-alpha', updated_at = NOW() WHERE id = 'sony-a7-iv';
 UPDATE public.products SET image = 'https://cdn.shopify.com/s/files/1/0517/6767/3016/files/A1277011_V1.png?v=1753755956', updated_at = NOW() WHERE id = 'anker-powerbank';
 UPDATE public.products SET image = 'https://cdsassets.apple.com/live/7WUAS350/images/tech-specs/121205-airpods-max.png', updated_at = NOW() WHERE id = 'airpods-max';
-UPDATE public.products SET image = 'https://cdsassets.apple.com/live/7WUAS350/images/tech-specs/mbp14-m4-2024.png', updated_at = NOW() WHERE id = 'macbook-pro-m4';
+UPDATE public.products SET image = '/images/products/macbook-pro-m4.jpg', updated_at = NOW() WHERE id = 'macbook-pro-m4';
 UPDATE public.products SET image = 'https://cdsassets.apple.com/live/7WUAS350/images/ipod/ipod-touch/ipod-touch-7th-gen.jpg', updated_at = NOW() WHERE id = 'ipod-7th-gen';
 UPDATE public.products SET image = 'https://images.samsung.com/is/image/samsung/p6pim/africa_en/sm-x216bzaaafa/gallery/africa-en-galaxy-tab-a9-plus-sm-x216-sm-x216bzaaafa-538834097?$Q90_2052_1641_JPG$', updated_at = NOW() WHERE id = 'samsung-tab-a9';
 UPDATE public.products SET image = 'https://www.apple.com/newsroom/images/product/ipad/standard/Apple-iPad-10th-gen-blue-2up-221018_big.jpg.large_2x.jpg', updated_at = NOW() WHERE id = 'ipad-10th-gen';
@@ -113,4 +113,4 @@ UPDATE public.products SET image = 'https://images.samsung.com/us/smartphones/ga
 UPDATE public.products SET image = 'https://cdsassets.apple.com/live/7WUAS350/images/tech-specs/iphone_15_pro.png', updated_at = NOW() WHERE id = 'iphone-15-pro';
 UPDATE public.products SET image = 'https://assets2.razerzone.com/images/pnx.assets/bf7ea91398b704ea710dfad671d185b9/razer-deathadder-v3-hero-desktop.webp', updated_at = NOW() WHERE id = 'razer-deathadder-v3';
 UPDATE public.products SET image = 'https://dlcdnwebimgs.asus.com/gain/14730014-9B03-4369-83EE-B668F348B5AA', updated_at = NOW() WHERE id = 'rog-strix-g16';
-UPDATE public.products SET image = 'https://cdsassets.apple.com/live/7WUAS350/images/macbook-air/2022-macbook-air-m2-colors.png', updated_at = NOW() WHERE id = 'macbook-air-m2';
+UPDATE public.products SET image = '/images/products/macbook-air-m2.jpg', updated_at = NOW() WHERE id = 'macbook-air-m2';

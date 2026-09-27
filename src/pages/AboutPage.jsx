@@ -22,12 +22,12 @@ export default function AboutPage() {
         <div style={{ display: 'flex', flexDirection: 'column', gap: 48, marginBottom: 120 }}>
           <ScrollReveal delay={100}>
             <div className="glass-panel" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', borderRadius: 24, overflow: 'hidden' }}>
-              <div style={{ background: 'var(--bg-inner)', display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: 300 }}>
-                {/* Placeholder for Edison's image */}
-                <div style={{ textAlign: 'center', color: 'var(--text-secondary)' }}>
-                  <div style={{ fontSize: 48, marginBottom: 8 }}>E.E.</div>
-                  <div className="font-mono">mr_reavo.jpg</div>
-                </div>
+              <div style={{ background: 'var(--bg-inner)', minHeight: 300, display: 'flex' }}>
+                <img 
+                  src="/founders/edison.png" 
+                  alt="Emuan Edison - Mr. Reavo" 
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+                />
               </div>
               <div style={{ padding: '48px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
                 <div style={{ color: 'var(--accent-primary)', fontSize: 13, fontWeight: 700, letterSpacing: '0.1em', marginBottom: 12 }}>FOUNDER · CEO</div>
