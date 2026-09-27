@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 import { Link, useNavigate } from 'react-router';
-import { ArrowRight, ChevronRight, MessageCircle, Laptop, Tablet, Headphones, SlidersHorizontal, Package, Zap } from 'lucide-react';
+import { ArrowRight, ChevronRight, MessageCircle, Laptop, Tablet, Headphones, SlidersHorizontal, Package, Zap, ShieldCheck, Award, Truck } from 'lucide-react';
 import ScrollReveal from '../components/ScrollReveal';
 import { products, categories } from '../data/products';
 import DotNav from '../components/DotNav';
@@ -467,66 +467,60 @@ export default function LandingPage() {
             gap: 20
           }}>
             <div 
-              onClick={() => navigate('/story')}
-              className="glass-panel glass-hover"
+              className="glass-panel"
               style={{
                 padding: '24px 28px',
                 borderRadius: 20,
                 background: 'var(--bg-card)',
                 border: '1px solid var(--border-subtle)',
-                cursor: 'pointer',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between'
               }}
             >
               <div>
-                <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 4, color: 'var(--text-primary)' }}>Our Story</h3>
-                <p style={{ fontSize: 13, color: 'var(--text-secondary)' }}>The manifesto behind Nigeria's student tech brand.</p>
+                <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 4, color: 'var(--text-primary)' }}>100% Genuine</h3>
+                <p style={{ fontSize: 13, color: 'var(--text-secondary)', maxWidth: '90%' }}>Verified authentic gadgets from official distributors.</p>
               </div>
-              <ChevronRight size={18} color="var(--accent-purple, #7C5CFF)" />
+              <ShieldCheck size={22} color="var(--accent-purple, #7C5CFF)" />
             </div>
 
             <div 
-              onClick={() => navigate('/ambassadors')}
-              className="glass-panel glass-hover"
+              className="glass-panel"
               style={{
                 padding: '24px 28px',
                 borderRadius: 20,
                 background: 'var(--bg-card)',
                 border: '1px solid var(--border-subtle)',
-                cursor: 'pointer',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between'
               }}
             >
               <div>
-                <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 4, color: 'var(--text-primary)' }}>Ambassadors</h3>
-                <p style={{ fontSize: 13, color: 'var(--text-secondary)' }}>The student representatives across Nigerian campuses.</p>
+                <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 4, color: 'var(--text-primary)' }}>Campus Warranty</h3>
+                <p style={{ fontSize: 13, color: 'var(--text-secondary)', maxWidth: '90%' }}>12-month comprehensive warranty and hassle-free returns.</p>
               </div>
-              <ChevronRight size={18} color="var(--accent-primary)" />
+              <Award size={22} color="var(--accent-primary)" />
             </div>
 
             <div 
-              onClick={() => navigate('/partnerships')}
-              className="glass-panel glass-hover"
+              className="glass-panel"
               style={{
                 padding: '24px 28px',
                 borderRadius: 20,
                 background: 'var(--bg-card)',
                 border: '1px solid var(--border-subtle)',
-                cursor: 'pointer',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between'
               }}
             >
               <div>
-                <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 4, color: 'var(--text-primary)' }}>Partnerships</h3>
-                <p style={{ fontSize: 13, color: 'var(--text-secondary)' }}>School labs, faculty packages & bulk orders.</p>
+                <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 4, color: 'var(--text-primary)' }}>Swift Delivery</h3>
+                <p style={{ fontSize: 13, color: 'var(--text-secondary)', maxWidth: '90%' }}>Fast, secure delivery straight to your university campus.</p>
               </div>
-              <ChevronRight size={18} color="var(--accent-primary)" />
+              <Truck size={22} color="var(--text-primary)" />
             </div>
 
             <div 
@@ -544,10 +538,10 @@ export default function LandingPage() {
               }}
             >
               <div>
-                <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 4, color: 'var(--text-primary)' }}>Student Desk</h3>
-                <p style={{ fontSize: 13, color: 'var(--text-secondary)' }}>Need advice? Chat directly on WhatsApp.</p>
+                <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 4, color: 'var(--text-primary)' }}>Student Support</h3>
+                <p style={{ fontSize: 13, color: 'var(--text-secondary)', maxWidth: '90%' }}>Need technical advice? Chat directly with us on WhatsApp.</p>
               </div>
-              <MessageCircle size={18} color="#25D366" />
+              <MessageCircle size={22} color="#25D366" />
             </div>
           </div>
         </div>

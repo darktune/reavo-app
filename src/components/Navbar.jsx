@@ -145,8 +145,34 @@ export default function Navbar() {
             <Search size={20} style={{ color: 'var(--text-secondary)' }} />
           </CardHover>
 
-
-
+          <CardHover
+            onClick={() => navigate('/shop?wishlist=true')}
+            style={{ borderRadius: 12, padding: 8, position: 'relative' }}
+            aria-label="Wishlist"
+            title="Wishlist"
+          >
+            <Heart size={20} style={{ color: 'var(--text-secondary)' }} />
+            {wishlist.length > 0 && (
+              <div style={{
+                position: 'absolute',
+                top: 0,
+                right: 0,
+                background: '#FF4757',
+                color: '#fff',
+                fontSize: 10,
+                width: 16,
+                height: 16,
+                borderRadius: '50%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontWeight: 'bold',
+                transform: 'translate(25%, -25%)',
+              }}>
+                {wishlist.length}
+              </div>
+            )}
+          </CardHover>
           <CardHover
             onClick={() => isAuthenticated ? navigate('/profile') : setIsAuthModalOpen(true)}
             style={{ borderRadius: 12, padding: 8, position: 'relative' }}
