@@ -241,6 +241,7 @@ export default function LandingPage() {
                 <img 
                   src={products[0].image} 
                   alt="Featured MacBook Pro M4 • REAVO campus tech" 
+                  fetchPriority="high"
                   style={{ 
                     width: '100%', 
                     height: 'auto', 
@@ -249,6 +250,15 @@ export default function LandingPage() {
                     display: 'block' 
                   }} 
                 />
+                <div style={{
+                  position: 'absolute',
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  height: '40%',
+                  background: 'linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 100%)',
+                  pointerEvents: 'none'
+                }} />
                 <div style={{
                   position: 'absolute',
                   bottom: 14,
@@ -265,23 +275,11 @@ export default function LandingPage() {
                   justifyContent: 'space-between'
                 }}>
                   <div>
-                    <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-primary)' }}>MacBook Pro M4</div>
-                    <div style={{ fontSize: 11, color: 'var(--text-secondary)' }}>Liquid Retina XDR</div>
+                    <div style={{ fontSize: 13, fontWeight: 700, color: '#FFFFFF' }}>MacBook Pro M4</div>
+                    <div style={{ fontSize: 11, color: 'rgba(255, 255, 255, 0.7)' }}>Liquid Retina XDR</div>
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                    <span style={{
-                      padding: '2px 7px',
-                      borderRadius: 6,
-                      background: 'rgba(57, 217, 196, 0.14)',
-                      border: '1px solid rgba(57, 217, 196, 0.35)',
-                      fontSize: 11,
-                      fontWeight: 700,
-                      color: 'var(--accent-primary)',
-                      fontFamily: 'JetBrains Mono, monospace'
-                    }}>
-                      -12%
-                    </span>
-                    <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-primary)', fontFamily: 'JetBrains Mono, monospace' }}>
+                    <span style={{ fontSize: 13, fontWeight: 700, color: '#FFFFFF', fontFamily: 'JetBrains Mono, monospace' }}>
                       ₦1,950,000
                     </span>
                   </div>

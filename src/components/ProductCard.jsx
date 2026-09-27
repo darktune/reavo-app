@@ -146,6 +146,15 @@ export default function ProductCard({ product, onCompare }) {
           src={product.image} 
           alt={`${product.name} • REAVO Campus Gadget${product.category ? ` | ${product.category}` : ''}`}
           loading="lazy"
+          decoding="async"
+          onLoad={(e) => {
+            e.currentTarget.style.opacity = '1';
+          }}
+          ref={(el) => {
+            if (el && el.complete) {
+              el.style.opacity = '1';
+            }
+          }}
           onError={(e) => {
             if (e.currentTarget.dataset.fallbackTried) return;
             e.currentTarget.dataset.fallbackTried = 'true';
@@ -159,8 +168,10 @@ export default function ProductCard({ product, onCompare }) {
             height: '100%', 
             objectFit: 'contain',
             objectPosition: 'center',
-            transition: 'transform 0.4s ease',
-            transform: isHovered ? 'scale(1.05)' : 'scale(1)'
+            transition: 'transform 0.4s ease, opacity 0.5s ease',
+            transform: isHovered ? 'scale(1.05)' : 'scale(1)',
+            opacity: 0,
+            willChange: 'opacity, transform'
           }} 
         />
       </div>
