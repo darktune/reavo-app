@@ -155,14 +155,6 @@ export default function ProductCard({ product, onCompare }) {
               el.style.opacity = '1';
             }
           }}
-          onError={(e) => {
-            if (e.currentTarget.dataset.fallbackTried) return;
-            e.currentTarget.dataset.fallbackTried = 'true';
-            const fallback = fallbackProducts.find(p => p.id === product.id);
-            if (fallback && fallback.image) {
-              e.currentTarget.src = fallback.image;
-            }
-          }}
           style={{ 
             width: '100%', 
             height: '100%', 

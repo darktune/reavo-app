@@ -92,9 +92,11 @@ export default function ProductPage() {
             ...fallback,
             ...p,
             image: resolvedImage,
-            images: (Array.isArray(p.images) && p.images.length > 0 && !p.images[0]?.includes('m.media-amazon.com'))
-              ? p.images
-              : (resolvedImage ? [resolvedImage] : [])
+            images: (fallback?.images?.length > 0)
+              ? fallback.images
+              : ((Array.isArray(p.images) && p.images.length > 0 && !p.images[0]?.includes('m.media-amazon.com'))
+                  ? p.images
+                  : (resolvedImage ? [resolvedImage] : []))
           });
           const { data: c } = await supabase.from('categories').select('*').eq('id', p.category).single();
           if (c) setCategory(c);
@@ -204,14 +206,6 @@ export default function ProductPage() {
                 <img 
                   src={gallery[selectedImage] || product.image} 
                   alt={product.name} 
-                  onError={(e) => {
-                    if (e.currentTarget.dataset.fallbackTried) return;
-                    e.currentTarget.dataset.fallbackTried = 'true';
-                    const fallback = fallbackProducts.find(p => p.id === product.id);
-                    if (fallback && fallback.image) {
-                      e.currentTarget.src = fallback.image;
-                    }
-                  }}
                   style={{ width: '100%', height: '100%', objectFit: 'contain' }} 
                 />
               </div>
@@ -222,12 +216,6 @@ export default function ProductPage() {
                       <img 
                         src={img} 
                         alt={`${product.name} • view ${i + 1}`} 
-                        onError={(e) => {
-                          const fallback = fallbackProducts.find(p => p.id === product.id);
-                          if (fallback && fallback.image && e.currentTarget.src !== fallback.image) {
-                            e.currentTarget.src = fallback.image;
-                          }
-                        }}
                         style={{ width: '100%', height: '100%', objectFit: 'contain' }} 
                       />
                     </button>

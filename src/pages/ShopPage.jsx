@@ -169,9 +169,11 @@ export default function ShopPage() {
               ...existing,
               ...dbProd,
               image: resolvedImage,
-              images: (Array.isArray(dbProd.images) && dbProd.images.length > 0 && !dbProd.images[0]?.includes('m.media-amazon.com'))
-                ? dbProd.images
-                : (resolvedImage ? [resolvedImage] : [])
+              images: (existing?.images?.length > 0)
+                ? existing.images
+                : ((Array.isArray(dbProd.images) && dbProd.images.length > 0 && !dbProd.images[0]?.includes('m.media-amazon.com'))
+                    ? dbProd.images
+                    : (resolvedImage ? [resolvedImage] : []))
             });
           });
           setProducts(Array.from(prodMap.values()));

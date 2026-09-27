@@ -138,12 +138,6 @@ export default function SearchModal({ isOpen, onClose }) {
                   <img 
                     src={product.image} 
                     alt={product.name} 
-                    onError={(e) => {
-                      const fallback = products.find(p => p.id === product.id);
-                      if (fallback && fallback.image && e.currentTarget.src !== fallback.image) {
-                        e.currentTarget.src = fallback.image;
-                      }
-                    }}
                     style={{ width: '100%', height: '100%', objectFit: 'contain' }} 
                   />
                 </div>
