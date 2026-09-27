@@ -303,19 +303,33 @@ export default function ProductPage() {
                   {product.description || `The definitive version of the ${product.name}, crafted for the modern campus hustle. Features ultra-durable materials, seamless integration with your lifestyle, and the unmistakable REAVO aesthetic.`}
                 </p>
 
-                {product.specs && product.specs.length > 0 && (
-                  <div style={{ marginBottom: 20 }}>
-                    <h4 style={{ color: 'var(--text-primary)', fontSize: 13, marginBottom: 12, textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 700 }}>Key Features</h4>
-                    <ul style={{ listStyleType: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 8 }}>
-                      {product.specs.map((spec, i) => (
-                        <li key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 10 }}>
-                          <div style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--accent-primary)', marginTop: 8, flexShrink: 0 }} />
-                          <span style={{ fontSize: 15 }}>{spec}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
+                {(() => {
+                  const uniqueFeatures = product.specs?.filter(spec => {
+                    if (!product.technicalSpecs || Object.keys(product.technicalSpecs).length === 0) return true;
+                    const s = spec.toLowerCase();
+                    const isHardwareSpec = 
+                      s.includes('chip') || s.includes('core') || s.includes('bionic') || s.includes('silicon') || s.includes('processor') ||
+                      s.match(/\d+gb/) || s.match(/\d+tb/) || s.includes('ram') || s.includes('memory') || s.includes('ssd') || s.includes('storage') ||
+                      s.includes('display') || s.includes('retina') || s.includes('hz') || s.includes('oled') || s.includes('lcd');
+                    return !isHardwareSpec;
+                  }) || [];
+
+                  if (uniqueFeatures.length === 0) return null;
+                  
+                  return (
+                    <div style={{ marginBottom: 20 }}>
+                      <h4 style={{ color: 'var(--text-primary)', fontSize: 13, marginBottom: 12, textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 700 }}>Key Features</h4>
+                      <ul style={{ listStyleType: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 8 }}>
+                        {uniqueFeatures.map((spec, i) => (
+                          <li key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 10 }}>
+                            <div style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--accent-primary)', marginTop: 8, flexShrink: 0 }} />
+                            <span style={{ fontSize: 15 }}>{spec}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  );
+                })()}
 
                 {product.technicalSpecs && Object.keys(product.technicalSpecs).length > 0 && (
                   <div style={{ marginBottom: 20 }}>
