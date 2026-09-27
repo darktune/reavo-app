@@ -77,6 +77,7 @@ export default function Footer() {
             <a href="https://wa.me/2349158554158" target="_blank" rel="noopener noreferrer" className="footer-link">WhatsApp (09158554158)</a>
             <a href="https://www.instagram.com/reavo_global?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer" className="footer-link">Instagram</a>
             <a href="https://www.snapchat.com/add/reavoglobal" target="_blank" rel="noopener noreferrer" className="footer-link">Snapchat</a>
+            <a href="https://www.tiktok.com/@reavo_global" target="_blank" rel="noopener noreferrer" className="footer-link">TikTok</a>
             <a href="https://www.linkedin.com/company/reavo/posts/?feedView=all" target="_blank" rel="noopener noreferrer" className="footer-link">LinkedIn</a>
           </div>
         </div>

@@ -279,8 +279,8 @@ export default function LandingPage() {
                     <div style={{ fontSize: 11, color: 'rgba(255, 255, 255, 0.7)' }}>Liquid Retina XDR</div>
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                    <span style={{ fontSize: 13, fontWeight: 700, color: '#FFFFFF', fontFamily: 'JetBrains Mono, monospace' }}>
-                      ₦1,950,000
+                    <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--accent-primary)', fontFamily: 'JetBrains Mono, monospace' }}>
+                      10% OFF
                     </span>
                   </div>
                 </div>
@@ -529,8 +529,9 @@ export default function LandingPage() {
               style={{
                 padding: '24px 28px',
                 borderRadius: 20,
-                background: 'var(--bg-card)',
-                border: '1px solid var(--border-subtle)',
+                background: 'var(--bg-inner)',
+                border: '1px solid rgba(37, 211, 102, 0.3)',
+                boxShadow: '0 4px 20px rgba(37, 211, 102, 0.08)',
                 cursor: 'pointer',
                 display: 'flex',
                 alignItems: 'center',
@@ -540,6 +541,10 @@ export default function LandingPage() {
               <div>
                 <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 4, color: 'var(--text-primary)' }}>Student Support</h3>
                 <p style={{ fontSize: 13, color: 'var(--text-secondary)', maxWidth: '90%' }}>Need technical advice? Chat directly with us on WhatsApp.</p>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 10, color: '#25D366', fontSize: 13, fontWeight: 600 }}>
+                  <span>Chat Now</span>
+                  <ArrowRight size={14} />
+                </div>
               </div>
               <MessageCircle size={22} color="#25D366" />
             </div>
