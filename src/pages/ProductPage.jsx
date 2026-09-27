@@ -310,9 +310,39 @@ export default function ProductPage() {
                 </div>
               </div>
 
-              <p style={{ color: 'var(--text-secondary)', fontSize: 16, lineHeight: 1.6 }}>
-                The definitive version of the {product.name}, crafted for the modern campus hustle. Features ultra-durable materials, seamless integration with your lifestyle, and the unmistakable REAVO aesthetic.
-              </p>
+              <div style={{ color: 'var(--text-secondary)', fontSize: 16, lineHeight: 1.6 }}>
+                <p style={{ marginBottom: 20 }}>
+                  {product.description || `The definitive version of the ${product.name}, crafted for the modern campus hustle. Features ultra-durable materials, seamless integration with your lifestyle, and the unmistakable REAVO aesthetic.`}
+                </p>
+
+                {product.specs && product.specs.length > 0 && (
+                  <div style={{ marginBottom: 20 }}>
+                    <h4 style={{ color: 'var(--text-primary)', fontSize: 13, marginBottom: 12, textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 700 }}>Key Features</h4>
+                    <ul style={{ listStyleType: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 8 }}>
+                      {product.specs.map((spec, i) => (
+                        <li key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 10 }}>
+                          <div style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--accent-primary)', marginTop: 8, flexShrink: 0 }} />
+                          <span style={{ fontSize: 15 }}>{spec}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {product.technicalSpecs && Object.keys(product.technicalSpecs).length > 0 && (
+                  <div style={{ marginBottom: 20 }}>
+                    <h4 style={{ color: 'var(--text-primary)', fontSize: 13, marginBottom: 12, textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 700 }}>Technical Specifications</h4>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+                      {Object.entries(product.technicalSpecs).map(([key, value]) => (
+                        <div key={key} style={{ display: 'flex', flexWrap: 'wrap', gap: '8px 16px', padding: '10px 14px', background: 'var(--bg-inner)', borderRadius: 10, border: '1px solid var(--border-subtle)', fontSize: 14 }}>
+                          <span style={{ width: 100, color: 'var(--text-secondary)', fontWeight: 600, flexShrink: 0 }}>{key}</span>
+                          <span style={{ color: 'var(--text-primary)', flex: '1 1 auto' }}>{value}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
 
               <div style={{ display: 'flex', gap: 16, borderTop: '1px solid var(--border-subtle)', borderBottom: '1px solid var(--border-subtle)', padding: '24px 0' }}>
                 <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 16 }}>
