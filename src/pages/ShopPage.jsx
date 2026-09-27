@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router';
 import SEO from '../components/SEO';
-import { Search, SlidersHorizontal, Heart, X } from 'lucide-react';
+import { Search, SlidersHorizontal, Heart, X, ChevronDown } from 'lucide-react';
 import ProductCard from '../components/ProductCard';
 import CompareDrawer from '../components/CompareDrawer';
 import ScrollReveal from '../components/ScrollReveal';
@@ -142,10 +142,10 @@ export default function ShopPage() {
       }}>
         <div className="container" style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
           
-          {/* Top Row: Search & Sort & Wishlist Pill */}
+          {/* Top Row: Search & Filters & Sort */}
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, alignItems: 'center', justifyContent: 'space-between' }}>
-            <div className="shop-filters" style={{ display: 'flex', gap: 10, alignItems: 'center', flex: '1 1 320px' }}>
-              <div style={{ position: 'relative', flex: 1 }}>
+            <div className="shop-filters" style={{ display: 'flex', gap: 10, alignItems: 'center', flex: '1 1 auto', flexWrap: 'wrap' }}>
+              <div style={{ position: 'relative', flex: '1 1 200px', minWidth: 200 }}>
                 <Search size={16} style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', color: 'var(--text-secondary)' }} />
                 <input 
                   type="text" 
@@ -171,7 +171,75 @@ export default function ShopPage() {
                   }}
                 />
               </div>
+
+              {/* Category Dropdown */}
+              <div style={{ position: 'relative' }}>
+                <select 
+                  value={currentCategory}
+                  onChange={(e) => {
+                    const p = new URLSearchParams(searchParams);
+                    p.delete('wishlist');
+                    if (e.target.value === 'all') {
+                      p.delete('cat');
+                    } else {
+                      p.set('cat', e.target.value);
+                    }
+                    setSearchParams(p);
+                  }}
+                  style={{
+                    appearance: 'none',
+                    background: 'var(--bg-inner)',
+                    border: '1px solid var(--border-subtle)',
+                    borderRadius: 100,
+                    padding: '10px 34px 10px 14px',
+                    color: 'var(--text-primary)',
+                    fontSize: 13,
+                    outline: 'none',
+                    cursor: 'pointer'
+                  }}
+                >
+                  <option value="all">All Categories</option>
+                  {categories.map(cat => (
+                    <option key={cat.id} value={cat.id}>{cat.label}</option>
+                  ))}
+                </select>
+                <ChevronDown size={14} style={{ position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none', color: 'var(--text-secondary)' }} />
+              </div>
+
+              {/* Type Dropdown */}
+              <div style={{ position: 'relative' }}>
+                <select 
+                  value={currentHardwareType}
+                  onChange={(e) => {
+                    const p = new URLSearchParams(searchParams);
+                    p.delete('wishlist');
+                    if (e.target.value === 'all') {
+                      p.delete('type');
+                    } else {
+                      p.set('type', e.target.value);
+                    }
+                    setSearchParams(p);
+                  }}
+                  style={{
+                    appearance: 'none',
+                    background: 'var(--bg-inner)',
+                    border: '1px solid var(--border-subtle)',
+                    borderRadius: 100,
+                    padding: '10px 34px 10px 14px',
+                    color: 'var(--text-primary)',
+                    fontSize: 13,
+                    outline: 'none',
+                    cursor: 'pointer'
+                  }}
+                >
+                  {HARDWARE_TYPES.map(hw => (
+                    <option key={hw.id} value={hw.id}>{hw.label}</option>
+                  ))}
+                </select>
+                <ChevronDown size={14} style={{ position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none', color: 'var(--text-secondary)' }} />
+              </div>
               
+              {/* Sort Dropdown */}
               <div style={{ position: 'relative' }}>
                 <select 
                   value={sortBy}
@@ -220,108 +288,13 @@ export default function ShopPage() {
                 fontSize: 12,
                 fontWeight: 600,
                 cursor: 'pointer',
-                transition: 'all 0.2s'
+                transition: 'all 0.2s',
+                whiteSpace: 'nowrap'
               }}
             >
               <Heart size={14} fill={isWishlistOnly ? '#FF4757' : 'none'} color={isWishlistOnly ? '#FF4757' : 'currentColor'} />
               <span>Wishlist ({wishlist.length})</span>
             </button>
-          </div>
-
-          {/* Row 2: Student Categories (Signature REAVO identity with color indicators) */}
-          <div style={{ display: 'flex', gap: 8, overflowX: 'auto', paddingBottom: 2, scrollbarWidth: 'none' }}>
-            <button 
-              className="glass-hover"
-              onClick={() => {
-                const p = new URLSearchParams(searchParams);
-                p.delete('cat');
-                p.delete('wishlist');
-                setSearchParams(p);
-              }}
-              style={{
-                flexShrink: 0,
-                padding: '7px 16px',
-                borderRadius: 100,
-                background: currentCategory === 'all' && !isWishlistOnly ? 'var(--text-primary)' : 'var(--bg-inner)',
-                color: currentCategory === 'all' && !isWishlistOnly ? 'var(--bg-void)' : 'var(--text-secondary)',
-                border: `1px solid ${currentCategory === 'all' && !isWishlistOnly ? 'transparent' : 'var(--border-subtle)'}`,
-                fontSize: 13,
-                fontWeight: 600,
-                whiteSpace: 'nowrap',
-                cursor: 'pointer',
-                transition: 'all 0.2s'
-              }}
-            >
-              All Categories
-            </button>
-            {categories.map(cat => (
-              <button 
-                key={cat.id}
-                className="glass-hover"
-                onClick={() => {
-                  const p = new URLSearchParams(searchParams);
-                  p.delete('wishlist');
-                  p.set('cat', cat.id);
-                  setSearchParams(p);
-                }}
-                style={{
-                  flexShrink: 0,
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 8,
-                  padding: '7px 16px',
-                  borderRadius: 100,
-                  background: currentCategory === cat.id && !isWishlistOnly ? 'var(--text-primary)' : 'var(--bg-inner)',
-                  color: currentCategory === cat.id && !isWishlistOnly ? 'var(--bg-void)' : 'var(--text-secondary)',
-                  border: `1px solid ${currentCategory === cat.id && !isWishlistOnly ? 'transparent' : 'var(--border-subtle)'}`,
-                  fontSize: 13,
-                  fontWeight: 500,
-                  whiteSpace: 'nowrap',
-                  cursor: 'pointer',
-                  transition: 'all 0.2s'
-                }}
-              >
-                <div style={{ width: 8, height: 8, borderRadius: '50%', background: cat.color }} />
-                <span>{cat.label}</span>
-              </button>
-            ))}
-          </div>
-
-          {/* Row 3: Hardware Type Quick Pills (Clean text, zero emojis) */}
-          <div style={{ display: 'flex', gap: 6, overflowX: 'auto', paddingBottom: 2, scrollbarWidth: 'none' }}>
-            {HARDWARE_TYPES.map(hw => {
-              const active = !isWishlistOnly && currentHardwareType === hw.id;
-              return (
-                <button
-                  key={hw.id}
-                  onClick={() => {
-                    const p = new URLSearchParams(searchParams);
-                    p.delete('wishlist');
-                    if (hw.id === 'all') {
-                      p.delete('type');
-                    } else {
-                      p.set('type', hw.id);
-                    }
-                    setSearchParams(p);
-                  }}
-                  style={{
-                    flexShrink: 0,
-                    padding: '5px 12px',
-                    borderRadius: 100,
-                    background: active ? 'var(--text-primary)' : 'transparent',
-                    color: active ? 'var(--bg-void)' : 'var(--text-secondary)',
-                    border: `1px solid ${active ? 'transparent' : 'var(--border-subtle)'}`,
-                    fontSize: 12,
-                    fontWeight: active ? 700 : 500,
-                    cursor: 'pointer',
-                    whiteSpace: 'nowrap',
-                    transition: 'all 0.18s ease'
-                  }}
-                >
-                  {hw.label}
-                </button>
-              );
-            })}
           </div>
 
         </div>
