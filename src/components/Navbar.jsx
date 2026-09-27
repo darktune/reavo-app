@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { ShoppingBag, User, Search, Menu, X, Heart } from 'lucide-react';
 import { useCart } from '../context/CartContext';
+import { useWishlist } from '../context/WishlistContext';
 import { useAuth } from '../context/AuthContext';
 
 import { useNavigate } from 'react-router';
@@ -40,6 +41,7 @@ function CardHover({ children, onClick, style = {}, className = '', ...rest }) {
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const { cartCount, toggleCart } = useCart();
+  const { wishlist } = useWishlist();
 
   const { isAuthenticated, user } = useAuth();
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);

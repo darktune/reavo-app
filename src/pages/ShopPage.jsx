@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router';
 import SEO from '../components/SEO';
 import { Search, SlidersHorizontal, Heart, X, ChevronDown } from 'lucide-react';
@@ -31,16 +31,119 @@ function matchesHardwareType(product, type) {
   return true;
 }
 
+function CustomDropdown({ value, onChange, options, minWidth = 160 }) {
+  const [isOpen, setIsOpen] = useState(false);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (ref.current && !ref.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const selectedOption = options.find(o => o.value === value) || options[0];
+
+  return (
+    <div ref={ref} style={{ position: 'relative', flex: '1 1 auto', minWidth }}>
+      <button
+        type="button"
+        onClick={() => setIsOpen(!isOpen)}
+        style={{
+          width: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          background: 'var(--bg-inner)',
+          border: '1px solid var(--border-subtle)',
+          borderRadius: 100,
+          padding: '10px 14px',
+          color: 'var(--text-primary)',
+          fontSize: 13,
+          cursor: 'pointer'
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          {selectedOption?.color && <div style={{ width: 8, height: 8, borderRadius: '50%', background: selectedOption.color }} />}
+          <span>{selectedOption?.label}</span>
+        </div>
+        <ChevronDown size={14} style={{ color: 'var(--text-secondary)', transition: 'transform 0.2s', transform: isOpen ? 'rotate(180deg)' : 'none' }} />
+      </button>
+
+      {isOpen && (
+        <div style={{
+          position: 'absolute',
+          top: 'calc(100% + 8px)',
+          left: 0,
+          right: 0,
+          background: 'var(--bg-card)',
+          border: '1px solid var(--border-subtle)',
+          borderRadius: 12,
+          padding: 8,
+          zIndex: 50,
+          boxShadow: '0 8px 32px rgba(0,0,0,0.25)',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 4
+        }}>
+          {options.map(opt => (
+            <button
+              key={opt.value}
+              onClick={() => { onChange(opt.value); setIsOpen(false); }}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 8,
+                padding: '8px 12px',
+                borderRadius: 8,
+                background: value === opt.value ? 'var(--bg-inner)' : 'transparent',
+                border: 'none',
+                color: 'var(--text-primary)',
+                fontSize: 13,
+                cursor: 'pointer',
+                textAlign: 'left'
+              }}
+              onMouseEnter={(e) => {
+                if (value !== opt.value) e.currentTarget.style.background = 'var(--bg-inner)';
+              }}
+              onMouseLeave={(e) => {
+                if (value !== opt.value) e.currentTarget.style.background = 'transparent';
+              }}
+            >
+              {opt.color && <div style={{ width: 8, height: 8, borderRadius: '50%', background: opt.color }} />}
+              <span>{opt.label}</span>
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function ShopPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchQuery, setSearchQuery] = useState(searchParams.get('q') || '');
   const [sortBy, setSortBy] = useState('featured');
   const [compareItems, setCompareItems] = useState([]);
   const { wishlist } = useWishlist();
+  const [wishlistAnim, setWishlistAnim] = useState(false);
+  const prevWishlistLength = useRef(wishlist.length);
   
   const [products, setProducts] = useState(fallbackProducts);
   const [categories, setCategories] = useState(fallbackCategories);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (wishlist.length > prevWishlistLength.current) {
+      setWishlistAnim(true);
+      const timer = setTimeout(() => setWishlistAnim(false), 600);
+      return () => clearTimeout(timer);
+    }
+    prevWishlistLength.current = wishlist.length;
+  }, [wishlist.length]);
 
   useEffect(() => {
     async function loadData() {
@@ -86,6 +189,19 @@ export default function ShopPage() {
   const currentCategory = searchParams.get('cat') || 'all';
   const currentHardwareType = searchParams.get('type') || 'all';
   const isWishlistOnly = searchParams.get('wishlist') === 'true';
+
+  const categoryOptions = [
+    { value: 'all', label: 'All Categories' },
+    ...categories.map(c => ({ value: c.id, label: c.label, color: c.color }))
+  ];
+  
+  const typeOptions = HARDWARE_TYPES.map(hw => ({ value: hw.id, label: hw.label }));
+  
+  const sortOptions = [
+    { value: 'featured', label: 'Featured' },
+    { value: 'price-low', label: 'Price: Low to High' },
+    { value: 'price-high', label: 'Price: High to Low' },
+  ];
 
   // Filter products
   let filteredProducts = products.filter(p => {
@@ -172,101 +288,48 @@ export default function ShopPage() {
                 />
               </div>
 
-              {/* Category Dropdown */}
-              <div style={{ position: 'relative' }}>
-                <select 
-                  value={currentCategory}
-                  onChange={(e) => {
-                    const p = new URLSearchParams(searchParams);
-                    p.delete('wishlist');
-                    if (e.target.value === 'all') {
-                      p.delete('cat');
-                    } else {
-                      p.set('cat', e.target.value);
-                    }
-                    setSearchParams(p);
-                  }}
-                  style={{
-                    appearance: 'none',
-                    background: 'var(--bg-inner)',
-                    border: '1px solid var(--border-subtle)',
-                    borderRadius: 100,
-                    padding: '10px 34px 10px 14px',
-                    color: 'var(--text-primary)',
-                    fontSize: 13,
-                    outline: 'none',
-                    cursor: 'pointer'
-                  }}
-                >
-                  <option value="all">All Categories</option>
-                  {categories.map(cat => (
-                    <option key={cat.id} value={cat.id}>{cat.label}</option>
-                  ))}
-                </select>
-                <ChevronDown size={14} style={{ position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none', color: 'var(--text-secondary)' }} />
-              </div>
+              <CustomDropdown
+                value={currentCategory}
+                options={categoryOptions}
+                onChange={(val) => {
+                  const p = new URLSearchParams(searchParams);
+                  p.delete('wishlist');
+                  if (val === 'all') {
+                    p.delete('cat');
+                  } else {
+                    p.set('cat', val);
+                  }
+                  setSearchParams(p);
+                }}
+              />
 
-              {/* Type Dropdown */}
-              <div style={{ position: 'relative' }}>
-                <select 
-                  value={currentHardwareType}
-                  onChange={(e) => {
-                    const p = new URLSearchParams(searchParams);
-                    p.delete('wishlist');
-                    if (e.target.value === 'all') {
-                      p.delete('type');
-                    } else {
-                      p.set('type', e.target.value);
-                    }
-                    setSearchParams(p);
-                  }}
-                  style={{
-                    appearance: 'none',
-                    background: 'var(--bg-inner)',
-                    border: '1px solid var(--border-subtle)',
-                    borderRadius: 100,
-                    padding: '10px 34px 10px 14px',
-                    color: 'var(--text-primary)',
-                    fontSize: 13,
-                    outline: 'none',
-                    cursor: 'pointer'
-                  }}
-                >
-                  {HARDWARE_TYPES.map(hw => (
-                    <option key={hw.id} value={hw.id}>{hw.label}</option>
-                  ))}
-                </select>
-                <ChevronDown size={14} style={{ position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none', color: 'var(--text-secondary)' }} />
-              </div>
+              <CustomDropdown
+                value={currentHardwareType}
+                options={typeOptions}
+                onChange={(val) => {
+                  const p = new URLSearchParams(searchParams);
+                  p.delete('wishlist');
+                  if (val === 'all') {
+                    p.delete('type');
+                  } else {
+                    p.set('type', val);
+                  }
+                  setSearchParams(p);
+                }}
+              />
               
-              {/* Sort Dropdown */}
-              <div style={{ position: 'relative' }}>
-                <select 
-                  value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value)}
-                  style={{
-                    appearance: 'none',
-                    background: 'var(--bg-inner)',
-                    border: '1px solid var(--border-subtle)',
-                    borderRadius: 100,
-                    padding: '10px 34px 10px 14px',
-                    color: 'var(--text-primary)',
-                    fontSize: 13,
-                    outline: 'none',
-                    cursor: 'pointer'
-                  }}
-                >
-                  <option value="featured">Featured</option>
-                  <option value="price-low">Price: Low to High</option>
-                  <option value="price-high">Price: High to Low</option>
-                </select>
-                <SlidersHorizontal size={13} style={{ position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none', color: 'var(--text-secondary)' }} />
-              </div>
+              <CustomDropdown
+                value={sortBy}
+                options={sortOptions}
+                onChange={(val) => setSortBy(val)}
+                minWidth={180}
+              />
             </div>
 
             {/* Quick Wishlist Mode Toggle */}
             <button
               type="button"
+              className={wishlistAnim ? 'heart-pulse' : ''}
               onClick={() => {
                 const p = new URLSearchParams(searchParams);
                 if (isWishlistOnly) {
@@ -284,7 +347,7 @@ export default function ShopPage() {
                 borderRadius: 100,
                 background: isWishlistOnly ? 'rgba(255, 71, 87, 0.15)' : 'var(--bg-inner)',
                 border: `1px solid ${isWishlistOnly ? '#FF4757' : 'var(--border-subtle)'}`,
-                color: isWishlistOnly ? '#FF4757' : 'var(--text-secondary)',
+                color: isWishlistOnly || wishlistAnim ? '#FF4757' : 'var(--text-secondary)',
                 fontSize: 12,
                 fontWeight: 600,
                 cursor: 'pointer',
@@ -292,7 +355,7 @@ export default function ShopPage() {
                 whiteSpace: 'nowrap'
               }}
             >
-              <Heart size={14} fill={isWishlistOnly ? '#FF4757' : 'none'} color={isWishlistOnly ? '#FF4757' : 'currentColor'} />
+              <Heart size={14} fill={isWishlistOnly || wishlistAnim ? '#FF4757' : 'none'} color={isWishlistOnly || wishlistAnim ? '#FF4757' : 'currentColor'} />
               <span>Wishlist ({wishlist.length})</span>
             </button>
           </div>
@@ -403,6 +466,14 @@ export default function ShopPage() {
       />
 
       <style>{`
+        @keyframes heartPulse {
+          0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 71, 87, 0.4); }
+          50% { transform: scale(1.05); box-shadow: 0 0 0 6px rgba(255, 71, 87, 0); border-color: #FF4757; }
+          100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 71, 87, 0); }
+        }
+        .heart-pulse {
+          animation: heartPulse 0.6s ease-out;
+        }
         .shop-grid {
           display: grid;
           grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
